@@ -1,0 +1,11 @@
+{
+  "title": "DSA Level 7 — Binary Search Trees (BST)",
+  "intro": "This level focuses on Binary Search Trees and their operations.",
+  "points": [
+    "Understand the BST property: left subtree < root < right subtree.",
+    "Insert nodes into a BST while maintaining order.",
+    "Search for a value in a BST efficiently.",
+    "Delete nodes from a BST (concept and simple implementations).",
+    "Relate BST search performance to O(log n) in the average case."
+  ]
+}

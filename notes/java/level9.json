@@ -1,0 +1,11 @@
+{
+  "title": "Java Level 9 — Arrays, Strings & Collections Intro",
+  "intro": "This level combines arrays and strings and gives a basic peek into collections.",
+  "points": [
+    "Work with String class and its common methods like length, charAt, substring.",
+    "Convert between strings and primitive types using wrapper classes.",
+    "Use arrays of objects in simple programs.",
+    "Get introduced to ArrayList as a dynamic array structure.",
+    "Practice problems involving arrays and strings together."
+  ]
+}

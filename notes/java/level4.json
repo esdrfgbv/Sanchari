@@ -1,0 +1,11 @@
+{
+  "title": "Java Level 4 — Loops & Iteration",
+  "intro": "This level introduces for, while, and do-while loops in Java.",
+  "points": [
+    "Use for loops for fixed number of iterations.",
+    "Use while loops for condition-controlled repetition.",
+    "Use do-while loops when the body must run at least once.",
+    "Apply break and continue to control loop execution.",
+    "Solve numeric and pattern problems using loops."
+  ]
+}

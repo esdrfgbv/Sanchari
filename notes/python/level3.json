@@ -1,0 +1,11 @@
+{
+  "title": "Python Level 3 — Conditions & Branching",
+  "intro": "This level covers decision making using if, elif, and else.",
+  "points": [
+    "Write simple if statements to check conditions.",
+    "Use if-elif-else chains for multiple conditions.",
+    "Combine conditions with and, or, not.",
+    "Handle basic validation and edge cases in user input.",
+    "Build small menu-driven or condition-based programs."
+  ]
+}

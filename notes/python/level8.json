@@ -1,0 +1,11 @@
+{
+  "title": "Python Level 8 — Dictionaries & Tuples",
+  "intro": "This level teaches key-value data with dictionaries and immutable sequences with tuples.",
+  "points": [
+    "Create dictionaries and access values by key.",
+    "Add, update, and delete key-value pairs.",
+    "Loop over keys, values, and items in dictionaries.",
+    "Understand tuples as immutable ordered collections.",
+    "Use dictionaries and tuples to model real-world data."
+  ]
+}

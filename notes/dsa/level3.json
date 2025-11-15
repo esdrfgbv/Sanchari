@@ -1,0 +1,11 @@
+{
+  "title": "DSA Level 3 — Sorting Fundamentals",
+  "intro": "This level introduces basic sorting algorithms and their ideas.",
+  "points": [
+    "Understand what sorting means and why it is useful.",
+    "Implement simple algorithms like bubble sort and selection sort.",
+    "Trace sorting algorithms step by step on small inputs.",
+    "Know the basic time complexities of simple sorts (O(n^2)).",
+    "Start thinking about how sorting helps in other problems."
+  ]
+}

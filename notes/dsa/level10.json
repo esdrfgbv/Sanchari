@@ -1,0 +1,11 @@
+{
+  "title": "DSA Level 10 — Dynamic Programming & Problem Solving",
+  "intro": "This level gives an introduction to dynamic programming and combines multiple DSA ideas.",
+  "points": [
+    "Understand the idea of overlapping subproblems and optimal substructure.",
+    "Convert a simple recursive solution into a DP solution using memoization or tabulation.",
+    "Practice classic DP patterns like Fibonacci, knapsack-style, or grid paths (concept level).",
+    "Combine arrays, recursion, and DP to solve harder problems.",
+    "Strengthen problem-solving mindset for coding interviews and contests."
+  ]
+}

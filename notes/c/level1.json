@@ -1,0 +1,10 @@
+{
+  "title": "C Level 1 — Basics of C",
+  "intro": "In this level, you will revise basic input-output and variables in C.",
+  "points": [
+    "Using printf() to print output",
+    "Declaring int, float, and char variables",
+    "Reading input using scanf()",
+    "Performing basic arithmetic operations"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "title": "DSA Level 2 — Searching Algorithms",
+  "intro": "This level covers linear search and binary search on arrays.",
+  "points": [
+    "Implement linear search on unsorted arrays.",
+    "Understand the need for a sorted array in binary search.",
+    "Implement iterative binary search.",
+    "Compare time complexities of linear search (O(n)) and binary search (O(log n)).",
+    "Practice choosing the correct search method based on the situation."
+  ]
+}

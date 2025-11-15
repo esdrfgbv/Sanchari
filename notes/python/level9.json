@@ -1,0 +1,11 @@
+{
+  "title": "Python Level 9 — Files & Basic Exceptions",
+  "intro": "This level introduces reading from and writing to files, and basic error handling.",
+  "points": [
+    "Open files using open() with modes like 'r', 'w', 'a'.",
+    "Read file content using read(), readline(), and readlines().",
+    "Write text to files using write() and writelines().",
+    "Use the with statement to handle files safely.",
+    "Get a basic idea of try-except for handling errors."
+  ]
+}

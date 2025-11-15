@@ -1,0 +1,11 @@
+{
+  "title": "DSA Level 5 — Linked Lists",
+  "intro": "This level introduces singly linked lists as a dynamic linear structure.",
+  "points": [
+    "Understand the node structure: data and next pointer.",
+    "Create and traverse a singly linked list.",
+    "Insert nodes at the beginning, end, and a given position (conceptually and in code).",
+    "Delete nodes from a linked list and handle edge cases.",
+    "Compare arrays and linked lists in terms of advantages and disadvantages."
+  ]
+}

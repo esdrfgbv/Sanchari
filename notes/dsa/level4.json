@@ -1,0 +1,11 @@
+{
+  "title": "DSA Level 4 — Stacks & Queues",
+  "intro": "This level covers stack and queue data structures and their use-cases.",
+  "points": [
+    "Understand the LIFO (Last In First Out) principle of stacks.",
+    "Perform push and pop operations on stacks conceptually and in code.",
+    "Understand the FIFO (First In First Out) principle of queues.",
+    "Perform enqueue and dequeue operations using arrays or lists.",
+    "Recognize real-life and coding problems where stacks and queues are useful."
+  ]
+}

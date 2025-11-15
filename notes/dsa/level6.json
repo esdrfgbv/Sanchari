@@ -1,0 +1,11 @@
+{
+  "title": "DSA Level 6 — Trees & Binary Trees",
+  "intro": "This level covers tree basics and binary tree traversal techniques.",
+  "points": [
+    "Understand the basic terminology of trees: root, child, leaf, height, depth.",
+    "Learn the structure of a binary tree node (data, left, right).",
+    "Implement and understand preorder, inorder, and postorder traversals.",
+    "Use recursion to traverse trees effectively.",
+    "Visualize tree traversals on simple diagrams."
+  ]
+}

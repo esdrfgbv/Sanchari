@@ -1,0 +1,11 @@
+{
+  "title": "Python Level 10 — Problem Solving & Mini Projects",
+  "intro": "This level combines all Python basics into small real-world style problems.",
+  "points": [
+    "Combine loops, conditions, and functions in a single program.",
+    "Use lists, dictionaries, and strings together to solve problems.",
+    "Implement small console-based apps like calculators or text analyzers.",
+    "Focus on writing clean, readable, and commented code.",
+    "Practice debugging and improving your own solutions."
+  ]
+}

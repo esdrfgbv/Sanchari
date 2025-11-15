@@ -1,0 +1,11 @@
+{
+  "title": "C Level 4 — Loops & Repetition",
+  "intro": "This level covers loops to repeat blocks of code efficiently.",
+  "points": [
+    "Understand the purpose of loops and when to use them.",
+    "Use for loop for counting-based repetition.",
+    "Use while and do-while loops for condition-based repetition.",
+    "Know the difference between entry-controlled and exit-controlled loops.",
+    "Use break and continue to control loop flow."
+  ]
+}

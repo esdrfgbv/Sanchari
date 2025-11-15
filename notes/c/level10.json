@@ -1,0 +1,11 @@
+{
+  "title": "C Level 10 — File Handling & Mini Projects",
+  "intro": "This level teaches basic file input/output and applies all concepts in mini projects.",
+  "points": [
+    "Understand FILE pointer and file modes like \"r\", \"w\", \"a\".",
+    "Use fopen, fprintf, fscanf, fputs, fgets, fclose in simple examples.",
+    "Read from and write to text files.",
+    "Combine arrays, structures, and files in a single program.",
+    "Plan and implement a small C project using all learned concepts."
+  ]
+}

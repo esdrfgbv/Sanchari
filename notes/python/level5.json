@@ -1,0 +1,11 @@
+{
+  "title": "Python Level 5 — Lists & Basic Operations",
+  "intro": "This level introduces lists (dynamic arrays) and their basic operations.",
+  "points": [
+    "Create and access list elements using indices.",
+    "Append, insert, remove, and pop elements from a list.",
+    "Slice lists to obtain sublists.",
+    "Use built-in functions like len, min, max, sum on lists.",
+    "Iterate over lists to process collections of data."
+  ]
+}

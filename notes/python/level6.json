@@ -1,0 +1,11 @@
+{
+  "title": "Python Level 6 — Strings & String Methods",
+  "intro": "This level focuses on working with text and common string operations.",
+  "points": [
+    "Understand that strings are immutable sequences of characters.",
+    "Use indexing and slicing to access parts of a string.",
+    "Apply common string methods like lower(), upper(), strip(), split(), join().",
+    "Check substrings using in and not in.",
+    "Solve problems involving parsing and formatting strings."
+  ]
+}

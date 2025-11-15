@@ -1,0 +1,11 @@
+{
+  "title": "DSA Level 9 — Graphs & Traversals",
+  "intro": "This level introduces graphs and standard traversal techniques.",
+  "points": [
+    "Understand what graphs are and how they are represented (adjacency list/matrix).",
+    "Know the difference between directed and undirected graphs.",
+    "Implement or understand Depth First Search (DFS).",
+    "Implement or understand Breadth First Search (BFS).",
+    "Relate graph problems (paths, connectivity) to DFS and BFS."
+  ]
+}

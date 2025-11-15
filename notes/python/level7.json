@@ -1,0 +1,11 @@
+{
+  "title": "Python Level 7 — Functions & Modular Code",
+  "intro": "This level introduces functions to organize Python code into reusable blocks.",
+  "points": [
+    "Define functions using def and call them with arguments.",
+    "Use return to send values back from functions.",
+    "Understand default arguments and keyword arguments.",
+    "Separate logic into small functions for cleaner code.",
+    "Write utility functions for repeated calculations."
+  ]
+}

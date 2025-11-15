@@ -1,0 +1,11 @@
+{
+  "title": "Java Level 5 — Arrays & Basic Algorithms",
+  "intro": "This level teaches single-dimensional arrays and simple array algorithms.",
+  "points": [
+    "Declare and initialize 1D arrays of various types.",
+    "Access and update elements using indices inside loops.",
+    "Find minimum, maximum, and sum of elements in an array.",
+    "Implement linear search to find elements.",
+    "Get an initial sense of time complexity of array operations."
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Python Level 4 — Loops & Ranges",
+  "intro": "This level teaches looping with for and while to repeat tasks.",
+  "points": [
+    "Use for loops with range() for counting.",
+    "Iterate over strings and lists using for-each style.",
+    "Write while loops for condition-based repetition.",
+    "Use break and continue to control loop behavior.",
+    "Solve pattern and counting problems using loops."
+  ]
+}

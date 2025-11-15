@@ -14,7 +14,7 @@
   <!-- TOP BAR -->
   <header class="top-bar">
     <div class="logo">
-      <div class="logo-img"></div>  <!-- logo box now uses coding.png -->
+      <div class="logo-img"></div>
       <span class="logo-text">EduWin</span>
     </div>
   </header>
@@ -34,7 +34,7 @@
       </div>
 
       <div class="course-card" data-lang="python">
-        <div class="course-icon">Py</div>
+        <div class="course-icon">🐍</div>
         <h2>Python</h2>
         <p>Build logic & problem solving using clean and readable syntax.</p>
       </div>
@@ -61,6 +61,22 @@
     </div>
 
     <div class="levels-container" id="levelsContainer"></div>
+  </section>
+
+  <!-- NEW: LEVEL INTRO / NOTES PAGE -->
+  <section id="level-intro-section" class="hidden">
+    <div class="breadcrumb">
+      <button id="backToLevelsFromIntro" class="back-btn">← Back</button>
+      <span id="levelIntroBreadcrumb"></span>
+    </div>
+
+    <div class="level-intro-card">
+      <h2 id="levelIntroTitle"></h2>
+      <div id="levelIntroBody" class="level-intro-body"></div>
+      <button id="startPracticingBtn" class="btn primary start-btn">
+        Start Practicing →
+      </button>
+    </div>
   </section>
 
   <!-- CHALLENGE PAGE -->

@@ -1,0 +1,11 @@
+{
+  "title": "Java Level 10 — Problem Solving & Mini Projects",
+  "intro": "This level combines core Java concepts to build mini console-based projects.",
+  "points": [
+    "Use classes, objects, methods, and arrays in a single program.",
+    "Create simple menu-driven applications like a student manager or library system.",
+    "Practice handling basic input validation and edge cases.",
+    "Focus on writing clean code with good naming and structure.",
+    "Prepare your Java fundamentals for future DSA and interviews."
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "title": "C Level 3 — Conditional Statements",
+  "intro": "This level teaches decision-making using if, if-else, and nested conditions.",
+  "points": [
+    "Use relational operators (==, !=, >, <, >=, <=) to compare values.",
+    "Write simple if and if-else statements.",
+    "Use nested if-else structures to handle multiple cases.",
+    "Understand the logical operators &&, ||, and !.",
+    "Design small decision-making programs using conditions."
+  ]
+}

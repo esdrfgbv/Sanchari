@@ -1,0 +1,11 @@
+{
+  "title": "Java Level 3 — Conditional Statements",
+  "intro": "This level covers if-else, nested conditions, and switch statements.",
+  "points": [
+    "Write if and if-else statements for decision making.",
+    "Use nested if-else for multiple complex conditions.",
+    "Understand and use the switch statement for multi-way branching.",
+    "Combine relational and logical operators to form complex conditions.",
+    "Build small applications that react differently based on user input."
+  ]
+}

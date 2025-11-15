@@ -1,0 +1,11 @@
+{
+  "title": "Java Level 2 — Variables, Operators & Type Casting",
+  "intro": "This level focuses on variables, operators, and basic type conversions in Java.",
+  "points": [
+    "Declare and initialize variables with explicit types.",
+    "Use arithmetic, relational, and logical operators.",
+    "Understand operator precedence and parentheses in expressions.",
+    "Perform implicit and explicit type casting between numeric types.",
+    "Use increment and decrement operators effectively."
+  ]
+}

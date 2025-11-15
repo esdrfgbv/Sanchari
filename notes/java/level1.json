@@ -1,0 +1,11 @@
+{
+  "title": "Java Level 1 — Basics, Setup & First Program",
+  "intro": "This level introduces the Java syntax, main method, and printing output.",
+  "points": [
+    "Understand the structure of a Java class and the main method.",
+    "Use System.out.println to print text and values.",
+    "Know how to compile and run Java programs using javac and java or an IDE.",
+    "Learn about basic data types: int, double, char, boolean.",
+    "Write simple programs that perform arithmetic operations."
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "title": "C Level 6 — Strings & Character Arrays",
+  "intro": "This level focuses on working with strings using character arrays in C.",
+  "points": [
+    "Declare and initialize strings using character arrays.",
+    "Understand the null terminator '\\0' in strings.",
+    "Use standard library functions like strlen, strcpy, strcat, strcmp.",
+    "Read strings using scanf and gets/fgets (and their issues).",
+    "Solve problems involving basic string manipulation."
+  ]
+}

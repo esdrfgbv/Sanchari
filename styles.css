@@ -56,9 +56,6 @@ body {
   font-weight: 600;
 }
 
-/* Remaining CSS below (unchanged) */
-
-
 /* Home */
 #home-section {
   padding: 32px 5vw;
@@ -175,6 +172,52 @@ body {
   color: #b9c2d8;
 }
 
+/* NEW: LEVEL INTRO PAGE */
+#level-intro-section {
+  padding: 10px 4vw 40px;
+  flex: 1;
+}
+
+.level-intro-card {
+  background: rgba(12, 18, 39, 0.95);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 24px;
+  max-width: 720px;
+  margin: 10px auto 0;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+}
+
+.level-intro-card h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.level-intro-body {
+  font-size: 14px;
+  color: #cfd4e6;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.level-intro-text {
+  margin-bottom: 12px;
+}
+
+.level-notes-list {
+  margin-left: 18px;
+  margin-top: 6px;
+}
+
+.level-notes-list li {
+  margin-bottom: 6px;
+}
+
+.start-btn {
+  margin-top: 8px;
+  font-weight: 600;
+}
+
 /* CHALLENGE PAGE */
 #challenge-section {
   padding: 10px 4vw 32px;
@@ -208,6 +251,12 @@ body {
   margin-bottom: 10px;
 }
 
+.challenge-concept {
+  font-size: 13px;
+  color: #a5b4fc;
+  margin-bottom: 10px;
+}
+
 .io-container h3 {
   margin-top: 14px;
   font-size: 14px;
@@ -238,6 +287,11 @@ body {
 .status-pass { color: #22c55e; font-weight: 600; }
 .status-fail { color: #ef4444; font-weight: 600; }
 .status-running { color: #38bdf8; }
+
+.challenge-status {
+  margin-top: 10px;
+  font-size: 13px;
+}
 
 /* RIGHT */
 .challenge-right {
@@ -340,5 +394,9 @@ body {
   }
   #codeEditor {
     height: 260px;
+  }
+
+  .level-intro-card {
+    margin-inline: 0;
   }
 }

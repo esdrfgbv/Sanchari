@@ -1,0 +1,11 @@
+{
+  "title": "Python Level 1 — Basics & I/O",
+  "intro": "This level introduces Python syntax, printing, and taking simple input.",
+  "points": [
+    "Write and run your first Python script using print().",
+    "Use input() to read values from the user.",
+    "Understand basic data types: int, float, str, bool.",
+    "Perform simple arithmetic operations in Python.",
+    "Get comfortable with indentation and comments."
+  ]
+}

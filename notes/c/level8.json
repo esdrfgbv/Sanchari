@@ -1,0 +1,11 @@
+{
+  "title": "C Level 8 — Pointers & Dynamic Thinking",
+  "intro": "This level gives a basic understanding of pointers and memory addresses.",
+  "points": [
+    "Understand the concept of memory address and the '&' operator.",
+    "Declare and use pointer variables.",
+    "Use pointers with basic data types and arrays.",
+    "Pass variables to functions using pointers (call by reference).",
+    "Visualize how pointers point to memory locations."
+  ]
+}

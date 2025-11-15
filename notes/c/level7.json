@@ -1,0 +1,11 @@
+{
+  "title": "C Level 7 — Functions & Modular Programming",
+  "intro": "This level introduces functions to organize code into reusable blocks.",
+  "points": [
+    "Define and call user-defined functions.",
+    "Understand function parameters and return values.",
+    "Differentiate between call by value and call by reference (conceptually).",
+    "Use functions to break a big problem into smaller subproblems.",
+    "Practice writing clean and reusable function-based programs."
+  ]
+}

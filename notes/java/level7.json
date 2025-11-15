@@ -1,0 +1,11 @@
+{
+  "title": "Java Level 7 — Classes & Objects (OOP Basics)",
+  "intro": "This level introduces basic object-oriented programming concepts in Java.",
+  "points": [
+    "Define simple classes with fields and methods.",
+    "Create objects using the new keyword.",
+    "Use constructors to initialize object state.",
+    "Understand the idea of encapsulation and access modifiers (public, private).",
+    "Model real-world entities as Java classes."
+  ]
+}

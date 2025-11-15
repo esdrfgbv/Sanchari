@@ -1,0 +1,11 @@
+{
+  "title": "C Level 2 — Variables, Operators & Expressions",
+  "intro": "This level focuses on variables, operators, and forming valid expressions in C.",
+  "points": [
+    "Declare and initialize variables of different types (int, float, char).",
+    "Understand arithmetic operators: +, -, *, /, % and operator precedence.",
+    "Use assignment and compound assignment operators like +=, -=.",
+    "Understand increment and decrement operators: ++ and --.",
+    "Write expressions combining multiple operators and predict the result."
+  ]
+}

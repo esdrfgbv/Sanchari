@@ -1,0 +1,11 @@
+{
+  "title": "Java Level 6 — Methods & Parameter Passing",
+  "intro": "This level focuses on creating and using methods to structure Java programs.",
+  "points": [
+    "Define methods with parameters and return types.",
+    "Call methods from main and pass arguments.",
+    "Understand pass-by-value behavior in Java.",
+    "Separate logic into methods to avoid duplicate code.",
+    "Use method overloading in simple examples."
+  ]
+}

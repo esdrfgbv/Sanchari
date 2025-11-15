@@ -1,0 +1,11 @@
+{
+  "title": "C Level 9 — Structures & Composite Types",
+  "intro": "This level introduces structures to group different types of data.",
+  "points": [
+    "Define and use struct to combine related variables.",
+    "Create structure variables and access members using the dot operator.",
+    "Use arrays of structures to represent collections of records.",
+    "Pass structures to functions (by value and by reference).",
+    "Use structures to design simple record-based programs (like student data)."
+  ]
+}

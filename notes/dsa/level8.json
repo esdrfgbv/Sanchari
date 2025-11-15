@@ -1,0 +1,11 @@
+{
+  "title": "DSA Level 8 — Heaps & Hashing Basics",
+  "intro": "This level introduces heaps and basic hashing concepts.",
+  "points": [
+    "Understand the idea of a binary heap and the heap property.",
+    "Know the difference between min-heap and max-heap.",
+    "Use heaps conceptually to support priority-based operations.",
+    "Get a basic idea of hash tables and hash functions.",
+    "See how hashing can give average O(1) insertion and search."
+  ]
+}

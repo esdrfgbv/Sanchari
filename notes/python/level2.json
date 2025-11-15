@@ -1,0 +1,11 @@
+{
+  "title": "Python Level 2 — Variables & Operators",
+  "intro": "This level focuses on using variables and operators in Python expressions.",
+  "points": [
+    "Assign values to variables dynamically without explicit type declaration.",
+    "Use arithmetic, relational, and logical operators.",
+    "Understand operator precedence and parentheses.",
+    "Use augmented assignment operators like +=, -=, *=.",
+    "Format outputs using f-strings for readable prints."
+  ]
+}

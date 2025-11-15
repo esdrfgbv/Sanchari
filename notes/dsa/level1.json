@@ -1,0 +1,11 @@
+{
+  "title": "DSA Level 1 — Arrays & Complexity Basics",
+  "intro": "This level reviews arrays and introduces the idea of time complexity.",
+  "points": [
+    "Revisit 1D arrays and common operations: traversal, insertion (concept), deletion (concept).",
+    "Write simple functions to search and process arrays.",
+    "Understand the meaning of time complexity in a basic way.",
+    "Recognize O(1), O(n) using simple examples.",
+    "Start thinking about efficient versus inefficient solutions."
+  ]
+}

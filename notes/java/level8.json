@@ -1,0 +1,11 @@
+{
+  "title": "Java Level 8 — Inheritance & Polymorphism",
+  "intro": "This level covers inheritance and polymorphism to reuse and extend code.",
+  "points": [
+    "Create subclasses that extend a base class using the extends keyword.",
+    "Understand method overriding and the use of @Override annotation.",
+    "Use super to access parent class members and constructors.",
+    "Understand the concept of dynamic method dispatch (runtime polymorphism).",
+    "Design simple class hierarchies to avoid code duplication."
+  ]
+}

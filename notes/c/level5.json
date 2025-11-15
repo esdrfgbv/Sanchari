@@ -1,0 +1,11 @@
+{
+  "title": "C Level 5 — Arrays & Basic Searching",
+  "intro": "This level introduces 1D arrays and simple searching techniques.",
+  "points": [
+    "Declare and initialize 1D arrays.",
+    "Access and update elements using indices.",
+    "Traverse an array using loops.",
+    "Implement linear search to find an element.",
+    "Understand the idea of time complexity at a basic level."
+  ]
+}
