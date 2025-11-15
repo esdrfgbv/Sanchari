@@ -19,86 +19,85 @@
     </div>
   </header>
 
-  <!-- HOME PAGE -->
+  <!-- HOME PAGE (RESTORED OLD VERSION) -->
   <section id="home-section">
     <div class="home-hero">
       <h1>Learn step-by-step</h1>
       <p>Structured learning with 10 levels per language and real coding compiler.</p>
     </div>
-      <div class="course-card" data-lang="c">
-        <div class="course-icon"></div>
-        <h2>C Programming</h2>
-        <p>Master fundamentals, loops, functions, pointers and more.</p>
-      </div>
 
-      <div class="course-card" data-lang="python">
-        <div class="course-icon"></div>
-        <h2>Python</h2>
-        <p>Build logic & problem solving using clean and readable syntax.</p>
-      </div>
-
-      <div class="course-card" data-lang="java">
-        <div class="course-icon"></div>
-        <h2>Java</h2>
-        <p>Object-oriented programming for both beginners & interview prep.</p>
-      </div>
-
-      <div class="course-card" data-lang="dsa">
-        <div class="course-icon"></div>
-        <h2>DSA</h2>
-        <p>Data structures & algorithms for placements.</p>
-      </div>
-
-      <div class="course-card" data-lang="cpp">
-        <div class="course-icon"></div>
-        <h2>C++</h2>
-        <p>STL, OOP and competitive programming friendly features.</p>
-      </div>
-
-      <div class="course-card" data-lang="js">
-        <div class="course-icon"></div>
-        <h2>JavaScript</h2>
-        <p>Core JS for web: variables, functions, DOM basics.</p>
-      </div>
-
-      <div class="course-card" data-lang="csharp">
-        <div class="course-icon"></div>
-        <h2>C#</h2>
-        <p>.NET / Unity foundation with C# programming basics.</p>
-      </div>
-
-      <div class="course-card" data-lang="dbms">
-        <div class="course-icon"></div>
-        <h2>DBMS + SQL</h2>
-        <p>Database concepts, SQL queries and normalization.</p>
-      </div>
-
-      <div class="course-card" data-lang="os">
-        <div class="course-icon"></div>
-        <h2>Operating Systems</h2>
-        <p>Processes, scheduling, memory and more.</p>
-      </div>
-
-      <div class="course-card" data-lang="cn">
-        <div class="course-icon"></div>
-        <h2>Computer Networks</h2>
-        <p>OSI model, TCP/UDP, IP, routing basics.</p>
-      </div>
-
-      <div class="course-card" data-lang="systemdesign">
-        <div class="course-icon"></div>
-        <h2>System Design</h2>
-        <p>High-level design of scalable systems.</p>
-      </div>
-
-      <div class="course-card" data-lang="htmlcss">
-        <div class="course-icon"></div>
-        <h2>HTML + CSS</h2>
-        <p>Build responsive and clean landing pages.</p>
-      </div>
-
+    <div class="course-card" data-lang="c">
+      <div class="course-icon">C</div>
+      <h2>C Programming</h2>
+      <p>Master fundamentals, loops, functions, pointers and more.</p>
     </div>
 
+    <div class="course-card" data-lang="python">
+      <div class="course-icon">Py</div>
+      <h2>Python</h2>
+      <p>Build logic & problem solving using clean and readable syntax.</p>
+    </div>
+
+    <div class="course-card" data-lang="java">
+      <div class="course-icon">J</div>
+      <h2>Java</h2>
+      <p>Object-oriented programming for both beginners & interview prep.</p>
+    </div>
+
+    <div class="course-card" data-lang="dsa">
+      <div class="course-icon">DS</div>
+      <h2>DSA</h2>
+      <p>Data structures & algorithms for placements.</p>
+    </div>
+
+    <!-- NEW 8 COURSES (old layout) -->
+
+    <div class="course-card" data-lang="cpp">
+      <div class="course-icon">C++</div>
+      <h2>C++</h2>
+      <p>STL, OOP and competitive programming friendly features.</p>
+    </div>
+
+    <div class="course-card" data-lang="js">
+      <div class="course-icon">JS</div>
+      <h2>JavaScript</h2>
+      <p>Core JS for web: variables, functions, DOM basics.</p>
+    </div>
+
+    <div class="course-card" data-lang="csharp">
+      <div class="course-icon">C#</div>
+      <h2>C#</h2>
+      <p>.NET / Unity foundation with C# programming basics.</p>
+    </div>
+
+    <div class="course-card" data-lang="dbms">
+      <div class="course-icon">DB</div>
+      <h2>DBMS + SQL</h2>
+      <p>Database concepts, SQL queries and normalization.</p>
+    </div>
+
+    <div class="course-card" data-lang="os">
+      <div class="course-icon">OS</div>
+      <h2>Operating Systems</h2>
+      <p>Processes, scheduling, memory and more.</p>
+    </div>
+
+    <div class="course-card" data-lang="cn">
+      <div class="course-icon">CN</div>
+      <h2>Computer Networks</h2>
+      <p>OSI model, TCP/UDP, IP, routing basics.</p>
+    </div>
+
+    <div class="course-card" data-lang="systemdesign">
+      <div class="course-icon">SD</div>
+      <h2>System Design</h2>
+      <p>High-level design of scalable systems.</p>
+    </div>
+
+    <div class="course-card" data-lang="htmlcss">
+      <div class="course-icon">HW</div>
+      <h2>HTML + CSS</h2>
+      <p>Build responsive and clean landing pages.</p>
     </div>
   </section>
 
@@ -112,7 +111,7 @@
     <div class="levels-container" id="levelsContainer"></div>
   </section>
 
-  <!-- NEW: LEVEL INTRO / NOTES PAGE -->
+  <!-- LEVEL INTRO / NOTES PAGE -->
   <section id="level-intro-section" class="hidden">
     <div class="breadcrumb">
       <button id="backToLevelsFromIntro" class="back-btn">← Back</button>
@@ -137,6 +136,9 @@
 
     <div class="challenge-layout">
       <div class="challenge-left">
+        <!-- Question list pills -->
+        <div id="questionList" class="question-list"></div>
+
         <h2 id="challengeTitle"></h2>
         <p id="challengeDescription" class="challenge-description"></p>
         <div id="challengeConcept" class="challenge-concept"></div>

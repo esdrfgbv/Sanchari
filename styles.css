@@ -89,6 +89,8 @@ body {
   cursor: pointer;
   transition: 0.17s;
   border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
 }
 
 .course-card:hover {
@@ -97,28 +99,51 @@ body {
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
 }
 
+/* icon with white square behind logo */
 .course-icon {
   width: 56px;
   height: 56px;
   border-radius: 12px;
-
-  /* white square behind the logo */
   background-color: #ffffff;
-
-  /* logo settings */
-  background-size: 70%;      /* small padding so logo fits inside */
+  background-size: 70%;
   background-position: center;
   background-repeat: no-repeat;
-
   margin-bottom: 12px;
-  box-shadow: 0 0 12px rgba(0,0,0,0.3); /* soft shadow (optional but looks nice) */
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* animated hover on icon */
 .course-card:hover .course-icon {
-  box-shadow: 0 0 16px rgba(255,255,255,0.35);
+  transform: translateY(-2px) scale(1.05) rotate(-2deg);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.35);
 }
 
+/* progress text inside each course card */
+.course-progress {
+  font-size: 12px;
+  color: #a5b4fc;
+  margin-top: 6px;
+}
 
+/* green tick for completed course */
+.course-card.completed::after {
+  content: "✓";
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #22c55e;
+  color: #020617;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
+}
 
 /* Breadcrumb */
 .breadcrumb {
@@ -181,7 +206,26 @@ body {
   color: #b9c2d8;
 }
 
-/* NEW: LEVEL INTRO PAGE */
+/* green tick for completed levels */
+.level-card.completed::after {
+  content: "✓";
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #22c55e;
+  color: #020617;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
+}
+
+/* LEVEL INTRO PAGE */
 #level-intro-section {
   padding: 10px 4vw 40px;
   flex: 1;
@@ -237,6 +281,43 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 18px;
+}
+
+/* Question list pills */
+.question-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.question-item {
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: rgba(15, 23, 42, 0.9);
+  color: #e5e7eb;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.question-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 10px rgba(148, 163, 184, 0.6);
+}
+
+.question-item.active {
+  background: linear-gradient(135deg, #615bff, #12c9a4);
+  color: #020617;
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.question-item.locked {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-style: dashed;
 }
 
 /* LEFT */
@@ -296,6 +377,19 @@ body {
 .status-pass { color: #22c55e; font-weight: 600; }
 .status-fail { color: #ef4444; font-weight: 600; }
 .status-running { color: #38bdf8; }
+
+/* green tick and cross icons in status */
+.status-pass::before {
+  content: "✓";
+  margin-right: 4px;
+  font-weight: 700;
+  color: #22c55e;
+}
+
+.status-fail::before {
+  content: "✕";
+  margin-right: 4px;
+}
 
 .challenge-status {
   margin-top: 10px;
@@ -392,6 +486,40 @@ body {
 }
 
 .hidden { display: none; }
+
+/* LOADING OVERLAY */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 22, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 999;
+}
+
+.loading-overlay.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.spinner {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 4px solid rgba(255,255,255,0.18);
+  border-top-color: #ffffff;
+  animation: spinner-spin 0.6s linear infinite;
+}
+
+@keyframes spinner-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 /* RESPONSIVE */
 @media (max-width: 980px) {

@@ -42,6 +42,9 @@ const levelIntroTitle = document.getElementById("levelIntroTitle");
 const levelIntroBody = document.getElementById("levelIntroBody");
 const startPracticingBtn = document.getElementById("startPracticingBtn");
 
+/* question list container */
+const questionList = document.getElementById("questionList");
+
 // Global state
 let currentLanguage = null;
 let challengeData = null; // { levels: [ level1Json, level2Json, ... ] }
@@ -67,7 +70,27 @@ const JUDGE_LANG_MAP = {
 };
 
 /* ==============================
-   PROGRESS SYSTEM
+   COURSE ORDER + SUMMARY CONFIG
+   ============================== */
+const COURSE_ORDER = [
+  "c",
+  "python",
+  "java",
+  "dsa",
+  "cpp",
+  "js",
+  "csharp",
+  "dbms",
+  "os",
+  "cn",
+  "systemdesign",
+  "htmlcss"
+];
+
+const TOTAL_LEVELS_PER_COURSE = 10; // for display
+
+/* ==============================
+   PROGRESS SYSTEM (PER LEVEL)
    ============================== */
 function getProgress(lang) {
   return JSON.parse(localStorage.getItem("progress_" + lang)) || {
@@ -78,6 +101,151 @@ function getProgress(lang) {
 
 function saveProgress(lang, progress) {
   localStorage.setItem("progress_" + lang, JSON.stringify(progress));
+}
+
+/* ==============================
+   COURSE SUMMARY (FOR HOME CARDS)
+   ============================== */
+function getCourseSummary(lang) {
+  const raw = localStorage.getItem("courseSummary_" + lang);
+  if (!raw) {
+    return {
+      completedLevels: 0,
+      totalLevels: TOTAL_LEVELS_PER_COURSE
+    };
+  }
+  try {
+    return JSON.parse(raw);
+  } catch (e) {
+    console.warn("Invalid courseSummary for", lang);
+    return {
+      completedLevels: 0,
+      totalLevels: TOTAL_LEVELS_PER_COURSE
+    };
+  }
+}
+
+function saveCourseSummary(lang, summary) {
+  localStorage.setItem("courseSummary_" + lang, JSON.stringify(summary));
+}
+
+/**
+ * Recompute course summary for the CURRENT language
+ * using challengeData + per-level progress.
+ * Called after loading levels and after unlocking progress.
+ */
+function updateCourseSummaryForCurrentLanguage() {
+  if (!challengeData || !currentLanguage) return;
+
+  const progress = getProgress(currentLanguage);
+  let completedLevels = 0;
+  const totalLevels = challengeData.levels.length;
+
+  challengeData.levels.forEach((lvl, idx) => {
+    const totalChallenges = Array.isArray(lvl.challenges)
+      ? lvl.challenges.length
+      : 0;
+
+    if (
+      totalChallenges > 0 &&
+      (progress.levels[idx] || 0) >= totalChallenges
+    ) {
+      completedLevels++;
+    }
+  });
+
+  saveCourseSummary(currentLanguage, {
+    completedLevels,
+    totalLevels
+  });
+
+  // Refresh course cards UI (home) so it reflects new progress
+  updateCourseCardsUI();
+}
+
+/* ==============================
+   LOADING OVERLAY (COURSE SWITCH)
+   ============================== */
+function showLoading() {
+  let overlay = document.querySelector(".loading-overlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.className = "loading-overlay";
+    overlay.innerHTML = '<div class="spinner"></div>';
+    document.body.appendChild(overlay);
+  }
+  overlay.classList.add("visible");
+
+  // auto-hide after a short delay (visual feedback)
+  setTimeout(() => {
+    hideLoading();
+  }, 450);
+}
+
+function hideLoading() {
+  const overlay = document.querySelector(".loading-overlay");
+  if (overlay) {
+    overlay.classList.remove("visible");
+  }
+}
+
+/* ==============================
+   HOME COURSE CARDS UI
+   - logos
+   - "X / 10 Levels Completed"
+   - completed tick
+   - all courses accessible
+   ============================== */
+function updateCourseCardsUI() {
+  const cards = document.querySelectorAll(".course-card");
+
+  COURSE_ORDER.forEach((lang) => {
+    const card = document.querySelector(`.course-card[data-lang="${lang}"]`);
+    if (!card) return;
+
+    // Set logo background
+    const icon = card.querySelector(".course-icon");
+    if (icon) {
+      icon.style.backgroundImage = `url(logos/${lang}.png)`;
+    }
+
+    // Ensure progress element exists
+    let progressEl = card.querySelector(".course-progress");
+    if (!progressEl) {
+      progressEl = document.createElement("p");
+      progressEl.className = "course-progress";
+      card.appendChild(progressEl);
+    }
+
+    const summary = getCourseSummary(lang);
+    const completedLevels = summary.completedLevels || 0;
+    const totalLevels =
+      summary.totalLevels || TOTAL_LEVELS_PER_COURSE;
+
+    progressEl.textContent = `${completedLevels} / ${totalLevels} Levels Completed`;
+
+    // Completed course -> green tick (CSS: .course-card.completed::after)
+    if (completedLevels >= totalLevels && totalLevels > 0) {
+      card.classList.add("completed");
+    } else {
+      card.classList.remove("completed");
+    }
+
+    // no locking for courses
+    card.classList.remove("locked");
+  });
+
+  // Click handling (once per card)
+  cards.forEach((card) => {
+    if (card._eduwinHandlerAttached) return;
+    card._eduwinHandlerAttached = true;
+
+    card.addEventListener("click", () => {
+      const lang = card.getAttribute("data-lang");
+      showLoading();
+      openLevels(lang);
+    });
+  });
 }
 
 /* ==============================
@@ -305,6 +473,14 @@ function loadLevelsUI() {
         ? lvl.challenges.length
         : 0;
 
+      // mark fully completed levels (for green tick)
+      if (totalChallenges > 0 && solvedCount >= totalChallenges) {
+        card.classList.add("completed");
+      } else {
+        card.classList.remove("completed");
+      }
+
+      // lock if previous level not fully completed
       if (idx > 0) {
         const prevTotal = Array.isArray(levels[idx - 1].challenges)
           ? levels[idx - 1].challenges.length
@@ -331,6 +507,9 @@ function loadLevelsUI() {
 
       levelsContainer.appendChild(card);
     });
+
+    // After building levels for this course, recompute its summary
+    updateCourseSummaryForCurrentLanguage();
   });
 }
 
@@ -345,6 +524,39 @@ function loadChallengeScreen() {
   challengeBreadcrumb.textContent = `${level.title} — Challenge ${
     currentChallengeIndex + 1
   } / ${totalChallenges}`;
+
+  /* Build question list pills */
+  if (questionList) {
+    questionList.innerHTML = "";
+
+    const progress = getProgress(currentLanguage);
+    const unlockedCount = progress.levels[currentLevelIndex] || 0;
+    // unlockedCount = highest solved challenge index (1-based)
+
+    for (let i = 0; i < totalChallenges; i++) {
+      const btn = document.createElement("button");
+      btn.className = "question-item";
+      btn.textContent = `Q${i + 1}`;
+
+      if (i === currentChallengeIndex) {
+        btn.classList.add("active");
+      }
+
+      // lock: only questions with index <= unlockedCount are clickable
+      // if unlockedCount = 0 → only Q1 (i=0) clickable
+      if (i > unlockedCount) {
+        btn.classList.add("locked");
+      } else {
+        btn.addEventListener("click", () => {
+          if (i !== currentChallengeIndex) {
+            openChallenge(currentLevelIndex, i, false);
+          }
+        });
+      }
+
+      questionList.appendChild(btn);
+    }
+  }
 
   challengeTitle.textContent = challenge.title;
   challengeDescription.textContent = challenge.description || "";
@@ -366,7 +578,16 @@ function loadChallengeScreen() {
     testcaseTable.appendChild(tr);
   });
 
-  codeEditor.value = challenge.starterCode || "";
+  // Load saved code if exists
+  const savedKey = `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`;
+  const saved = localStorage.getItem(savedKey);
+
+  if (saved && saved.trim() !== "") {
+    codeEditor.value = saved;
+  } else {
+    codeEditor.value = challenge.starterCode || "";
+  }
+
   editorLangPill.textContent = getEditorPill(currentLanguage);
 
   const progress = getProgress(currentLanguage);
@@ -508,29 +729,52 @@ function unlockNext() {
 
   // If all challenges solved, user has effectively completed this level.
   if (progress.levels[currentLevelIndex] === totalChallenges) {
-    // can unlock next level (handled in loadLevelsUI)
+    // Update course summary & home cards
+    updateCourseSummaryForCurrentLanguage();
   }
+
+  // refresh question strip & challenge UI (unlock next question)
+  loadChallengeScreen();
 }
 
 /* ==============================
    BUTTON EVENTS
    ============================== */
+// AUTO SAVE code on typing
+codeEditor.addEventListener("input", () => {
+  if (currentLanguage !== null) {
+    const key = `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`;
+    localStorage.setItem(key, codeEditor.value);
+  }
+});
+
 runCodeBtn.addEventListener("click", runCode);
 testCodeBtn.addEventListener("click", testCode);
 
 resetStarterBtn.addEventListener("click", () => {
   const level = challengeData.levels[currentLevelIndex];
   const challenge = level.challenges[currentChallengeIndex];
+
+  // clear saved code
+  const key = `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`;
+  localStorage.removeItem(key);
+
+  // restore starter
   codeEditor.value = challenge.starterCode || "";
 });
 
 clearCodeBtn.addEventListener("click", () => {
   codeEditor.value = "";
+  // keep cleared state in storage
+  if (currentLanguage !== null) {
+    const key = `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`;
+    localStorage.setItem(key, "");
+  }
 });
 
 prevChallengeBtn.addEventListener("click", () => {
   if (currentChallengeIndex > 0) {
-    openChallenge(currentLevelIndex, currentChallengeIndex - 1);
+    openChallenge(currentLevelIndex, currentChallengeIndex - 1, false);
   }
 });
 
@@ -541,7 +785,7 @@ nextChallengeBtn.addEventListener("click", () => {
 
   if (progress.levels[currentLevelIndex] >= currentChallengeIndex + 1) {
     if (currentChallengeIndex < totalChallenges - 1) {
-      openChallenge(currentLevelIndex, currentChallengeIndex + 1);
+      openChallenge(currentLevelIndex, currentChallengeIndex + 1, false);
     } else {
       const isLastLevel =
         currentLevelIndex === challengeData.levels.length - 1;
@@ -595,23 +839,11 @@ window.addEventListener("popstate", (event) => {
   }
 });
 
-/* Course cards → open levels */
-document.querySelectorAll(".course-card").forEach((card) => {
-  card.addEventListener("click", () => {
-    const lang = card.getAttribute("data-lang");
-    openLevels(lang);
-  });
-});
-
 /* Initial state */
 if (!history.state) {
   history.replaceState({ page: "home" }, "", "");
 }
 showHome(false);
 
-document.querySelectorAll(".course-card").forEach(card => {
-  const lang = card.dataset.lang;
-  const icon = card.querySelector(".course-icon");
-  icon.style.backgroundImage = `url(logos/${lang}.png)`; // change to .svg or .jpg if needed
-});
-
+// Initialize home course cards (logos, progress)
+updateCourseCardsUI();
