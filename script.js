@@ -59,15 +59,21 @@ function saveProgress(lang, progress) {
 }
 
 /* ==============================
-   NAVIGATION
+   NAVIGATION + HISTORY
    ============================== */
-function showHome() {
+// Home
+function showHome(pushHistory = true) {
   homeSection.classList.remove("hidden");
   levelsSection.classList.add("hidden");
   challengeSection.classList.add("hidden");
+
+  if (pushHistory) {
+    history.pushState({ page: "home" }, "", "");
+  }
 }
 
-function openLevels(lang) {
+// Levels list
+function openLevels(lang, pushHistory = true) {
   currentLanguage = lang;
   selectedLanguageTitle.textContent =
     lang === "c"
@@ -78,17 +84,41 @@ function openLevels(lang) {
       ? "Java — 10 Levels"
       : "DSA — 10 Levels";
 
-  loadLevelsUI();
+  const levelsPromise = loadLevelsUI(); // returns a Promise
+
   homeSection.classList.add("hidden");
   levelsSection.classList.remove("hidden");
+  challengeSection.classList.add("hidden");
+
+  if (pushHistory) {
+    history.pushState({ page: "levels", lang }, "", "");
+  }
+
+  return levelsPromise;
 }
 
-function openChallenge(levelIdx, challengeIdx) {
+// Challenge screen
+function openChallenge(levelIdx, challengeIdx, pushHistory = true) {
   currentLevelIndex = levelIdx;
   currentChallengeIndex = challengeIdx;
   loadChallengeScreen();
+
   levelsSection.classList.add("hidden");
   challengeSection.classList.remove("hidden");
+  homeSection.classList.add("hidden");
+
+  if (pushHistory) {
+    history.pushState(
+      {
+        page: "challenge",
+        lang: currentLanguage,
+        levelIdx,
+        challengeIdx,
+      },
+      "",
+      ""
+    );
+  }
 }
 
 /* ==============================
@@ -129,8 +159,8 @@ function loadLevelsUI() {
     );
   }
 
-  Promise.all(levelPromises).then((levels) => {
-    // same shape that the rest of the code expects
+  // 🔁 return Promise so we can await when needed (for back navigation)
+  return Promise.all(levelPromises).then((levels) => {
     challengeData = { levels };
 
     levels.forEach((lvl, idx) => {
@@ -164,7 +194,6 @@ function loadLevelsUI() {
     });
   });
 }
-
 
 /* ==============================
    LOAD CHALLENGE SCREEN
@@ -234,18 +263,21 @@ async function runCode() {
     stdin: "",
   };
 
-  const job = await fetch(`${JUDGE0_URL}/submissions?base64_encoded=false&wait=false`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  }).then((r) => r.json());
+  const job = await fetch(
+    `${JUDGE0_URL}/submissions?base64_encoded=false&wait=false`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }
+  ).then((r) => r.json());
 
   let result;
   while (true) {
     await new Promise((res) => setTimeout(res, 1200));
-    result = await fetch(`${JUDGE0_URL}/submissions/${job.token}?base64_encoded=false`).then((r) =>
-      r.json()
-    );
+    result = await fetch(
+      `${JUDGE0_URL}/submissions/${job.token}?base64_encoded=false`
+    ).then((r) => r.json());
     if (result.status.id >= 3) break;
   }
 
@@ -260,7 +292,8 @@ async function runCode() {
    RUN TESTS (UNLOCK PROGRESS)
    ============================== */
 async function testCode() {
-  const challenge = challengeData.levels[currentLevelIndex].challenges[currentChallengeIndex];
+  const challenge =
+    challengeData.levels[currentLevelIndex].challenges[currentChallengeIndex];
   const langId = JUDGE_LANG_MAP[currentLanguage];
   if (!langId) return;
 
@@ -279,18 +312,21 @@ async function testCode() {
     rows[i].querySelector(".status").textContent = "Running...";
     rows[i].querySelector(".status").className = "status status-running";
 
-    const job = await fetch(`${JUDGE0_URL}/submissions?base64_encoded=false&wait=false`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    }).then((r) => r.json());
+    const job = await fetch(
+      `${JUDGE0_URL}/submissions?base64_encoded=false&wait=false`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }
+    ).then((r) => r.json());
 
     let result;
     while (true) {
       await new Promise((res) => setTimeout(res, 1200));
-      result = await fetch(`${JUDGE0_URL}/submissions/${job.token}?base64_encoded=false`).then((r) =>
-        r.json()
-      );
+      result = await fetch(
+        `${JUDGE0_URL}/submissions/${job.token}?base64_encoded=false`
+      ).then((r) => r.json());
       if (result.status.id >= 3) break;
     }
 
@@ -326,7 +362,8 @@ function unlockNext() {
     saveProgress(currentLanguage, progress);
   }
 
-  nextChallengeBtn.disabled = progress.levels[currentLevelIndex] <= currentChallengeIndex;
+  nextChallengeBtn.disabled =
+    progress.levels[currentLevelIndex] <= currentChallengeIndex;
 }
 
 /* ==============================
@@ -336,7 +373,8 @@ runCodeBtn.addEventListener("click", runCode);
 testCodeBtn.addEventListener("click", testCode);
 
 resetStarterBtn.addEventListener("click", () => {
-  const challenge = challengeData.levels[currentLevelIndex].challenges[currentChallengeIndex];
+  const challenge =
+    challengeData.levels[currentLevelIndex].challenges[currentChallengeIndex];
   codeEditor.value = challenge.starterCode;
 });
 
@@ -359,8 +397,35 @@ nextChallengeBtn.addEventListener("click", () => {
   }
 });
 
-backToHome.addEventListener("click", showHome);
-backToLevels.addEventListener("click", () => openLevels(currentLanguage));
+/* 🔙 Top in-app back buttons use browser history */
+backToHome.addEventListener("click", () => {
+  // behaves like Android back (one step)
+  history.back();
+});
+
+backToLevels.addEventListener("click", () => {
+  history.back();
+});
+
+/* ==============================
+   HANDLE ANDROID / BROWSER BACK
+   ============================== */
+window.addEventListener("popstate", (event) => {
+  const state = event.state;
+
+  if (!state || state.page === "home") {
+    showHome(false);
+  } else if (state.page === "levels") {
+    currentLanguage = state.lang;
+    openLevels(state.lang, false);
+  } else if (state.page === "challenge") {
+    currentLanguage = state.lang;
+    // ensure levels & data are loaded, then open challenge
+    openLevels(state.lang, false).then(() => {
+      openChallenge(state.levelIdx, state.challengeIdx, false);
+    });
+  }
+});
 
 /* ==============================
    COURSE CARD CLICKS — HOME
@@ -375,4 +440,8 @@ document.querySelectorAll(".course-card").forEach((card) => {
 /* ==============================
    INITIAL
    ============================== */
-showHome();
+// Set initial state as "home" once
+if (!history.state) {
+  history.replaceState({ page: "home" }, "", "");
+}
+showHome(false);
