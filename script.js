@@ -5,6 +5,7 @@ const homeSection = document.getElementById("home-section");
 const levelsSection = document.getElementById("levels-section");
 const levelIntroSection = document.getElementById("level-intro-section");
 const challengeSection = document.getElementById("challenge-section");
+const authSection = document.getElementById("auth-section");
 
 const levelsContainer = document.getElementById("levelsContainer");
 
@@ -45,6 +46,23 @@ const startPracticingBtn = document.getElementById("startPracticingBtn");
 /* question list container */
 const questionList = document.getElementById("questionList");
 
+/* AUTH + PROFILE DOM */
+const authTitle = document.getElementById("authTitle");
+const authSubtitle = document.getElementById("authSubtitle");
+const authUsername = document.getElementById("authUsername");
+const authPassword = document.getElementById("authPassword");
+const authSubmitBtn = document.getElementById("authSubmitBtn");
+const authToggleMode = document.getElementById("authToggleMode");
+
+const currentUserLabel = document.getElementById("currentUserLabel");
+const currentUserNameEl = document.getElementById("currentUserName");
+const profileButton = document.getElementById("profileButton");
+const profileInitial = document.getElementById("profileInitial");
+const profileMenu = document.getElementById("profileMenu");
+const profileMenuName = document.getElementById("profileMenuName");
+const switchUserBtn = document.getElementById("switchUserBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+
 // Global state
 let currentLanguage = null;
 let challengeData = null; // { levels: [ level1Json, level2Json, ... ] }
@@ -52,7 +70,18 @@ let notesCache = {}; // key: `${lang}_level${i}` -> notes json
 let currentLevelIndex = 0;
 let currentChallengeIndex = 0;
 
-// Judge0 config (languages that actually run)
+/* AUTH STATE */
+let authMode = "login"; // "login" or "signup"
+const CURRENT_USER_KEY = "eduwin_currentUser";
+
+/* ==============================
+   BACKEND CONFIG
+   ============================== */
+const BACKEND_URL = "https://eduwin-backend.onrender.com"; // change to your deployed URL later
+
+/* ==============================
+   JUDGE0 CONFIG
+   ============================== */
 const JUDGE0_URL = "https://ce.judge0.com";
 const JUDGE_LANG_MAP = {
   c: 50,        // GCC C
@@ -90,24 +119,130 @@ const COURSE_ORDER = [
 const TOTAL_LEVELS_PER_COURSE = 10; // for display
 
 /* ==============================
-   PROGRESS SYSTEM (PER LEVEL)
+   AUTH HELPERS
+   ============================== */
+function getCurrentUser() {
+  return localStorage.getItem(CURRENT_USER_KEY);
+}
+
+function setCurrentUser(username) {
+  localStorage.setItem(CURRENT_USER_KEY, username);
+  updateUserUI();
+  updateCourseCardsUI();
+}
+
+/** Add user prefix so each user has separate progress & code */
+function getUserScopedKey(baseKey) {
+  const user = getCurrentUser() || "guest";
+  return `user_${user}_${baseKey}`;
+}
+
+/* UI updates for login / signup mode */
+function updateAuthModeUI() {
+  if (authMode === "login") {
+    authTitle.textContent = "Welcome back 👋";
+    authSubtitle.textContent = "Login to continue your saved progress.";
+    authSubmitBtn.textContent = "Login";
+    authToggleMode.textContent = "New here? Create account";
+  } else {
+    authTitle.textContent = "Create your EduWin profile ✨";
+    authSubtitle.textContent = "Each profile will have separate progress.";
+    authSubmitBtn.textContent = "Create account";
+    authToggleMode.textContent = "Already have an account? Login";
+  }
+}
+
+/* Show current user in top bar */
+function updateUserUI() {
+  const user = getCurrentUser();
+
+  if (!user) {
+    currentUserLabel.classList.add("hidden");
+    profileButton.classList.add("hidden");
+    profileMenu.classList.remove("open");
+    return;
+  }
+
+  currentUserLabel.classList.remove("hidden");
+  profileButton.classList.remove("hidden");
+
+  currentUserNameEl.textContent = user;
+  profileInitial.textContent = user.charAt(0).toUpperCase();
+  profileMenuName.textContent = user;
+}
+
+/* AUTH SECTION SHOW / HIDE */
+function showAuth(pushHistory = true) {
+  authSection.classList.remove("hidden");
+  homeSection.classList.add("hidden");
+  levelsSection.classList.add("hidden");
+  levelIntroSection.classList.add("hidden");
+  challengeSection.classList.add("hidden");
+
+  if (pushHistory) {
+    history.pushState({ page: "auth" }, "", "");
+  }
+}
+
+async function handleAuthSubmit() {
+  const username = authUsername.value.trim();
+  const password = authPassword.value.trim();
+
+  if (!username || !password) {
+    alert("Please enter both username and password.");
+    return;
+  }
+
+  const endpoint = authMode === "signup" ? "/api/signup" : "/api/login";
+
+  try {
+    const res = await fetch(BACKEND_URL + endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ username, password })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.success) {
+      alert(data.error || "Something went wrong. Try again.");
+      return;
+    }
+
+    setCurrentUser(data.username || username);
+    authUsername.value = "";
+    authPassword.value = "";
+
+    showHome(true);
+  } catch (err) {
+    console.error(err);
+    alert("Cannot connect to server. Is the backend running?");
+  }
+}
+
+/* ==============================
+   PROGRESS SYSTEM (PER LEVEL, PER USER)
    ============================== */
 function getProgress(lang) {
-  return JSON.parse(localStorage.getItem("progress_" + lang)) || {
-    // for each of 10 levels: number of solved challenges (0..max)
+  const key = getUserScopedKey("progress_" + lang);
+  return JSON.parse(localStorage.getItem(key)) || {
     levels: Array(10).fill(0)
   };
 }
 
 function saveProgress(lang, progress) {
-  localStorage.setItem("progress_" + lang, JSON.stringify(progress));
+  const key = getUserScopedKey("progress_" + lang);
+  localStorage.setItem(key, JSON.stringify(progress));
 }
 
 /* ==============================
-   COURSE SUMMARY (FOR HOME CARDS)
+   COURSE SUMMARY (FOR HOME CARDS, PER USER)
    ============================== */
 function getCourseSummary(lang) {
-  const raw = localStorage.getItem("courseSummary_" + lang);
+  const key = getUserScopedKey("courseSummary_" + lang);
+  const raw = localStorage.getItem(key);
   if (!raw) {
     return {
       completedLevels: 0,
@@ -126,13 +261,13 @@ function getCourseSummary(lang) {
 }
 
 function saveCourseSummary(lang, summary) {
-  localStorage.setItem("courseSummary_" + lang, JSON.stringify(summary));
+  const key = getUserScopedKey("courseSummary_" + lang);
+  localStorage.setItem(key, JSON.stringify(summary));
 }
 
 /**
  * Recompute course summary for the CURRENT language
  * using challengeData + per-level progress.
- * Called after loading levels and after unlocking progress.
  */
 function updateCourseSummaryForCurrentLanguage() {
   if (!challengeData || !currentLanguage) return;
@@ -176,7 +311,6 @@ function showLoading() {
   }
   overlay.classList.add("visible");
 
-  // auto-hide after a short delay (visual feedback)
   setTimeout(() => {
     hideLoading();
   }, 450);
@@ -191,10 +325,6 @@ function hideLoading() {
 
 /* ==============================
    HOME COURSE CARDS UI
-   - logos
-   - "X / 10 Levels Completed"
-   - completed tick
-   - all courses accessible
    ============================== */
 function updateCourseCardsUI() {
   const cards = document.querySelectorAll(".course-card");
@@ -224,14 +354,13 @@ function updateCourseCardsUI() {
 
     progressEl.textContent = `${completedLevels} / ${totalLevels} Levels Completed`;
 
-    // Completed course -> green tick (CSS: .course-card.completed::after)
+    // Completed course -> green tick
     if (completedLevels >= totalLevels && totalLevels > 0) {
       card.classList.add("completed");
     } else {
       card.classList.remove("completed");
     }
 
-    // no locking for courses
     card.classList.remove("locked");
   });
 
@@ -291,6 +420,7 @@ function getEditorPill(lang) {
    NAVIGATION
    ============================== */
 function showHome(pushHistory = true) {
+  authSection.classList.add("hidden");
   homeSection.classList.remove("hidden");
   levelsSection.classList.add("hidden");
   levelIntroSection.classList.add("hidden");
@@ -311,6 +441,7 @@ function openLevels(lang, pushHistory = true) {
   levelsSection.classList.remove("hidden");
   levelIntroSection.classList.add("hidden");
   challengeSection.classList.add("hidden");
+  authSection.classList.add("hidden");
 
   if (pushHistory) {
     history.pushState({ page: "levels", lang }, "", "");
@@ -319,7 +450,7 @@ function openLevels(lang, pushHistory = true) {
   return levelsPromise;
 }
 
-/* ---------- Level intro (notes from notes/<lang>/levelX.json) ---------- */
+/* ---------- Level intro ---------- */
 
 function renderLevelIntro(notesJson, levelIdx) {
   const level = challengeData.levels[levelIdx];
@@ -368,6 +499,7 @@ function openLevelIntro(levelIdx, pushHistory = true) {
     levelsSection.classList.add("hidden");
     challengeSection.classList.add("hidden");
     levelIntroSection.classList.remove("hidden");
+    authSection.classList.add("hidden");
 
     if (pushHistory) {
       history.pushState(
@@ -412,6 +544,7 @@ function openChallenge(levelIdx, challengeIdx, pushHistory = true) {
   levelIntroSection.classList.add("hidden");
   challengeSection.classList.remove("hidden");
   homeSection.classList.add("hidden");
+  authSection.classList.add("hidden");
 
   if (pushHistory) {
     history.pushState(
@@ -531,7 +664,6 @@ function loadChallengeScreen() {
 
     const progress = getProgress(currentLanguage);
     const unlockedCount = progress.levels[currentLevelIndex] || 0;
-    // unlockedCount = highest solved challenge index (1-based)
 
     for (let i = 0; i < totalChallenges; i++) {
       const btn = document.createElement("button");
@@ -542,8 +674,6 @@ function loadChallengeScreen() {
         btn.classList.add("active");
       }
 
-      // lock: only questions with index <= unlockedCount are clickable
-      // if unlockedCount = 0 → only Q1 (i=0) clickable
       if (i > unlockedCount) {
         btn.classList.add("locked");
       } else {
@@ -578,8 +708,10 @@ function loadChallengeScreen() {
     testcaseTable.appendChild(tr);
   });
 
-  // Load saved code if exists
-  const savedKey = `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`;
+  // Load saved code if exists (per user)
+  const savedKey = getUserScopedKey(
+    `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`
+  );
   const saved = localStorage.getItem(savedKey);
 
   if (saved && saved.trim() !== "") {
@@ -727,23 +859,22 @@ function unlockNext() {
   nextChallengeBtn.disabled =
     progress.levels[currentLevelIndex] <= currentChallengeIndex;
 
-  // If all challenges solved, user has effectively completed this level.
   if (progress.levels[currentLevelIndex] === totalChallenges) {
-    // Update course summary & home cards
     updateCourseSummaryForCurrentLanguage();
   }
 
-  // refresh question strip & challenge UI (unlock next question)
   loadChallengeScreen();
 }
 
 /* ==============================
    BUTTON EVENTS
    ============================== */
-// AUTO SAVE code on typing
+// AUTO SAVE code on typing (per user)
 codeEditor.addEventListener("input", () => {
   if (currentLanguage !== null) {
-    const key = `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`;
+    const key = getUserScopedKey(
+      `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`
+    );
     localStorage.setItem(key, codeEditor.value);
   }
 });
@@ -755,19 +886,20 @@ resetStarterBtn.addEventListener("click", () => {
   const level = challengeData.levels[currentLevelIndex];
   const challenge = level.challenges[currentChallengeIndex];
 
-  // clear saved code
-  const key = `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`;
+  const key = getUserScopedKey(
+    `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`
+  );
   localStorage.removeItem(key);
 
-  // restore starter
   codeEditor.value = challenge.starterCode || "";
 });
 
 clearCodeBtn.addEventListener("click", () => {
   codeEditor.value = "";
-  // keep cleared state in storage
   if (currentLanguage !== null) {
-    const key = `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`;
+    const key = getUserScopedKey(
+      `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`
+    );
     localStorage.setItem(key, "");
   }
 });
@@ -817,11 +949,62 @@ backToHome.addEventListener("click", () => history.back());
 backToLevels.addEventListener("click", () => history.back());
 backToLevelsFromIntro.addEventListener("click", () => history.back());
 
+/* AUTH UI EVENTS */
+authToggleMode.addEventListener("click", () => {
+  authMode = authMode === "login" ? "signup" : "login";
+  updateAuthModeUI();
+});
+
+authSubmitBtn.addEventListener("click", handleAuthSubmit);
+
+authPassword.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    handleAuthSubmit();
+  }
+});
+
+/* PROFILE MENU EVENTS */
+profileButton.addEventListener("click", () => {
+  profileMenu.classList.toggle("open");
+});
+
+document.addEventListener("click", (e) => {
+  if (
+    !profileMenu.contains(e.target) &&
+    !profileButton.contains(e.target)
+  ) {
+    profileMenu.classList.remove("open");
+  }
+});
+
+switchUserBtn.addEventListener("click", () => {
+  profileMenu.classList.remove("open");
+  localStorage.removeItem(CURRENT_USER_KEY);
+  updateUserUI();
+  showAuth(true);
+});
+
+logoutBtn.addEventListener("click", () => {
+  profileMenu.classList.remove("open");
+  localStorage.removeItem(CURRENT_USER_KEY);
+  updateUserUI();
+  showAuth(true);
+});
+
 /* Handle browser / Android back */
 window.addEventListener("popstate", (event) => {
   const state = event.state;
 
-  if (!state || state.page === "home") {
+  if (!state) {
+    const user = getCurrentUser();
+    if (user) {
+      showHome(false);
+    } else {
+      showAuth(false);
+    }
+  } else if (state.page === "auth") {
+    showAuth(false);
+  } else if (state.page === "home") {
     showHome(false);
   } else if (state.page === "levels") {
     currentLanguage = state.lang;
@@ -840,10 +1023,19 @@ window.addEventListener("popstate", (event) => {
 });
 
 /* Initial state */
-if (!history.state) {
-  history.replaceState({ page: "home" }, "", "");
-}
-showHome(false);
+updateAuthModeUI();
+updateUserUI();
 
-// Initialize home course cards (logos, progress)
+if (!history.state) {
+  const user = getCurrentUser();
+  if (user) {
+    history.replaceState({ page: "home" }, "", "");
+    showHome(false);
+  } else {
+    history.replaceState({ page: "auth" }, "", "");
+    showAuth(false);
+  }
+}
+
+// Initialize home course cards (logos, progress) for current user
 updateCourseCardsUI();

@@ -17,10 +17,72 @@
       <div class="logo-img"></div>
       <span class="logo-text">EduWin</span>
     </div>
+
+    <!-- TOP RIGHT: CURRENT USER + PROFILE ICON -->
+    <div class="top-right">
+      <div id="currentUserLabel" class="user-label hidden">
+        <span>Hi, </span><span id="currentUserName"></span>
+      </div>
+
+      <div class="profile-wrapper">
+        <button id="profileButton" class="profile-btn hidden" aria-label="Profile">
+          <span id="profileInitial">U</span>
+        </button>
+        <div id="profileMenu" class="profile-menu">
+          <div class="profile-menu-header">
+            <span id="profileMenuName">User</span>
+          </div>
+          <button id="switchUserBtn" class="profile-menu-item">Switch user</button>
+          <button id="logoutBtn" class="profile-menu-item">Logout</button>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <!-- HOME PAGE (RESTORED OLD VERSION) -->
-  <section id="home-section">
+  <!-- LOGIN / SIGNUP PAGE -->
+  <section id="auth-section" class="auth-section">
+    <div class="auth-card">
+      <h2 id="authTitle">Welcome to EduWin 👋</h2>
+      <p id="authSubtitle" class="auth-subtitle">
+        Create a profile or log in to save your progress separately.
+      </p>
+
+      <div class="auth-field">
+        <label for="authUsername">Username</label>
+        <input
+          id="authUsername"
+          type="text"
+          placeholder="eg: ram_k"
+          autocomplete="username"
+        />
+      </div>
+
+      <div class="auth-field">
+        <label for="authPassword">Password</label>
+        <input
+          id="authPassword"
+          type="password"
+          placeholder="Enter password"
+          autocomplete="current-password"
+        />
+      </div>
+
+      <button id="authSubmitBtn" class="btn primary auth-submit">
+        Continue
+      </button>
+
+      <button id="authToggleMode" class="auth-toggle-btn" type="button">
+        New here? Create account
+      </button>
+
+      <p class="auth-note">
+        👉 All progress, code and levels are saved <b>per user</b> on this device.
+      </p>
+    </div>
+  </section>
+
+  <!-- HOME PAGE -->
+  <section id="home-section" class="hidden">
     <div class="home-hero">
       <h1>Learn step-by-step</h1>
       <p>Structured learning with 10 levels per language and real coding compiler.</p>
