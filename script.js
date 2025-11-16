@@ -25,6 +25,7 @@ const challengeStatusMsg = document.getElementById("challengeStatusMsg");
 const codeEditor = document.getElementById("codeEditor");
 const outputArea = document.getElementById("outputArea");
 const editorLangPill = document.getElementById("editorLangPill");
+const testSummaryBadge = document.getElementById("testSummaryBadge");
 
 const runCodeBtn = document.getElementById("runCodeBtn");
 const testCodeBtn = document.getElementById("testCodeBtn");
@@ -354,6 +355,19 @@ function updateCourseCardsUI() {
 
     progressEl.textContent = `${completedLevels} / ${totalLevels} Levels Completed`;
 
+    // per-course score
+    let scoreEl = card.querySelector(".course-score");
+    if (!scoreEl) {
+      scoreEl = document.createElement("p");
+      scoreEl.className = "course-score";
+      card.appendChild(scoreEl);
+    }
+    const courseScore =
+      totalLevels > 0
+        ? Math.round((completedLevels / totalLevels) * 100)
+        : 0;
+    scoreEl.textContent = `Score: ${courseScore}%`;
+
     // Completed course -> green tick
     if (completedLevels >= totalLevels && totalLevels > 0) {
       card.classList.add("completed");
@@ -414,6 +428,16 @@ function getEditorPill(lang) {
     case "dsa": return "DSA";
     default: return "Code";
   }
+}
+
+function escapeHtml(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 /* ==============================
@@ -623,9 +647,15 @@ function loadLevelsUI() {
         }
       }
 
+      const levelScore =
+        totalChallenges > 0
+          ? Math.round((solvedCount / totalChallenges) * 100)
+          : 0;
+
       card.innerHTML = `
         <h3>${lvl.title || `Level ${idx + 1}`}</h3>
         <p class="level-progress">${solvedCount}/${totalChallenges || 0} challenges completed</p>
+        <p class="level-score">Score: ${levelScore}%</p>
       `;
 
       if (
@@ -705,6 +735,10 @@ function loadChallengeScreen() {
       <td>${(t.expected || "").replace(/\n/g, "\\n")}</td>
       <td class="status status-notrun">Not Run</td>
     `;
+    tr.title = "Click to run only this test case";
+    tr.addEventListener("click", () => {
+      runSingleTest(i);
+    });
     testcaseTable.appendChild(tr);
   });
 
@@ -728,7 +762,13 @@ function loadChallengeScreen() {
     progress.levels[currentLevelIndex] <= currentChallengeIndex;
 
   challengeStatusMsg.textContent = "";
-  outputArea.textContent = "";
+  if (outputArea) {
+    outputArea.textContent = "";
+  }
+  if (testSummaryBadge) {
+    testSummaryBadge.textContent = "–";
+    testSummaryBadge.classList.remove("all-pass");
+  }
 }
 
 /* ==============================
@@ -738,12 +778,20 @@ async function runCode() {
   const langId = JUDGE_LANG_MAP[currentLanguage];
 
   if (!langId) {
-    outputArea.textContent =
-      "⚠ Code execution is disabled for this course. Focus on logic/theory here.";
+    if (outputArea) {
+      outputArea.textContent =
+        "⚠ Code execution is disabled for this course. Focus on logic/theory here.";
+    }
     return;
   }
 
-  outputArea.textContent = "⏳ Running...";
+  if (outputArea) {
+    outputArea.textContent = "⏳ Running...";
+  }
+  if (testSummaryBadge) {
+    testSummaryBadge.textContent = "Running...";
+    testSummaryBadge.classList.remove("all-pass");
+  }
 
   const payload = {
     language_id: langId,
@@ -773,7 +821,166 @@ async function runCode() {
   if (result.stderr) out += "\n[stderr]\n" + result.stderr;
   if (result.compile_output) out += "\n[compile]\n" + result.compile_output;
 
-  outputArea.textContent = out.trim();
+  if (outputArea) {
+    outputArea.textContent = out.trim();
+  }
+  if (testSummaryBadge) {
+    testSummaryBadge.textContent = "Manual Run";
+  }
+}
+
+/* ==============================
+   JUDGE HELPER FOR TESTS
+   ============================== */
+async function runJudgeForInput(langId, stdinValue) {
+  const payload = {
+    language_id: langId,
+    source_code: codeEditor.value,
+    stdin: stdinValue || ""
+  };
+
+  const job = await fetch(
+    `${JUDGE0_URL}/submissions?base64_encoded=false&wait=false`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }
+  ).then((r) => r.json());
+
+  let result;
+  while (true) {
+    await new Promise((res) => setTimeout(res, 1200));
+    result = await fetch(
+      `${JUDGE0_URL}/submissions/${job.token}?base64_encoded=false`
+    ).then((r) => r.json());
+    if (result.status.id >= 3) break;
+  }
+
+  return {
+    stdout: result.stdout || "",
+    stderr: result.stderr || "",
+    compile_output: result.compile_output || "",
+    time: result.time,      // seconds, string
+    memory: result.memory   // KB, number
+  };
+}
+
+/* ==============================
+   RENDER TEST RESULTS (CARDS)
+   ============================== */
+function renderTestResults(results, options = {}) {
+  if (!outputArea) return;
+
+  const totalTests = options.totalTests || results.length;
+  const passedCount =
+    typeof options.passedCount === "number"
+      ? options.passedCount
+      : results.filter((r) => r.isPass).length;
+  const failedFirst = options.failedFirst || false;
+  const singleMode = options.singleMode || false;
+
+  // summary badge
+  if (testSummaryBadge) {
+    if (totalTests > 0) {
+      testSummaryBadge.textContent = `${passedCount}/${totalTests} tests passed`;
+    } else {
+      testSummaryBadge.textContent = "No tests";
+    }
+    if (totalTests > 0 && passedCount === totalTests) {
+      testSummaryBadge.classList.add("all-pass");
+    } else {
+      testSummaryBadge.classList.remove("all-pass");
+    }
+  }
+
+  outputArea.innerHTML = "";
+
+  let ordered = results.slice();
+  if (failedFirst && results.some((r) => !r.isPass)) {
+    ordered.sort((a, b) => Number(a.isPass) - Number(b.isPass)); // fails first
+  }
+
+  const list = document.createElement("div");
+  list.className = "test-result-list";
+
+  if (failedFirst && results.some((r) => !r.isPass)) {
+    const info = document.createElement("p");
+    info.style.fontSize = "12px";
+    info.style.marginBottom = "4px";
+    info.textContent = "Failed test cases are shown first below.";
+    outputArea.appendChild(info);
+  }
+
+  ordered.forEach((res) => {
+    const card = document.createElement("div");
+    card.className = "test-result-card " + (res.isPass ? "pass" : "fail");
+
+    const header = document.createElement("button");
+    header.className = "test-result-header";
+
+    const title = document.createElement("span");
+    title.className = "test-result-header-title";
+    title.textContent = `Test ${res.index + 1} — ${res.isPass ? "Pass ✅" : "Fail ❌"}`;
+    header.appendChild(title);
+
+    const right = document.createElement("div");
+    right.className = "test-result-header-right";
+
+    if (typeof res.timeMs === "number") {
+      const chipTime = document.createElement("span");
+      chipTime.className = "test-chip time";
+      chipTime.textContent = `${res.timeMs} ms`;
+      right.appendChild(chipTime);
+    }
+
+    if (typeof res.memoryKb === "number") {
+      const chipMem = document.createElement("span");
+      chipMem.className = "test-chip memory";
+      chipMem.textContent = `${res.memoryKb} KB`;
+      right.appendChild(chipMem);
+    }
+
+    const chev = document.createElement("span");
+    chev.className = "test-chevron";
+    chev.textContent = "⌄";
+    right.appendChild(chev);
+
+    header.appendChild(right);
+    card.appendChild(header);
+
+    const body = document.createElement("div");
+    body.className = "test-result-body";
+
+    body.innerHTML = `
+      <div class="test-block">
+        <h4>Input</h4>
+        <pre>${escapeHtml(res.input)}</pre>
+      </div>
+      <div class="test-block">
+        <h4>Expected Output</h4>
+        <pre>${escapeHtml(res.expected)}</pre>
+      </div>
+      <div class="test-block">
+        <h4>Your Output</h4>
+        <pre>${escapeHtml(res.displayOutput)}</pre>
+      </div>
+    `;
+    card.appendChild(body);
+
+    // default open: all fails, and singleMode card
+    if (!res.isPass || singleMode) {
+      card.classList.add("open");
+    }
+
+    header.addEventListener("click", () => {
+      card.classList.toggle("open");
+    });
+
+    list.appendChild(card);
+  });
+
+  outputArea.appendChild(list);
 }
 
 /* ==============================
@@ -790,52 +997,44 @@ async function testCode() {
   const level = challengeData.levels[currentLevelIndex];
   const challenge = level.challenges[currentChallengeIndex];
   const rows = testcaseTable.querySelectorAll("tr");
+  const tests = challenge.tests || [];
+
+  if (!tests.length) {
+    challengeStatusMsg.textContent = "No tests configured for this challenge.";
+    if (outputArea) {
+      outputArea.textContent = "No tests configured.";
+    }
+    return;
+  }
 
   let passed = 0;
-  challengeStatusMsg.textContent = "Running tests...";
-  outputArea.textContent = "Running tests on all cases...\n";
+  challengeStatusMsg.textContent = "Running all tests...";
+  if (outputArea) {
+    outputArea.textContent = "Running tests on all cases...";
+  }
+  if (testSummaryBadge) {
+    testSummaryBadge.textContent = "Running...";
+    testSummaryBadge.classList.remove("all-pass");
+  }
 
-  let outputsSummary = "";
+  const results = [];
 
-  for (let i = 0; i < (challenge.tests || []).length; i++) {
-    const t = challenge.tests[i];
-
-    const payload = {
-      language_id: langId,
-      source_code: codeEditor.value,
-      stdin: t.input || ""
-    };
+  for (let i = 0; i < tests.length; i++) {
+    const t = tests[i];
 
     const statusCell = rows[i].querySelector(".status");
     statusCell.textContent = "Running...";
     statusCell.className = "status status-running";
 
-    const job = await fetch(
-      `${JUDGE0_URL}/submissions?base64_encoded=false&wait=false`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      }
-    ).then((r) => r.json());
+    const judge = await runJudgeForInput(langId, t.input || "");
 
-    let result;
-    while (true) {
-      await new Promise((res) => setTimeout(res, 1200));
-      result = await fetch(
-        `${JUDGE0_URL}/submissions/${job.token}?base64_encoded=false`
-      ).then((r) => r.json());
-      if (result.status.id >= 3) break;
-    }
-
-    const rawStdout = result.stdout || "";
-    const stderr = result.stderr || "";
-    const compileOutput = result.compile_output || "";
+    const rawStdout = judge.stdout || "";
+    const stderr = judge.stderr || "";
+    const compileOutput = judge.compile_output || "";
 
     const actual = rawStdout.trim();
     const expected = (t.expected || "").trim();
 
-    // Build displayed "your output"
     let displayOutput = "";
     if (rawStdout) displayOutput += rawStdout;
     if (stderr) displayOutput += (displayOutput ? "\n" : "") + "[stderr]\n" + stderr;
@@ -853,25 +1052,126 @@ async function testCode() {
       statusCell.className = "status status-fail";
     }
 
-    outputsSummary +=
-      `Test ${i + 1}\n` +
-      `Input:\n${t.input || ""}\n\n` +
-      `Expected Output:\n${expected || ""}\n\n` +
-      `Your Output:\n${displayOutput}\n\n` +
-      `Status: ${isPass ? "Pass ✅" : "Fail ❌"}\n` +
-      `---------------------------\n\n`;
+    const timeMs =
+      judge.time != null ? Math.round(parseFloat(judge.time) * 1000) : undefined;
+    const memoryKb = judge.memory != null ? judge.memory : undefined;
+
+    results.push({
+      index: i,
+      input: t.input || "",
+      expected,
+      displayOutput,
+      isPass,
+      timeMs,
+      memoryKb
+    });
   }
 
-  outputArea.textContent = outputsSummary.trim();
+  renderTestResults(results, {
+    totalTests: tests.length,
+    passedCount: passed,
+    failedFirst: true,
+    singleMode: false
+  });
 
-  if (passed === (challenge.tests || []).length) {
+  if (passed === tests.length) {
     challengeStatusMsg.textContent = "🎉 Challenge Passed!";
     unlockNext();
   } else {
-    challengeStatusMsg.textContent = "❌ One or more test cases failed. Scroll up in Output to see details.";
+    challengeStatusMsg.textContent =
+      "❌ One or more test cases failed. Expand the red cards on the right to see details.";
   }
 }
 
+/* ==============================
+   RUN ONLY ONE TEST (ROW CLICK)
+   ============================== */
+async function runSingleTest(testIndex) {
+  const langId = JUDGE_LANG_MAP[currentLanguage];
+  if (!langId) {
+    challengeStatusMsg.textContent =
+      "⚠ Automatic test checking is disabled for this course.";
+    return;
+  }
+
+  const level = challengeData.levels[currentLevelIndex];
+  const challenge = level.challenges[currentChallengeIndex];
+  const tests = challenge.tests || [];
+  const rows = testcaseTable.querySelectorAll("tr");
+
+  if (testIndex < 0 || testIndex >= tests.length) return;
+
+  const t = tests[testIndex];
+  const row = rows[testIndex];
+  const statusCell = row.querySelector(".status");
+
+  challengeStatusMsg.textContent = `Running only Test ${testIndex + 1}...`;
+  if (outputArea) {
+    outputArea.textContent = `Running Test ${testIndex + 1}...`;
+  }
+  if (testSummaryBadge) {
+    testSummaryBadge.textContent = `Test ${testIndex + 1}`;
+    testSummaryBadge.classList.remove("all-pass");
+  }
+
+  statusCell.textContent = "Running...";
+  statusCell.className = "status status-running";
+
+  const judge = await runJudgeForInput(langId, t.input || "");
+
+  const rawStdout = judge.stdout || "";
+  const stderr = judge.stderr || "";
+  const compileOutput = judge.compile_output || "";
+
+  const actual = rawStdout.trim();
+  const expected = (t.expected || "").trim();
+
+  let displayOutput = "";
+  if (rawStdout) displayOutput += rawStdout;
+  if (stderr) displayOutput += (displayOutput ? "\n" : "") + "[stderr]\n" + stderr;
+  if (compileOutput) displayOutput += (displayOutput ? "\n" : "") + "[compile]\n" + compileOutput;
+  if (!displayOutput) displayOutput = "(no output)";
+
+  const isPass = actual === expected;
+
+  if (isPass) {
+    statusCell.textContent = "Pass";
+    statusCell.className = "status status-pass";
+    challengeStatusMsg.textContent = `✅ Test ${testIndex + 1} passed.`;
+  } else {
+    statusCell.textContent = "Fail";
+    statusCell.className = "status status-fail";
+    challengeStatusMsg.textContent = `❌ Test ${testIndex + 1} failed.`;
+  }
+
+  const timeMs =
+    judge.time != null ? Math.round(parseFloat(judge.time) * 1000) : undefined;
+  const memoryKb = judge.memory != null ? judge.memory : undefined;
+
+  renderTestResults(
+    [
+      {
+        index: testIndex,
+        input: t.input || "",
+        expected,
+        displayOutput,
+        isPass,
+        timeMs,
+        memoryKb
+      }
+    ],
+    {
+      totalTests: 1,
+      passedCount: isPass ? 1 : 0,
+      failedFirst: false,
+      singleMode: true
+    }
+  );
+}
+
+/* ==============================
+   UNLOCK NEXT (PROGRESS)
+   ============================== */
 function unlockNext() {
   const progress = getProgress(currentLanguage);
   const level = challengeData.levels[currentLevelIndex];
