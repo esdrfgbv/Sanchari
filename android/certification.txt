@@ -1,9 +1,9 @@
 ---------------------------------------------------
 Here are the ownership and the certification details
-of the EduWin 1.0
+of the Sanchari 1.0
 ---------------------------------------------------
 
-app_name - 						EduWin
+app_name - 						Sanchari
 app_alias - 					eduwin
 app_author_name - 				My Company
 app_author_organizational - 	My Company
@@ -17,7 +17,7 @@ app_versionCode - 				100
 
 ---------------------------------------------------
 The certification was created by WebIntoApp.com at
-the Friday 14th of November 2025 01:15:06 PM
+the Wednesday 19th of November 2025 01:45:31 PM
 
 https://webintoapp.com
 ---------------------------------------------------

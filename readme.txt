@@ -1,7 +1,7 @@
 
 FREE APP
 
-Created by WebIntoApp.com on Friday 14th of November 2025 01:15:07 PM.
+Created by WebIntoApp.com on Wednesday 19th of November 2025 01:45:31 PM.
 
 Release APK & App Bundle (AAB) ready to be submitted to Google Play Store 
 and to any other APK / AAB store over the internet.
@@ -9,7 +9,7 @@ and to any other APK / AAB store over the internet.
 -------------------------------------
 App ID:			988111
 App Key:		NiMREpjoxSPFIgdJxfyrtuhBwECMsArM
-App Name:		EduWin
+App Name:		Sanchari
 App Version:	1.0
 Package:		com.mycompany.eduwin
 Mode:			Free App
