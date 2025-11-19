@@ -78,7 +78,7 @@ const CURRENT_USER_KEY = "eduwin_currentUser";
 /* ==============================
    BACKEND CONFIG
    ============================== */
-const BACKEND_URL = "https://eduwin-backend.onrender.com"; // change to your deployed URL later
+const BACKEND_URL = "https://github.com/esdrfgbv/sanchari-backend"; // change to your deployed URL later
 
 /* ==============================
    JUDGE0 CONFIG
