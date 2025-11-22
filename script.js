@@ -57,7 +57,6 @@ const ioContainerEl = document.querySelector(".io-container");
 const navButtonsContainer = document.querySelector(".nav-buttons");
 const testTableEl = document.getElementById("testcaseTable");
 
-
 /* AUTH + PROFILE DOM */
 const authTitle = document.getElementById("authTitle");
 const authSubtitle = document.getElementById("authSubtitle");
@@ -75,10 +74,14 @@ const profileMenuName = document.getElementById("profileMenuName");
 const switchUserBtn = document.getElementById("switchUserBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 
+/* Detect which page we are on */
+const isAuthPage = !!authSection && !homeSection;   // login.html
+const isMainAppPage = !!homeSection;               // index.html
+
 // Global state
 let currentLanguage = null;
-let challengeData = null; // { levels: [ level1Json, level2Json, . ] }
-let notesCache = {}; // key: `${lang}_level${i}` -> notes json
+let challengeData = null; // { levels: [ level1Json, level2Json, ... ] }
+let notesCache = {};      // key: `${lang}_level${i}` -> notes json
 let currentLevelIndex = 0;
 let currentChallengeIndex = 0;
 
@@ -89,7 +92,7 @@ const CURRENT_USER_KEY = "eduwin_currentUser";
 /* ==============================
    BACKEND CONFIG
    ============================== */
-const BACKEND_URL = "https://eduwin-backend.onrender.com"; // change to your deployed URL later
+const BACKEND_URL = "https://eduwin-backend.onrender.com"; // backend URL
 
 /* ==============================
    JUDGE0 CONFIG
@@ -151,6 +154,8 @@ function getUserScopedKey(baseKey) {
 
 /* UI updates for login / signup mode */
 function updateAuthModeUI() {
+  if (!authTitle || !authSubtitle || !authSubmitBtn || !authToggleMode) return;
+
   if (authMode === "login") {
     authTitle.textContent = "Welcome back 👋";
     authSubtitle.textContent = "Login to continue your saved progress.";
@@ -168,6 +173,8 @@ function updateAuthModeUI() {
 function updateUserUI() {
   const user = getCurrentUser();
 
+  if (!currentUserLabel || !profileButton || !profileMenu) return;
+
   if (!user) {
     currentUserLabel.classList.add("hidden");
     profileButton.classList.add("hidden");
@@ -178,25 +185,33 @@ function updateUserUI() {
   currentUserLabel.classList.remove("hidden");
   profileButton.classList.remove("hidden");
 
-  currentUserNameEl.textContent = user;
-  profileInitial.textContent = user.charAt(0).toUpperCase();
-  profileMenuName.textContent = user;
+  if (currentUserNameEl) currentUserNameEl.textContent = user;
+  if (profileInitial) profileInitial.textContent = user.charAt(0).toUpperCase();
+  if (profileMenuName) profileMenuName.textContent = user;
 }
 
 /* AUTH SECTION SHOW / HIDE */
 function showAuth(pushHistory = true) {
-  authSection.classList.remove("hidden");
-  homeSection.classList.add("hidden");
-  levelsSection.classList.add("hidden");
-  levelIntroSection.classList.add("hidden");
-  challengeSection.classList.add("hidden");
+  // If auth section is not on this page, go to login.html
+  if (!authSection) {
+    window.location.href = "login.html";
+    return;
+  }
 
-  if (pushHistory) {
+  authSection.classList.remove("hidden");
+  if (homeSection) homeSection.classList.add("hidden");
+  if (levelsSection) levelsSection.classList.add("hidden");
+  if (levelIntroSection) levelIntroSection.classList.add("hidden");
+  if (challengeSection) challengeSection.classList.add("hidden");
+
+  if (pushHistory && typeof history !== "undefined") {
     history.pushState({ page: "auth" }, "", "");
   }
 }
 
 async function handleAuthSubmit() {
+  if (!authUsername || !authPassword) return;
+
   const username = authUsername.value.trim();
   const password = authPassword.value.trim();
 
@@ -227,7 +242,8 @@ async function handleAuthSubmit() {
     authUsername.value = "";
     authPassword.value = "";
 
-    showHome(true);
+    // After successful login, go to main app page
+    window.location.href = "index.html";
   } catch (err) {
     console.error(err);
     alert("Cannot connect to server. Is the backend running?");
@@ -306,7 +322,6 @@ function updateCourseSummaryForCurrentLanguage() {
     totalLevels
   });
 
-  // Refresh course cards UI (home) so it reflects new progress
   updateCourseCardsUI();
 }
 
@@ -339,6 +354,8 @@ function hideLoading() {
    HOME COURSE CARDS UI
    ============================== */
 function updateCourseCardsUI() {
+  if (!isMainAppPage) return;
+
   const cards = document.querySelectorAll(".course-card");
 
   COURSE_ORDER.forEach((lang) => {
@@ -460,33 +477,43 @@ function getDefaultLevelTypeForLang(lang) {
 }
 
 /* ==============================
-   NAVIGATION
+   NAVIGATION (MAIN APP)
    ============================== */
 function showHome(pushHistory = true) {
-  authSection.classList.add("hidden");
-  homeSection.classList.remove("hidden");
-  levelsSection.classList.add("hidden");
-  levelIntroSection.classList.add("hidden");
-  challengeSection.classList.add("hidden");
+  // If we are somehow on login page, go to index
+  if (!homeSection) {
+    window.location.href = "index.html";
+    return;
+  }
 
-  if (pushHistory) {
+  if (authSection) authSection.classList.add("hidden");
+  homeSection.classList.remove("hidden");
+  if (levelsSection) levelsSection.classList.add("hidden");
+  if (levelIntroSection) levelIntroSection.classList.add("hidden");
+  if (challengeSection) challengeSection.classList.add("hidden");
+
+  if (pushHistory && typeof history !== "undefined") {
     history.pushState({ page: "home" }, "", "");
   }
 }
 
 function openLevels(lang, pushHistory = true) {
+  if (!isMainAppPage) return;
+
   currentLanguage = lang;
-  selectedLanguageTitle.textContent = getCourseTitle(lang);
+  if (selectedLanguageTitle) {
+    selectedLanguageTitle.textContent = getCourseTitle(lang);
+  }
 
   const levelsPromise = loadLevelsUI(); // fetch data JSONs
 
-  homeSection.classList.add("hidden");
-  levelsSection.classList.remove("hidden");
-  levelIntroSection.classList.add("hidden");
-  challengeSection.classList.add("hidden");
-  authSection.classList.add("hidden");
+  if (homeSection) homeSection.classList.add("hidden");
+  if (levelsSection) levelsSection.classList.remove("hidden");
+  if (levelIntroSection) levelIntroSection.classList.add("hidden");
+  if (challengeSection) challengeSection.classList.add("hidden");
+  if (authSection) authSection.classList.add("hidden");
 
-  if (pushHistory) {
+  if (pushHistory && typeof history !== "undefined") {
     history.pushState({ page: "levels", lang }, "", "");
   }
 
@@ -494,7 +521,6 @@ function openLevels(lang, pushHistory = true) {
 }
 
 /* ---------- Level intro ---------- */
-
 function renderLevelIntro(notesJson, levelIdx) {
   const level = challengeData.levels[levelIdx];
 
@@ -507,9 +533,10 @@ function renderLevelIntro(notesJson, levelIdx) {
     "In this level, you will practice problems related to this topic.";
   const points = Array.isArray(notesJson.points) ? notesJson.points : [];
 
-  levelIntroTitle.textContent = notesTitle;
-  levelIntroBreadcrumb.textContent = notesTitle;
+  if (levelIntroTitle) levelIntroTitle.textContent = notesTitle;
+  if (levelIntroBreadcrumb) levelIntroBreadcrumb.textContent = notesTitle;
 
+  if (!levelIntroBody) return;
   levelIntroBody.innerHTML = "";
 
   const p = document.createElement("p");
@@ -530,6 +557,8 @@ function renderLevelIntro(notesJson, levelIdx) {
 }
 
 function openLevelIntro(levelIdx, pushHistory = true) {
+  if (!isMainAppPage) return;
+
   currentLevelIndex = levelIdx;
 
   const key = `${currentLanguage}_level${levelIdx + 1}`;
@@ -538,13 +567,13 @@ function openLevelIntro(levelIdx, pushHistory = true) {
   const showIntro = (notesJson) => {
     renderLevelIntro(notesJson, levelIdx);
 
-    homeSection.classList.add("hidden");
-    levelsSection.classList.add("hidden");
-    challengeSection.classList.add("hidden");
-    levelIntroSection.classList.remove("hidden");
-    authSection.classList.add("hidden");
+    if (homeSection) homeSection.classList.add("hidden");
+    if (levelsSection) levelsSection.classList.add("hidden");
+    if (challengeSection) challengeSection.classList.add("hidden");
+    if (levelIntroSection) levelIntroSection.classList.remove("hidden");
+    if (authSection) authSection.classList.add("hidden");
 
-    if (pushHistory) {
+    if (pushHistory && typeof history !== "undefined") {
       history.pushState(
         { page: "level-intro", lang: currentLanguage, levelIdx },
         "",
@@ -579,17 +608,19 @@ function openLevelIntro(levelIdx, pushHistory = true) {
 }
 
 function openChallenge(levelIdx, challengeIdx, pushHistory = true) {
+  if (!isMainAppPage) return;
+
   currentLevelIndex = levelIdx;
   currentChallengeIndex = challengeIdx;
   loadChallengeScreen();
 
-  levelsSection.classList.add("hidden");
-  levelIntroSection.classList.add("hidden");
-  challengeSection.classList.remove("hidden");
-  homeSection.classList.add("hidden");
-  authSection.classList.add("hidden");
+  if (levelsSection) levelsSection.classList.add("hidden");
+  if (levelIntroSection) levelIntroSection.classList.add("hidden");
+  if (challengeSection) challengeSection.classList.remove("hidden");
+  if (homeSection) homeSection.classList.add("hidden");
+  if (authSection) authSection.classList.add("hidden");
 
-  if (pushHistory) {
+  if (pushHistory && typeof history !== "undefined") {
     history.pushState(
       {
         page: "challenge",
@@ -676,7 +707,7 @@ function normalizeChallengeObject(raw, challengeIndex, levelType) {
       inputDescription: "Read the question carefully and choose the correct option.",
       outputDescription: "Correct option (A/B/C/D).",
       examples: exampleBlocks,
-      tests: [], // theory only
+      tests: [],
       starterCode: ""
     };
   }
@@ -698,6 +729,8 @@ function normalizeChallengeObject(raw, challengeIndex, levelType) {
    LOAD LEVELS UI FROM data/<lang>/levelX.json
    ============================== */
 function loadLevelsUI() {
+  if (!levelsContainer) return Promise.resolve();
+
   levelsContainer.innerHTML = "";
 
   const progress = getProgress(currentLanguage);
@@ -815,13 +848,21 @@ function renderMcqLevel(level) {
   mcqContainer.classList.remove("hidden");
 
   // Heading / info
-  challengeTitle.textContent =
-    level.title || `Level ${currentLevelIndex + 1} — MCQs`;
-  challengeDescription.textContent =
-    "Answer all questions below. Each has exactly one correct option.";
-  challengeConcept.textContent = level.concept || "";
+  if (challengeTitle) {
+    challengeTitle.textContent =
+      level.title || `Level ${currentLevelIndex + 1} — MCQs`;
+  }
+  if (challengeDescription) {
+    challengeDescription.textContent =
+      "Answer all questions below. Each has exactly one correct option.";
+  }
+  if (challengeConcept) {
+    challengeConcept.textContent = level.concept || "";
+  }
 
-  challengeBreadcrumb.textContent = `${level.title} — MCQ Level (${questions.length} questions)`;
+  if (challengeBreadcrumb) {
+    challengeBreadcrumb.textContent = `${level.title} — MCQ Level (${questions.length} questions)`;
+  }
 
   // Build each question card
   questions.forEach((q, idx) => {
@@ -907,8 +948,10 @@ function renderMcqLevel(level) {
     resultEl.textContent = `You got ${correctCount} / ${questions.length} correct.`;
 
     if (correctCount === questions.length && questions.length > 0) {
-      challengeStatusMsg.textContent =
-        "✅ All answers correct! Level completed.";
+      if (challengeStatusMsg) {
+        challengeStatusMsg.textContent =
+          "✅ All answers correct! Level completed.";
+      }
 
       // Mark this whole level as completed (all 'challenges' solved)
       const progress = getProgress(currentLanguage);
@@ -916,8 +959,10 @@ function renderMcqLevel(level) {
       saveProgress(currentLanguage, progress);
       updateCourseSummaryForCurrentLanguage();
     } else {
-      challengeStatusMsg.textContent =
-        "Some answers are incorrect or unanswered. Correct questions are highlighted in green.";
+      if (challengeStatusMsg) {
+        challengeStatusMsg.textContent =
+          "Some answers are incorrect or unanswered. Correct questions are highlighted in green.";
+      }
     }
   });
 
@@ -929,6 +974,8 @@ function renderMcqLevel(level) {
    LOAD CHALLENGE SCREEN
    ============================== */
 function loadChallengeScreen() {
+  if (!isMainAppPage || !challengeData) return;
+
   const level = challengeData.levels[currentLevelIndex];
   const totalChallenges = Array.isArray(level.challenges)
     ? level.challenges.length
@@ -944,8 +991,8 @@ function loadChallengeScreen() {
     renderMcqLevel(level);
 
     // Disable prev/next for MCQ mode
-    prevChallengeBtn.disabled = true;
-    nextChallengeBtn.disabled = true;
+    if (prevChallengeBtn) prevChallengeBtn.disabled = true;
+    if (nextChallengeBtn) nextChallengeBtn.disabled = true;
 
     // Clear compiler output badges
     if (outputArea) outputArea.textContent = "";
@@ -954,16 +1001,15 @@ function loadChallengeScreen() {
       testSummaryBadge.classList.remove("all-pass");
     }
 
-    // Status text
-    challengeStatusMsg.textContent =
-      "MCQ level — read all questions and select the correct options, then press Submit.";
+    if (challengeStatusMsg) {
+      challengeStatusMsg.textContent =
+        "MCQ level — read all questions and select the correct options, then press Submit.";
+    }
 
-    return; // IMPORTANT: don't run the compiler-style code below
+    return; // don't run compiler-style code below
   }
 
   // ----- COMPILER LEVEL: normal behaviour (one challenge at a time) -----
-
-  // Make sure MCQ UI is hidden and normal UI is visible
   if (mcqContainer) {
     mcqContainer.innerHTML = "";
     mcqContainer.classList.add("hidden");
@@ -983,9 +1029,11 @@ function loadChallengeScreen() {
     level.type
   );
 
-  challengeBreadcrumb.textContent = `${level.title} — Challenge ${
-    currentChallengeIndex + 1
-  } / ${totalChallenges}`;
+  if (challengeBreadcrumb) {
+    challengeBreadcrumb.textContent = `${level.title} — Challenge ${
+      currentChallengeIndex + 1
+    } / ${totalChallenges}`;
+  }
 
   /* Build question list pills */
   if (questionList) {
@@ -1018,91 +1066,45 @@ function loadChallengeScreen() {
   }
 
   // Left panel (description + IO)
-  challengeTitle.textContent = challenge.title;
-  challengeDescription.textContent = challenge.description || "";
-  challengeConcept.textContent = level.concept || "";
+  if (challengeTitle) challengeTitle.textContent = challenge.title;
+  if (challengeDescription) {
+    challengeDescription.textContent = challenge.description || "";
+  }
+  if (challengeConcept) {
+    challengeConcept.textContent = level.concept || "";
+  }
 
-  inputFormat.textContent = challenge.inputDescription || "";
-  outputFormat.textContent = challenge.outputDescription || "";
-  examplesArea.textContent = (challenge.examples || []).join("\n\n");
+  if (inputFormat) {
+    inputFormat.textContent = challenge.inputDescription || "";
+  }
+  if (outputFormat) {
+    outputFormat.textContent = challenge.outputDescription || "";
+  }
+  if (examplesArea) {
+    examplesArea.textContent = (challenge.examples || []).join("\n\n");
+  }
 
   // Test table
-  testcaseTable.innerHTML = "";
-  (challenge.tests || []).forEach((t, i) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${i + 1}</td>
-      <td>${(t.input || "").replace(/\n/g, "\\n")}</td>
-      <td>${(t.expected || "").replace(/\n/g, "\\n")}</td>
-      <td class="status status-notrun">Not Run</td>
-    `;
-    tr.title = "Click to run only this test case";
-    tr.addEventListener("click", () => {
-      runSingleTest(i);
+  if (testcaseTable) {
+    testcaseTable.innerHTML = "";
+    (challenge.tests || []).forEach((t, i) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${i + 1}</td>
+        <td>${(t.input || "").replace(/\n/g, "\\n")}</td>
+        <td>${(t.expected || "").replace(/\n/g, "\\n")}</td>
+        <td class="status status-notrun">Not Run</td>
+      `;
+      tr.title = "Click to run only this test case";
+      tr.addEventListener("click", () => {
+        runSingleTest(i);
+      });
+      testcaseTable.appendChild(tr);
     });
-    testcaseTable.appendChild(tr);
-  });
+  }
 
   // Compiler panel
-  const savedKey = getUserScopedKey(
-    `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`
-  );
-  const saved = localStorage.getItem(savedKey);
-
-  if (saved && saved.trim() !== "") {
-    codeEditor.value = saved;
-  } else {
-    codeEditor.value = challenge.starterCode || "";
-  }
-
-  editorLangPill.textContent = getEditorPill(currentLanguage);
-
-  const progress = getProgress(currentLanguage);
-  prevChallengeBtn.disabled = currentChallengeIndex === 0;
-  nextChallengeBtn.disabled =
-    progress.levels[currentLevelIndex] <= currentChallengeIndex;
-
-  // Reset status / output
-  challengeStatusMsg.textContent = "";
-  if (outputArea) {
-    outputArea.textContent = "";
-  }
-  if (testSummaryBadge) {
-    testSummaryBadge.textContent = "–";
-    testSummaryBadge.classList.remove("all-pass");
-  }
-}
-
-
-  // Left panel
-  challengeTitle.textContent = challenge.title;
-  challengeDescription.textContent = challenge.description || "";
-  challengeConcept.textContent = level.concept || "";
-
-  inputFormat.textContent = challenge.inputDescription || "";
-  outputFormat.textContent = challenge.outputDescription || "";
-  examplesArea.textContent = (challenge.examples || []).join("\n\n");
-
-  // Test table (Compiler only – for MCQ it's empty anyway)
-  testcaseTable.innerHTML = "";
-  (challenge.tests || []).forEach((t, i) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${i + 1}</td>
-      <td>${(t.input || "").replace(/\n/g, "\\n")}</td>
-      <td>${(t.expected || "").replace(/\n/g, "\\n")}</td>
-      <td class="status status-notrun">Not Run</td>
-    `;
-    tr.title = "Click to run only this test case";
-    tr.addEventListener("click", () => {
-      runSingleTest(i);
-    });
-    testcaseTable.appendChild(tr);
-  });
-
-  // Compiler panel only makes sense for "Compiler" levels
-  if (!isMcqLevel) {
-    // Load saved code if exists (per user)
+  if (codeEditor) {
     const savedKey = getUserScopedKey(
       `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`
     );
@@ -1113,38 +1115,29 @@ function loadChallengeScreen() {
     } else {
       codeEditor.value = challenge.starterCode || "";
     }
+  }
 
+  if (editorLangPill) {
     editorLangPill.textContent = getEditorPill(currentLanguage);
   }
 
   const progress = getProgress(currentLanguage);
-  prevChallengeBtn.disabled = currentChallengeIndex === 0;
-  nextChallengeBtn.disabled =
-    progress.levels[currentLevelIndex] <= currentChallengeIndex;
-
-  if (isMcqLevel) {
-    // For MCQ levels, status can guide the student instead of tests
-    challengeStatusMsg.textContent =
-      "MCQ level — read the question and select the correct option from the given choices.";
-    if (outputArea) {
-      outputArea.textContent = "";
-    }
-    if (testSummaryBadge) {
-      testSummaryBadge.textContent = "–";
-      testSummaryBadge.classList.remove("all-pass");
-    }
-  } else {
-    // Compiler levels: reset status as usual
-    challengeStatusMsg.textContent = "";
-    if (outputArea) {
-      outputArea.textContent = "";
-    }
-    if (testSummaryBadge) {
-      testSummaryBadge.textContent = "–";
-      testSummaryBadge.classList.remove("all-pass");
-    }
+  if (prevChallengeBtn) {
+    prevChallengeBtn.disabled = currentChallengeIndex === 0;
+  }
+  if (nextChallengeBtn) {
+    nextChallengeBtn.disabled =
+      progress.levels[currentLevelIndex] <= currentChallengeIndex;
   }
 
+  // Reset status / output
+  if (challengeStatusMsg) challengeStatusMsg.textContent = "";
+  if (outputArea) outputArea.textContent = "";
+  if (testSummaryBadge) {
+    testSummaryBadge.textContent = "–";
+    testSummaryBadge.classList.remove("all-pass");
+  }
+}
 
 /* ==============================
    RUN CODE (NO TESTS)
@@ -1152,7 +1145,7 @@ function loadChallengeScreen() {
 async function runCode() {
   const langId = JUDGE_LANG_MAP[currentLanguage];
 
-  if (!langId) {
+  if (!langId || !codeEditor) {
     if (outputArea) {
       outputArea.textContent =
         "⚠ Code execution is disabled for this course. Focus on logic/theory here.";
@@ -1208,6 +1201,8 @@ async function runCode() {
    JUDGE HELPER FOR TESTS
    ============================== */
 async function runJudgeForInput(langId, stdinValue) {
+  if (!codeEditor) return null;
+
   const payload = {
     language_id: langId,
     source_code: codeEditor.value,
@@ -1238,8 +1233,7 @@ async function runJudgeForInput(langId, stdinValue) {
    RENDER TEST RESULTS
    ============================== */
 function renderTestResults(results, summary) {
-  // summary: { totalTests, passedCount, failedFirst, singleMode }
-  const { totalTests, passedCount, singleMode } = summary;
+  const { totalTests, passedCount } = summary;
 
   if (!outputArea) return;
 
@@ -1264,77 +1258,72 @@ function renderTestResults(results, summary) {
     card.className =
       "test-result-card " + (res.isPass ? "pass" : "fail");
 
-    const header = document.createElement("div");
+    const header = document.createElement("button");
     header.className = "test-result-header";
 
-    const left = document.createElement("div");
-    left.className = "test-header-left";
-    const title = document.createElement("span");
-    title.className = "test-title";
-    title.textContent = `Test #${res.index + 1}`;
-    left.appendChild(title);
-
-    const status = document.createElement("span");
-    status.className =
-      "test-status " + (res.isPass ? "status-pass" : "status-fail");
-    status.textContent = res.isPass ? "Pass" : "Fail";
-    left.appendChild(status);
-
-    header.appendChild(left);
+    const titleSpan = document.createElement("span");
+    titleSpan.className = "test-result-header-title";
+    titleSpan.textContent = `Test #${res.index + 1}`;
 
     const right = document.createElement("div");
-    right.className = "test-header-right";
+    right.className = "test-result-header-right";
 
-    if (typeof res.timeMs === "number") {
-      const chipTime = document.createElement("span");
-      chipTime.className = "test-chip time";
-      chipTime.textContent = `${res.timeMs} ms`;
-      right.appendChild(chipTime);
-    }
+    const statusChip = document.createElement("span");
+    statusChip.className =
+      "test-chip " + (res.isPass ? "status-pass" : "status-fail");
+    statusChip.textContent = res.isPass ? "Pass" : "Fail";
 
-    if (typeof res.memoryKb === "number") {
-      const chipMem = document.createElement("span");
-      chipMem.className = "test-chip memory";
-      chipMem.textContent = `${res.memoryKb} KB`;
-      right.appendChild(chipMem);
-    }
+    const timeChip = document.createElement("span");
+    timeChip.className = "test-chip time";
+    timeChip.textContent = (res.time || "–") + " ms";
 
-    const chev = document.createElement("span");
-    chev.className = "test-chevron";
-    chev.textContent = "⌄";
-    right.appendChild(chev);
+    const memChip = document.createElement("span");
+    memChip.className = "test-chip memory";
+    memChip.textContent = (res.memory || "–") + " KB";
 
+    const chevron = document.createElement("span");
+    chevron.className = "test-chevron";
+    chevron.textContent = "▼";
+
+    right.appendChild(statusChip);
+    right.appendChild(timeChip);
+    right.appendChild(memChip);
+    right.appendChild(chevron);
+
+    header.appendChild(titleSpan);
     header.appendChild(right);
-    card.appendChild(header);
 
     const body = document.createElement("div");
     body.className = "test-result-body";
 
-    body.innerHTML = `
-      <div class="test-block">
-        <h4>Input</h4>
-        <pre>${escapeHtml(res.input)}</pre>
-      </div>
-      <div class="test-block">
-        <h4>Expected Output</h4>
-        <pre>${escapeHtml(res.expected)}</pre>
-      </div>
-      <div class="test-block">
-        <h4>Your Output</h4>
-        <pre>${escapeHtml(res.displayOutput)}</pre>
-      </div>
-    `;
-    card.appendChild(body);
+    const blkInput = document.createElement("div");
+    blkInput.className = "test-block";
+    blkInput.innerHTML = `<h4>Input</h4><pre>${escapeHtml(
+      res.input || ""
+    )}</pre>`;
 
-    // default open: all fails, and singleMode card
-    if (!res.isPass || singleMode) {
-      card.classList.add("open");
-    }
+    const blkExp = document.createElement("div");
+    blkExp.className = "test-block";
+    blkExp.innerHTML = `<h4>Expected Output</h4><pre>${escapeHtml(
+      res.expected || ""
+    )}</pre>`;
+
+    const blkOut = document.createElement("div");
+    blkOut.className = "test-block";
+    blkOut.innerHTML = `<h4>Your Output</h4><pre>${escapeHtml(
+      res.stdout || ""
+    )}</pre>`;
+
+    body.appendChild(blkInput);
+    body.appendChild(blkExp);
+    body.appendChild(blkOut);
 
     header.addEventListener("click", () => {
       card.classList.toggle("open");
     });
 
+    card.appendChild(header);
+    card.appendChild(body);
     list.appendChild(card);
   });
 
@@ -1342,382 +1331,414 @@ function renderTestResults(results, summary) {
 }
 
 /* ==============================
-   RUN TESTS + UNLOCK PROGRESS
+   RUN TESTS
    ============================== */
-async function testCode() {
-  const langId = JUDGE_LANG_MAP[currentLanguage];
-  if (!langId) {
-    challengeStatusMsg.textContent =
-      "⚠ Automatic test checking is disabled for this course.";
-    return;
-  }
-
+async function runTests() {
   const level = challengeData.levels[currentLevelIndex];
-  const challenge = level.challenges[currentChallengeIndex];
-  const rows = testcaseTable.querySelectorAll("tr");
-  const tests = challenge.tests || [];
+  const rawChallenge = level.challenges[currentChallengeIndex];
+  const challenge = normalizeChallengeObject(
+    rawChallenge,
+    currentChallengeIndex,
+    level.type
+  );
 
-  if (!tests.length) {
-    challengeStatusMsg.textContent = "No tests configured for this challenge.";
+  const tests = challenge.tests || [];
+  const totalTests = tests.length;
+
+  const langId = JUDGE_LANG_MAP[currentLanguage];
+
+  if (!langId || !totalTests) {
     if (outputArea) {
-      outputArea.textContent = "No tests configured.";
+      outputArea.textContent =
+        "No auto tests available for this challenge.";
     }
     return;
   }
 
-  let passed = 0;
-  challengeStatusMsg.textContent = "Running all tests.";
+  if (testcaseTable) {
+    const rows = testcaseTable.querySelectorAll("tr");
+    rows.forEach((row) => {
+      const tdStatus = row.querySelector(".status");
+      if (tdStatus) {
+        tdStatus.textContent = "Running";
+        tdStatus.className = "status status-running";
+      }
+    });
+  }
+
   if (outputArea) {
-    outputArea.textContent = "Running tests on all cases.";
+    outputArea.textContent = "⏳ Running all tests...";
   }
   if (testSummaryBadge) {
-    testSummaryBadge.textContent = "Running.";
+    testSummaryBadge.textContent = "Running...";
     testSummaryBadge.classList.remove("all-pass");
   }
 
   const results = [];
+  let passedCount = 0;
 
   for (let i = 0; i < tests.length; i++) {
     const t = tests[i];
+    const result = await runJudgeForInput(langId, t.input || "");
+    if (!result) continue;
 
-    const statusCell = rows[i].querySelector(".status");
-    statusCell.textContent = "Running.";
-    statusCell.className = "status status-running";
-
-    const judge = await runJudgeForInput(langId, t.input || "");
-
-    const rawStdout = judge.stdout || "";
-    const stderr = judge.stderr || "";
-    const compileOutput = judge.compile_output || "";
-
-    const actual = rawStdout.trim();
+    const stdout = (result.stdout || "").trim();
     const expected = (t.expected || "").trim();
+    const isPass = stdout === expected;
 
-    let displayOutput = "";
-    if (rawStdout) displayOutput += rawStdout;
-    if (stderr) displayOutput += (displayOutput ? "\n" : "") + "[stderr]\n" + stderr;
-    if (compileOutput) displayOutput += (displayOutput ? "\n" : "") + "[compile]\n" + compileOutput;
-    if (!displayOutput) displayOutput = "(no output)";
+    if (isPass) passedCount++;
 
-    const isPass = actual === expected;
-    if (isPass) passed++;
-
-    statusCell.textContent = isPass ? "Pass" : "Fail";
-    statusCell.className =
-      "status " + (isPass ? "status-pass" : "status-fail");
-
-    const timeMs =
-      judge.time != null ? Math.round(parseFloat(judge.time) * 1000) : undefined;
-    const memoryKb = judge.memory != null ? judge.memory : undefined;
+    const row = testcaseTable ? testcaseTable.querySelectorAll("tr")[i] : null;
+    if (row) {
+      const tdStatus = row.querySelector(".status");
+      if (tdStatus) {
+        tdStatus.textContent = isPass ? "Pass" : "Fail";
+        tdStatus.className = "status " + (isPass ? "status-pass" : "status-fail");
+      }
+    }
 
     results.push({
       index: i,
-      input: t.input || "",
+      input: t.input,
       expected,
-      displayOutput,
+      stdout,
       isPass,
-      timeMs,
-      memoryKb
+      time: result.time,
+      memory: result.memory
     });
   }
 
-  challengeStatusMsg.textContent =
-    passed === tests.length
-      ? "✅ All test cases passed!"
-      : `Some tests failed. Passed ${passed} / ${tests.length}.`;
-
   renderTestResults(results, {
-    totalTests: tests.length,
-    passedCount: passed,
-    failedFirst: passed !== tests.length,
+    totalTests,
+    passedCount,
     singleMode: false
   });
 
-  if (passed === tests.length) {
-    unlockNext();
+  // Progress unlock
+  if (passedCount === totalTests && totalTests > 0) {
+    const progress = getProgress(currentLanguage);
+    if (progress.levels[currentLevelIndex] < currentChallengeIndex + 1) {
+      progress.levels[currentLevelIndex] = currentChallengeIndex + 1;
+      saveProgress(currentLanguage, progress);
+      updateCourseSummaryForCurrentLanguage();
+    }
+
+    if (challengeStatusMsg) {
+      challengeStatusMsg.textContent =
+        "✅ All tests passed! You can move to the next challenge.";
+    }
+
+    if (nextChallengeBtn) {
+      nextChallengeBtn.disabled = false;
+    }
+  } else {
+    if (challengeStatusMsg) {
+      challengeStatusMsg.textContent =
+        "Some tests failed. Check the difference and try again.";
+    }
   }
 }
 
 /* ==============================
-   RUN A SINGLE TEST
+   RUN SINGLE TEST
    ============================== */
 async function runSingleTest(testIndex) {
+  const level = challengeData.levels[currentLevelIndex];
+  const rawChallenge = level.challenges[currentChallengeIndex];
+  const challenge = normalizeChallengeObject(
+    rawChallenge,
+    currentChallengeIndex,
+    level.type
+  );
+
+  const tests = challenge.tests || [];
+  if (!tests[testIndex]) return;
+
   const langId = JUDGE_LANG_MAP[currentLanguage];
   if (!langId) {
-    challengeStatusMsg.textContent =
-      "⚠ Automatic test checking is disabled for this course.";
+    if (outputArea) {
+      outputArea.textContent =
+        "No judge available for this course.";
+    }
     return;
   }
 
-  const level = challengeData.levels[currentLevelIndex];
-  const challenge = level.challenges[currentChallengeIndex];
-  const tests = challenge.tests || [];
-  const rows = testcaseTable.querySelectorAll("tr");
-
-  if (testIndex < 0 || testIndex >= tests.length) return;
-
   const t = tests[testIndex];
-  const row = rows[testIndex];
-  const statusCell = row.querySelector(".status");
 
-  challengeStatusMsg.textContent = `Running only Test ${testIndex + 1}.`;
   if (outputArea) {
-    outputArea.textContent = `Running Test ${testIndex + 1}.`;
+    outputArea.textContent = `⏳ Running Test #${testIndex + 1}...`;
   }
   if (testSummaryBadge) {
-    testSummaryBadge.textContent = `Test ${testIndex + 1}`;
+    testSummaryBadge.textContent = `Running Test #${testIndex + 1}`;
     testSummaryBadge.classList.remove("all-pass");
   }
 
-  statusCell.textContent = "Running.";
-  statusCell.className = "status status-running";
+  const result = await runJudgeForInput(langId, t.input || "");
+  if (!result) return;
 
-  const judge = await runJudgeForInput(langId, t.input || "");
-
-  const rawStdout = judge.stdout || "";
-  const stderr = judge.stderr || "";
-  const compileOutput = judge.compile_output || "";
-
-  const actual = rawStdout.trim();
+  const stdout = (result.stdout || "").trim();
   const expected = (t.expected || "").trim();
+  const isPass = stdout === expected;
 
-  let displayOutput = "";
-  if (rawStdout) displayOutput += rawStdout;
-  if (stderr) displayOutput += (displayOutput ? "\n" : "") + "[stderr]\n" + stderr;
-  if (compileOutput) displayOutput += (displayOutput ? "\n" : "") + "[compile]\n" + compileOutput;
-  if (!displayOutput) displayOutput = "(no output)";
-
-  const isPass = actual === expected;
-
-  if (isPass) {
-    statusCell.textContent = "Pass";
-    statusCell.className = "status status-pass";
-    challengeStatusMsg.textContent = `✅ Test ${testIndex + 1} passed.`;
-  } else {
-    statusCell.textContent = "Fail";
-    statusCell.className = "status status-fail";
-    challengeStatusMsg.textContent = `❌ Test ${testIndex + 1} failed.`;
+  const row = testcaseTable ? testcaseTable.querySelectorAll("tr")[testIndex] : null;
+  if (row) {
+    const tdStatus = row.querySelector(".status");
+    if (tdStatus) {
+      tdStatus.textContent = isPass ? "Pass" : "Fail";
+      tdStatus.className = "status " + (isPass ? "status-pass" : "status-fail");
+    }
   }
-
-  const timeMs =
-    judge.time != null ? Math.round(parseFloat(judge.time) * 1000) : undefined;
-  const memoryKb = judge.memory != null ? judge.memory : undefined;
 
   renderTestResults(
     [
       {
         index: testIndex,
-        input: t.input || "",
+        input: t.input,
         expected,
-        displayOutput,
+        stdout,
         isPass,
-        timeMs,
-        memoryKb
+        time: result.time,
+        memory: result.memory
       }
     ],
     {
       totalTests: 1,
       passedCount: isPass ? 1 : 0,
-      failedFirst: false,
       singleMode: true
     }
   );
 }
 
 /* ==============================
-   UNLOCK NEXT (PROGRESS)
+   EVENT LISTENERS
    ============================== */
-function unlockNext() {
-  const progress = getProgress(currentLanguage);
-  const level = challengeData.levels[currentLevelIndex];
-  const totalChallenges = level.challenges.length;
 
-  if (progress.levels[currentLevelIndex] < currentChallengeIndex + 1) {
-    progress.levels[currentLevelIndex] = currentChallengeIndex + 1;
-    saveProgress(currentLanguage, progress);
-  }
+// Editor buttons
+if (runCodeBtn) {
+  runCodeBtn.addEventListener("click", runCode);
+}
+if (testCodeBtn) {
+  testCodeBtn.addEventListener("click", () => {
+    runTests();
+  });
+}
+if (resetStarterBtn) {
+  resetStarterBtn.addEventListener("click", () => {
+    const level = challengeData.levels[currentLevelIndex];
+    const rawChallenge = level.challenges[currentChallengeIndex];
+    const challenge = normalizeChallengeObject(
+      rawChallenge,
+      currentChallengeIndex,
+      level.type
+    );
 
-  nextChallengeBtn.disabled =
-    progress.levels[currentLevelIndex] <= currentChallengeIndex;
+    const key = getUserScopedKey(
+      `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`
+    );
+    localStorage.removeItem(key);
 
-  if (progress.levels[currentLevelIndex] === totalChallenges) {
-    updateCourseSummaryForCurrentLanguage();
-  }
-
-  // Do NOT reload the challenge screen here,
-  // so the user still sees the latest test statuses & outputs.
+    if (codeEditor) {
+      codeEditor.value = challenge.starterCode || "";
+    }
+  });
+}
+if (clearCodeBtn) {
+  clearCodeBtn.addEventListener("click", () => {
+    if (codeEditor) codeEditor.value = "";
+    if (currentLanguage !== null) {
+      const key = getUserScopedKey(
+        `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`
+      );
+      localStorage.setItem(key, "");
+    }
+  });
 }
 
-/* ==============================
-   BUTTON EVENTS
-   ============================== */
-// AUTO SAVE code on typing (per user)
-codeEditor.addEventListener("input", () => {
-  if (currentLanguage !== null) {
-    const key = getUserScopedKey(
-      `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`
-    );
-    localStorage.setItem(key, codeEditor.value);
-  }
-});
+// Navigation within challenges
+if (prevChallengeBtn) {
+  prevChallengeBtn.addEventListener("click", () => {
+    if (currentChallengeIndex > 0) {
+      openChallenge(currentLevelIndex, currentChallengeIndex - 1, false);
+    }
+  });
+}
 
-runCodeBtn.addEventListener("click", runCode);
-testCodeBtn.addEventListener("click", testCode);
+if (nextChallengeBtn) {
+  nextChallengeBtn.addEventListener("click", () => {
+    const level = challengeData.levels[currentLevelIndex];
+    const totalChallenges = level.challenges.length;
+    const progress = getProgress(currentLanguage);
 
-resetStarterBtn.addEventListener("click", () => {
-  const level = challengeData.levels[currentLevelIndex];
-  const challenge = level.challenges[currentChallengeIndex];
-
-  const key = getUserScopedKey(
-    `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`
-  );
-  localStorage.removeItem(key);
-
-  codeEditor.value = challenge.starterCode || "";
-});
-
-clearCodeBtn.addEventListener("click", () => {
-  codeEditor.value = "";
-  if (currentLanguage !== null) {
-    const key = getUserScopedKey(
-      `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`
-    );
-    localStorage.setItem(key, "");
-  }
-});
-
-prevChallengeBtn.addEventListener("click", () => {
-  if (currentChallengeIndex > 0) {
-    openChallenge(currentLevelIndex, currentChallengeIndex - 1, false);
-  }
-});
-
-nextChallengeBtn.addEventListener("click", () => {
-  const level = challengeData.levels[currentLevelIndex];
-  const totalChallenges = level.challenges.length;
-  const progress = getProgress(currentLanguage);
-
-  if (progress.levels[currentLevelIndex] >= currentChallengeIndex + 1) {
-    if (currentChallengeIndex < totalChallenges - 1) {
-      openChallenge(currentLevelIndex, currentChallengeIndex + 1, false);
-    } else {
-      const isLastLevel =
-        currentLevelIndex === challengeData.levels.length - 1;
-
-      if (isLastLevel) {
-        challengeStatusMsg.textContent =
-          "✅ You finished all challenges in this course!";
-        nextChallengeBtn.disabled = true;
+    if (progress.levels[currentLevelIndex] >= currentChallengeIndex + 1) {
+      if (currentChallengeIndex < totalChallenges - 1) {
+        openChallenge(currentLevelIndex, currentChallengeIndex + 1, false);
       } else {
-        if (progress.levels[currentLevelIndex] === totalChallenges) {
-          const nextLevelIndex = currentLevelIndex + 1;
-          openLevelIntro(nextLevelIndex);
+        const isLastLevel =
+          currentLevelIndex === challengeData.levels.length - 1;
+
+        if (isLastLevel) {
+          if (challengeStatusMsg) {
+            challengeStatusMsg.textContent =
+              "✅ You finished all challenges in this course!";
+          }
+          nextChallengeBtn.disabled = true;
         } else {
-          challengeStatusMsg.textContent =
-            "Complete all challenges in this level to unlock the next level.";
+          if (progress.levels[currentLevelIndex] === totalChallenges) {
+            const nextLevelIndex = currentLevelIndex + 1;
+            openLevelIntro(nextLevelIndex);
+          } else {
+            if (challengeStatusMsg) {
+              challengeStatusMsg.textContent =
+                "Complete all challenges in this level to unlock the next level.";
+            }
+          }
         }
       }
     }
-  }
-});
+  });
+}
 
 // From Level Intro → first challenge
-startPracticingBtn.addEventListener("click", () => {
-  openChallenge(currentLevelIndex, 0);
-});
+if (startPracticingBtn) {
+  startPracticingBtn.addEventListener("click", () => {
+    openChallenge(currentLevelIndex, 0);
+  });
+}
 
 /* Back buttons (use browser history) */
-backToHome.addEventListener("click", () => history.back());
-backToLevels.addEventListener("click", () => history.back());
-backToLevelsFromIntro.addEventListener("click", () => history.back());
+if (backToHome) {
+  backToHome.addEventListener("click", () => history.back());
+}
+if (backToLevels) {
+  backToLevels.addEventListener("click", () => history.back());
+}
+if (backToLevelsFromIntro) {
+  backToLevelsFromIntro.addEventListener("click", () => history.back());
+}
 
 /* AUTH UI EVENTS */
-authToggleMode.addEventListener("click", () => {
-  authMode = authMode === "login" ? "signup" : "login";
-  updateAuthModeUI();
-});
+if (authToggleMode) {
+  authToggleMode.addEventListener("click", () => {
+    authMode = authMode === "login" ? "signup" : "login";
+    updateAuthModeUI();
+  });
+}
 
-authSubmitBtn.addEventListener("click", handleAuthSubmit);
+if (authSubmitBtn) {
+  authSubmitBtn.addEventListener("click", handleAuthSubmit);
+}
 
-authPassword.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    handleAuthSubmit();
-  }
-});
+if (authPassword) {
+  authPassword.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      handleAuthSubmit();
+    }
+  });
+}
 
 /* PROFILE MENU EVENTS */
-profileButton.addEventListener("click", () => {
-  profileMenu.classList.toggle("open");
-});
+if (profileButton && profileMenu) {
+  profileButton.addEventListener("click", () => {
+    profileMenu.classList.toggle("open");
+  });
 
-document.addEventListener("click", (e) => {
-  if (
-    !profileMenu.contains(e.target) &&
-    !profileButton.contains(e.target)
-  ) {
-    profileMenu.classList.remove("open");
-  }
-});
-
-switchUserBtn.addEventListener("click", () => {
-  profileMenu.classList.remove("open");
-  localStorage.removeItem(CURRENT_USER_KEY);
-  updateUserUI();
-  showAuth(true);
-});
-
-logoutBtn.addEventListener("click", () => {
-  profileMenu.classList.remove("open");
-  localStorage.removeItem(CURRENT_USER_KEY);
-  updateUserUI();
-  showAuth(true);
-});
-
-/* Handle browser / Android back */
-window.addEventListener("popstate", (event) => {
-  const state = event.state;
-
-  if (!state) {
-    const user = getCurrentUser();
-    if (user) {
-      showHome(false);
-    } else {
-      showAuth(false);
+  document.addEventListener("click", (e) => {
+    if (
+      !profileMenu.contains(e.target) &&
+      !profileButton.contains(e.target)
+    ) {
+      profileMenu.classList.remove("open");
     }
-  } else if (state.page === "auth") {
-    showAuth(false);
-  } else if (state.page === "home") {
-    showHome(false);
-  } else if (state.page === "levels") {
-    currentLanguage = state.lang;
-    openLevels(state.lang, false);
-  } else if (state.page === "level-intro") {
-    currentLanguage = state.lang;
-    openLevels(state.lang, false).then(() => {
-      openLevelIntro(state.levelIdx, false);
-    });
-  } else if (state.page === "challenge") {
-    currentLanguage = state.lang;
-    openLevels(state.lang, false).then(() => {
-      openChallenge(state.levelIdx, state.challengeIdx, false);
-    });
-  }
-});
+  });
+}
 
-/* Initial state */
+if (switchUserBtn) {
+  switchUserBtn.addEventListener("click", () => {
+    profileMenu && profileMenu.classList.remove("open");
+    localStorage.removeItem(CURRENT_USER_KEY);
+    updateUserUI();
+    showAuth(true);
+  });
+}
+
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", () => {
+    profileMenu && profileMenu.classList.remove("open");
+    localStorage.removeItem(CURRENT_USER_KEY);
+    updateUserUI();
+    showAuth(true);
+  });
+}
+
+/* Handle browser / Android back (only meaningful on main app page) */
+if (typeof window !== "undefined") {
+  window.addEventListener("popstate", (event) => {
+    if (!isMainAppPage) return; // login page: browser handles navigation itself
+
+    const state = event.state;
+
+    if (!state) {
+      const user = getCurrentUser();
+      if (user) {
+        showHome(false);
+      } else {
+        showAuth(false);
+      }
+    } else if (state.page === "auth") {
+      showAuth(false);
+    } else if (state.page === "home") {
+      showHome(false);
+    } else if (state.page === "levels") {
+      currentLanguage = state.lang;
+      openLevels(state.lang, false);
+    } else if (state.page === "level-intro") {
+      currentLanguage = state.lang;
+      openLevels(state.lang, false).then(() => {
+        openLevelIntro(state.levelIdx, false);
+      });
+    } else if (state.page === "challenge") {
+      currentLanguage = state.lang;
+      openLevels(state.lang, false).then(() => {
+        openChallenge(state.levelIdx, state.challengeIdx, false);
+      });
+    }
+  });
+}
+
+/* ==============================
+   INITIAL STATE
+   ============================== */
 updateAuthModeUI();
 updateUserUI();
 
-if (!history.state) {
-  const user = getCurrentUser();
+const existingState = history.state;
+const user = getCurrentUser();
+
+if (isMainAppPage) {
+  // On main app page (index.html)
+  if (!existingState) {
+    if (user) {
+      history.replaceState({ page: "home" }, "", "");
+      showHome(false);
+    } else {
+      // Not logged in → previously redirected to login
+      // window.location.href = "login.html";   // ⛔️ COMMENTED to stop auto redirect
+      history.replaceState({ page: "home" }, "", "");
+      showHome(false);  // ⬅ now home screen opens even without login
+    }
+  }
+
+  // Initialize course cards for current user
+  updateCourseCardsUI();
+} else if (isAuthPage) {
+  // On login.html page
   if (user) {
-    history.replaceState({ page: "home" }, "", "");
-    showHome(false);
+    window.location.href = "index.html";
   } else {
-    history.replaceState({ page: "auth" }, "", "");
+    if (!existingState) {
+      history.replaceState({ page: "auth" }, "", "");
+    }
     showAuth(false);
   }
 }
 
-// Initialize home course cards (logos, progress) for current user
-updateCourseCardsUI();

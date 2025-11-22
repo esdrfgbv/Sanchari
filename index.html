@@ -39,55 +39,14 @@
     </div>
   </header>
 
-  <!-- LOGIN / SIGNUP PAGE -->
-  <section id="auth-section" class="auth-section">
-    <div class="auth-card">
-      <h2 id="authTitle">Welcome to Sanchari 👋</h2>
-      <p id="authSubtitle" class="auth-subtitle">
-        Create a profile or log in to save your progress separately.
-      </p>
-
-      <div class="auth-field">
-        <label for="authUsername">Username</label>
-        <input
-          id="authUsername"
-          type="text"
-          placeholder="eg: ram_k"
-          autocomplete="username"
-        />
-      </div>
-
-      <div class="auth-field">
-        <label for="authPassword">Password</label>
-        <input
-          id="authPassword"
-          type="password"
-          placeholder="Enter password"
-          autocomplete="current-password"
-        />
-      </div>
-
-      <button id="authSubmitBtn" class="btn primary auth-submit">
-        Continue
-      </button>
-
-      <button id="authToggleMode" class="auth-toggle-btn" type="button">
-        New here? Create account
-      </button>
-
-      <p class="auth-note">
-        👉 All progress, code and levels are saved <b>per user</b> on this device.
-      </p>
-    </div>
-  </section>
-
   <!-- HOME PAGE -->
-  <section id="home-section" class="hidden">
+  <section id="home-section">
     <div class="home-hero">
       <h1>Learn step-by-step</h1>
       <p>Structured learning with 10 levels per language and real coding compiler.</p>
     </div>
 
+    <!-- COURSE CARDS -->
     <div class="course-card" data-lang="c">
       <div class="course-icon">C</div>
       <h2>C Programming</h2>
@@ -111,8 +70,6 @@
       <h2>DSA</h2>
       <p>Data structures & algorithms for placements.</p>
     </div>
-
-    <!-- NEW 8 COURSES (old layout) -->
 
     <div class="course-card" data-lang="cpp">
       <div class="course-icon">C++</div>
@@ -198,46 +155,45 @@
 
     <div class="challenge-layout">
       <div class="challenge-left">
-      <!-- Question list pills -->
-      <div id="questionList" class="question-list"></div>
+        <!-- Question list pills -->
+        <div id="questionList" class="question-list"></div>
 
-      <h2 id="challengeTitle"></h2>
-      <p id="challengeDescription" class="challenge-description"></p>
-      <div id="challengeConcept" class="challenge-concept"></div>
+        <h2 id="challengeTitle"></h2>
+        <p id="challengeDescription" class="challenge-description"></p>
+        <div id="challengeConcept" class="challenge-concept"></div>
 
-      <!-- NEW: MCQ container (for type = MCQ) -->
-      <div id="mcqContainer" class="mcq-container hidden"></div>
+        <!-- MCQ container (for type = MCQ) -->
+        <div id="mcqContainer" class="mcq-container hidden"></div>
 
-      <div class="io-container">
-        <h3>Input format</h3>
-        <pre id="inputFormat"></pre>
-        <h3>Output format</h3>
-        <pre id="outputFormat"></pre>
+        <div class="io-container">
+          <h3>Input format</h3>
+          <pre id="inputFormat"></pre>
+          <h3>Output format</h3>
+          <pre id="outputFormat"></pre>
 
-        <h3>Examples</h3>
-        <pre id="examplesArea"></pre>
+          <h3>Examples</h3>
+          <pre id="examplesArea"></pre>
+        </div>
+
+        <table id="testcaseTable" class="test-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Input</th>
+              <th>Expected Output</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <p id="challengeStatusMsg" class="challenge-status"></p>
+
+        <div class="nav-buttons">
+          <button id="prevChallenge" class="btn ghost">← Previous</button>
+          <button id="nextChallenge" class="btn primary">Next →</button>
+        </div>
       </div>
-
-      <table id="testcaseTable" class="test-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Input</th>
-            <th>Expected Output</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-
-      <p id="challengeStatusMsg" class="challenge-status"></p>
-
-      <div class="nav-buttons">
-        <button id="prevChallenge" class="btn ghost">← Previous</button>
-        <button id="nextChallenge" class="btn primary">Next →</button>
-      </div>
-    </div>
-
 
       <div class="challenge-right">
         <div class="language-pill" id="editorLangPill">C</div>
