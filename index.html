@@ -198,42 +198,46 @@
 
     <div class="challenge-layout">
       <div class="challenge-left">
-        <!-- Question list pills -->
-        <div id="questionList" class="question-list"></div>
+      <!-- Question list pills -->
+      <div id="questionList" class="question-list"></div>
 
-        <h2 id="challengeTitle"></h2>
-        <p id="challengeDescription" class="challenge-description"></p>
-        <div id="challengeConcept" class="challenge-concept"></div>
+      <h2 id="challengeTitle"></h2>
+      <p id="challengeDescription" class="challenge-description"></p>
+      <div id="challengeConcept" class="challenge-concept"></div>
 
-        <div class="io-container">
-          <h3>Input format</h3>
-          <pre id="inputFormat"></pre>
-          <h3>Output format</h3>
-          <pre id="outputFormat"></pre>
+      <!-- NEW: MCQ container (for type = MCQ) -->
+      <div id="mcqContainer" class="mcq-container hidden"></div>
 
-          <h3>Examples</h3>
-          <pre id="examplesArea"></pre>
-        </div>
+      <div class="io-container">
+        <h3>Input format</h3>
+        <pre id="inputFormat"></pre>
+        <h3>Output format</h3>
+        <pre id="outputFormat"></pre>
 
-        <table id="testcaseTable" class="test-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Input</th>
-              <th>Expected Output</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-
-        <p id="challengeStatusMsg" class="challenge-status"></p>
-
-        <div class="nav-buttons">
-          <button id="prevChallenge" class="btn ghost">← Previous</button>
-          <button id="nextChallenge" class="btn primary">Next →</button>
-        </div>
+        <h3>Examples</h3>
+        <pre id="examplesArea"></pre>
       </div>
+
+      <table id="testcaseTable" class="test-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Input</th>
+            <th>Expected Output</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <p id="challengeStatusMsg" class="challenge-status"></p>
+
+      <div class="nav-buttons">
+        <button id="prevChallenge" class="btn ghost">← Previous</button>
+        <button id="nextChallenge" class="btn primary">Next →</button>
+      </div>
+    </div>
+
 
       <div class="challenge-right">
         <div class="language-pill" id="editorLangPill">C</div>

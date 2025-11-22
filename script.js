@@ -47,6 +47,17 @@ const startPracticingBtn = document.getElementById("startPracticingBtn");
 /* question list container */
 const questionList = document.getElementById("questionList");
 
+/* challenge layout containers */
+const challengeLayout = document.querySelector(".challenge-layout");
+const challengeRight = document.querySelector(".challenge-right");
+
+/* NEW: MCQ container + helpers */
+const mcqContainer = document.getElementById("mcqContainer");
+const ioContainerEl = document.querySelector(".io-container");
+const navButtonsContainer = document.querySelector(".nav-buttons");
+const testTableEl = document.getElementById("testcaseTable");
+
+
 /* AUTH + PROFILE DOM */
 const authTitle = document.getElementById("authTitle");
 const authSubtitle = document.getElementById("authSubtitle");
@@ -66,7 +77,7 @@ const logoutBtn = document.getElementById("logoutBtn");
 
 // Global state
 let currentLanguage = null;
-let challengeData = null; // { levels: [ level1Json, level2Json, ... ] }
+let challengeData = null; // { levels: [ level1Json, level2Json, . ] }
 let notesCache = {}; // key: `${lang}_level${i}` -> notes json
 let currentLevelIndex = 0;
 let currentChallengeIndex = 0;
@@ -92,10 +103,10 @@ const JUDGE_LANG_MAP = {
   cpp: 54,      // C++ (G++)
   js: 63,       // JavaScript (Node)
   csharp: 51,   // C#
-  dbms: null,   // theory
-  os: null,     // theory
-  cn: null,     // theory
-  systemdesign: null, // theory
+  dbms: null,   // theory / MCQ
+  os: null,     // theory / MCQ
+  cn: null,     // theory / MCQ
+  systemdesign: null, // theory / MCQ
   htmlcss: null // front-end, no Judge
 };
 
@@ -440,6 +451,14 @@ function escapeHtml(str) {
     .replace(/'/g, "&#39;");
 }
 
+/* Default type based on course if level JSON doesn't specify */
+function getDefaultLevelTypeForLang(lang) {
+  if (lang === "dbms" || lang === "os" || lang === "systemdesign") {
+    return "MCQ";
+  }
+  return "Compiler";
+}
+
 /* ==============================
    NAVIGATION
    ============================== */
@@ -585,6 +604,97 @@ function openChallenge(levelIdx, challengeIdx, pushHistory = true) {
 }
 
 /* ==============================
+   NORMALIZERS (support both styles)
+   ============================== */
+
+// Handle level JSON that may use "questions" instead of "challenges"
+// and a per-level "type" field ("Compiler" / "MCQ").
+function normalizeLevelJson(lvl, levelIndex, lang) {
+  const normalized = { ...lvl };
+
+  // Determine type from JSON or fallback to course default
+  const rawType =
+    (normalized.type || getDefaultLevelTypeForLang(lang || currentLanguage || "")).toString();
+  const lower = rawType.toLowerCase();
+  normalized.type = lower === "mcq" ? "MCQ" : "Compiler";
+
+  // If it's using "questions" instead of "challenges" (DBMS/OS/SD style)
+  if (!Array.isArray(normalized.challenges) && Array.isArray(normalized.questions)) {
+    normalized.challenges = normalized.questions;
+  }
+
+  // Always make sure challenges is at least an empty array
+  if (!Array.isArray(normalized.challenges)) {
+    normalized.challenges = [];
+  }
+
+  return normalized;
+}
+
+// Convert each challenge to a common shape (MCQ / theory vs coding)
+function normalizeChallengeObject(raw, challengeIndex, levelType) {
+  if (!raw) {
+    return {
+      title: `Challenge ${challengeIndex + 1}`,
+      description: "",
+      inputDescription: "",
+      outputDescription: "",
+      examples: [],
+      tests: [],
+      starterCode: ""
+    };
+  }
+
+  const levelTypeLower = (levelType || "").toString().toLowerCase();
+  const levelIsMcq = levelTypeLower === "mcq";
+
+  const hasQuestionField = typeof raw.question === "string";
+  const hasOptions = raw.options && typeof raw.options === "object";
+  const looksLikeMcq = levelIsMcq || (hasQuestionField && hasOptions && !raw.starterCode && !raw.tests);
+
+  // MCQ / theory style (DBMS, OS, SD, etc.)
+  if (looksLikeMcq) {
+    const optionsText = Object.entries(raw.options || {})
+      .map(([key, val]) => `${key}. ${val}`)
+      .join("\n");
+
+    const exampleBlocks = [];
+    if (optionsText) {
+      exampleBlocks.push("Options:\n" + optionsText);
+    }
+    if (raw.answer) {
+      exampleBlocks.push("\nCorrect Answer: " + raw.answer);
+    }
+    if (raw.explanation) {
+      exampleBlocks.push("\nExplanation: " + raw.explanation);
+    }
+
+    return {
+      ...raw,
+      title: raw.title || `Question ${challengeIndex + 1}`,
+      description: raw.question,
+      inputDescription: "Read the question carefully and choose the correct option.",
+      outputDescription: "Correct option (A/B/C/D).",
+      examples: exampleBlocks,
+      tests: [], // theory only
+      starterCode: ""
+    };
+  }
+
+  // Coding style (already mostly in correct shape)
+  return {
+    ...raw,
+    title: raw.title || `Challenge ${challengeIndex + 1}`,
+    description: raw.description || "",
+    inputDescription: raw.inputDescription || "",
+    outputDescription: raw.outputDescription || "",
+    examples: raw.examples || [],
+    tests: raw.tests || [],
+    starterCode: raw.starterCode || ""
+  };
+}
+
+/* ==============================
    LOAD LEVELS UI FROM data/<lang>/levelX.json
    ============================== */
 function loadLevelsUI() {
@@ -607,11 +717,13 @@ function loadLevelsUI() {
           }
           return r.json();
         })
+        .then((json) => normalizeLevelJson(json, i - 1, currentLanguage))
         .catch((err) => {
           console.error(err);
           return {
             title: `Level ${i}`,
             concept: "Coming soon",
+            type: getDefaultLevelTypeForLang(currentLanguage),
             challenges: []
           };
         })
@@ -677,12 +789,199 @@ function loadLevelsUI() {
 }
 
 /* ==============================
+   RENDER MCQ LEVEL (type = MCQ)
+   ============================== */
+function renderMcqLevel(level) {
+  if (!mcqContainer) return;
+
+  const questions = Array.isArray(level.challenges) ? level.challenges : [];
+
+  // Mark layout as MCQ and hide compiler side
+  if (challengeLayout) {
+    challengeLayout.classList.add("mcq-mode");
+  }
+  if (challengeRight) {
+    challengeRight.classList.add("hidden");
+  }
+
+  // Hide single-question UI parts
+  if (questionList) questionList.classList.add("hidden");
+  if (ioContainerEl) ioContainerEl.classList.add("hidden");
+  if (testTableEl) testTableEl.classList.add("hidden");
+  if (navButtonsContainer) navButtonsContainer.classList.add("hidden");
+
+  // Clear MCQ container and show it
+  mcqContainer.innerHTML = "";
+  mcqContainer.classList.remove("hidden");
+
+  // Heading / info
+  challengeTitle.textContent =
+    level.title || `Level ${currentLevelIndex + 1} — MCQs`;
+  challengeDescription.textContent =
+    "Answer all questions below. Each has exactly one correct option.";
+  challengeConcept.textContent = level.concept || "";
+
+  challengeBreadcrumb.textContent = `${level.title} — MCQ Level (${questions.length} questions)`;
+
+  // Build each question card
+  questions.forEach((q, idx) => {
+    const card = document.createElement("div");
+    card.className = "mcq-question-card";
+
+    const qTitle = document.createElement("h3");
+    qTitle.className = "mcq-question-title";
+
+    const qText =
+      q.question || q.description || q.title || `Question ${idx + 1}`;
+    qTitle.textContent = `Q${idx + 1}. ${qText}`;
+
+    const optsDiv = document.createElement("div");
+    optsDiv.className = "mcq-options";
+
+    const options = q.options || {};
+    const optionKeys = Object.keys(options);
+
+    optionKeys.forEach((key) => {
+      const optId = `mcq_${currentLevelIndex}_${idx}_${key}`;
+
+      const label = document.createElement("label");
+      label.className = "mcq-option";
+
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = `mcq_${currentLevelIndex}_${idx}`;
+      input.id = optId;
+      input.value = key;
+
+      const keySpan = document.createElement("span");
+      keySpan.className = "mcq-option-key";
+      keySpan.textContent = key + ")";
+
+      const textSpan = document.createElement("span");
+      textSpan.className = "mcq-option-text";
+      textSpan.textContent = options[key];
+
+      label.appendChild(input);
+      label.appendChild(keySpan);
+      label.appendChild(textSpan);
+      optsDiv.appendChild(label);
+    });
+
+    card.appendChild(qTitle);
+    card.appendChild(optsDiv);
+    mcqContainer.appendChild(card);
+  });
+
+  // Submit button + result line
+  const submitBtn = document.createElement("button");
+  submitBtn.textContent = "Submit Answers";
+  submitBtn.className = "btn primary mcq-submit-btn";
+
+  const resultEl = document.createElement("p");
+  resultEl.className = "challenge-status";
+
+  submitBtn.addEventListener("click", () => {
+    let correctCount = 0;
+
+    questions.forEach((q, idx) => {
+      const correct = (q.answer || "").toString().trim().toUpperCase();
+      const selector = `input[name="mcq_${currentLevelIndex}_${idx}"]:checked`;
+      const chosen = document.querySelector(selector);
+      const cardEl = mcqContainer.children[idx];
+
+      cardEl.classList.remove("correct", "incorrect", "unanswered");
+
+      if (!chosen) {
+        cardEl.classList.add("unanswered");
+        return;
+      }
+
+      if (chosen.value.toUpperCase() === correct) {
+        correctCount++;
+        cardEl.classList.add("correct");
+      } else {
+        cardEl.classList.add("incorrect");
+      }
+    });
+
+    resultEl.textContent = `You got ${correctCount} / ${questions.length} correct.`;
+
+    if (correctCount === questions.length && questions.length > 0) {
+      challengeStatusMsg.textContent =
+        "✅ All answers correct! Level completed.";
+
+      // Mark this whole level as completed (all 'challenges' solved)
+      const progress = getProgress(currentLanguage);
+      progress.levels[currentLevelIndex] = questions.length;
+      saveProgress(currentLanguage, progress);
+      updateCourseSummaryForCurrentLanguage();
+    } else {
+      challengeStatusMsg.textContent =
+        "Some answers are incorrect or unanswered. Correct questions are highlighted in green.";
+    }
+  });
+
+  mcqContainer.appendChild(submitBtn);
+  mcqContainer.appendChild(resultEl);
+}
+
+/* ==============================
    LOAD CHALLENGE SCREEN
    ============================== */
 function loadChallengeScreen() {
   const level = challengeData.levels[currentLevelIndex];
-  const challenge = level.challenges[currentChallengeIndex];
-  const totalChallenges = level.challenges.length;
+  const totalChallenges = Array.isArray(level.challenges)
+    ? level.challenges.length
+    : 0;
+
+  const levelType = (level.type || getDefaultLevelTypeForLang(currentLanguage))
+    .toString()
+    .toLowerCase();
+  const isMcqLevel = levelType === "mcq";
+
+  // ----- MCQ LEVEL: show all questions with radios, no compiler -----
+  if (isMcqLevel) {
+    renderMcqLevel(level);
+
+    // Disable prev/next for MCQ mode
+    prevChallengeBtn.disabled = true;
+    nextChallengeBtn.disabled = true;
+
+    // Clear compiler output badges
+    if (outputArea) outputArea.textContent = "";
+    if (testSummaryBadge) {
+      testSummaryBadge.textContent = "–";
+      testSummaryBadge.classList.remove("all-pass");
+    }
+
+    // Status text
+    challengeStatusMsg.textContent =
+      "MCQ level — read all questions and select the correct options, then press Submit.";
+
+    return; // IMPORTANT: don't run the compiler-style code below
+  }
+
+  // ----- COMPILER LEVEL: normal behaviour (one challenge at a time) -----
+
+  // Make sure MCQ UI is hidden and normal UI is visible
+  if (mcqContainer) {
+    mcqContainer.innerHTML = "";
+    mcqContainer.classList.add("hidden");
+  }
+  if (questionList) questionList.classList.remove("hidden");
+  if (ioContainerEl) ioContainerEl.classList.remove("hidden");
+  if (testTableEl) testTableEl.classList.remove("hidden");
+  if (navButtonsContainer) navButtonsContainer.classList.remove("hidden");
+
+  if (challengeLayout) challengeLayout.classList.remove("mcq-mode");
+  if (challengeRight) challengeRight.classList.remove("hidden");
+
+  const rawChallenge = level.challenges[currentChallengeIndex];
+  const challenge = normalizeChallengeObject(
+    rawChallenge,
+    currentChallengeIndex,
+    level.type
+  );
 
   challengeBreadcrumb.textContent = `${level.title} — Challenge ${
     currentChallengeIndex + 1
@@ -718,6 +1017,7 @@ function loadChallengeScreen() {
     }
   }
 
+  // Left panel (description + IO)
   challengeTitle.textContent = challenge.title;
   challengeDescription.textContent = challenge.description || "";
   challengeConcept.textContent = level.concept || "";
@@ -726,6 +1026,7 @@ function loadChallengeScreen() {
   outputFormat.textContent = challenge.outputDescription || "";
   examplesArea.textContent = (challenge.examples || []).join("\n\n");
 
+  // Test table
   testcaseTable.innerHTML = "";
   (challenge.tests || []).forEach((t, i) => {
     const tr = document.createElement("tr");
@@ -742,7 +1043,7 @@ function loadChallengeScreen() {
     testcaseTable.appendChild(tr);
   });
 
-  // Load saved code if exists (per user)
+  // Compiler panel
   const savedKey = getUserScopedKey(
     `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`
   );
@@ -761,6 +1062,7 @@ function loadChallengeScreen() {
   nextChallengeBtn.disabled =
     progress.levels[currentLevelIndex] <= currentChallengeIndex;
 
+  // Reset status / output
   challengeStatusMsg.textContent = "";
   if (outputArea) {
     outputArea.textContent = "";
@@ -770,6 +1072,79 @@ function loadChallengeScreen() {
     testSummaryBadge.classList.remove("all-pass");
   }
 }
+
+
+  // Left panel
+  challengeTitle.textContent = challenge.title;
+  challengeDescription.textContent = challenge.description || "";
+  challengeConcept.textContent = level.concept || "";
+
+  inputFormat.textContent = challenge.inputDescription || "";
+  outputFormat.textContent = challenge.outputDescription || "";
+  examplesArea.textContent = (challenge.examples || []).join("\n\n");
+
+  // Test table (Compiler only – for MCQ it's empty anyway)
+  testcaseTable.innerHTML = "";
+  (challenge.tests || []).forEach((t, i) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${i + 1}</td>
+      <td>${(t.input || "").replace(/\n/g, "\\n")}</td>
+      <td>${(t.expected || "").replace(/\n/g, "\\n")}</td>
+      <td class="status status-notrun">Not Run</td>
+    `;
+    tr.title = "Click to run only this test case";
+    tr.addEventListener("click", () => {
+      runSingleTest(i);
+    });
+    testcaseTable.appendChild(tr);
+  });
+
+  // Compiler panel only makes sense for "Compiler" levels
+  if (!isMcqLevel) {
+    // Load saved code if exists (per user)
+    const savedKey = getUserScopedKey(
+      `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`
+    );
+    const saved = localStorage.getItem(savedKey);
+
+    if (saved && saved.trim() !== "") {
+      codeEditor.value = saved;
+    } else {
+      codeEditor.value = challenge.starterCode || "";
+    }
+
+    editorLangPill.textContent = getEditorPill(currentLanguage);
+  }
+
+  const progress = getProgress(currentLanguage);
+  prevChallengeBtn.disabled = currentChallengeIndex === 0;
+  nextChallengeBtn.disabled =
+    progress.levels[currentLevelIndex] <= currentChallengeIndex;
+
+  if (isMcqLevel) {
+    // For MCQ levels, status can guide the student instead of tests
+    challengeStatusMsg.textContent =
+      "MCQ level — read the question and select the correct option from the given choices.";
+    if (outputArea) {
+      outputArea.textContent = "";
+    }
+    if (testSummaryBadge) {
+      testSummaryBadge.textContent = "–";
+      testSummaryBadge.classList.remove("all-pass");
+    }
+  } else {
+    // Compiler levels: reset status as usual
+    challengeStatusMsg.textContent = "";
+    if (outputArea) {
+      outputArea.textContent = "";
+    }
+    if (testSummaryBadge) {
+      testSummaryBadge.textContent = "–";
+      testSummaryBadge.classList.remove("all-pass");
+    }
+  }
+
 
 /* ==============================
    RUN CODE (NO TESTS)
@@ -786,10 +1161,10 @@ async function runCode() {
   }
 
   if (outputArea) {
-    outputArea.textContent = "⏳ Running...";
+    outputArea.textContent = "⏳ Running.";
   }
   if (testSummaryBadge) {
-    testSummaryBadge.textContent = "Running...";
+    testSummaryBadge.textContent = "Running.";
     testSummaryBadge.classList.remove("all-pass");
   }
 
@@ -836,7 +1211,7 @@ async function runJudgeForInput(langId, stdinValue) {
   const payload = {
     language_id: langId,
     source_code: codeEditor.value,
-    stdin: stdinValue || ""
+    stdin: stdinValue
   };
 
   const job = await fetch(
@@ -850,82 +1225,65 @@ async function runJudgeForInput(langId, stdinValue) {
 
   let result;
   while (true) {
-    await new Promise((res) => setTimeout(res, 1200));
+    await new Promise((res) => setTimeout(res, 900));
     result = await fetch(
       `${JUDGE0_URL}/submissions/${job.token}?base64_encoded=false`
     ).then((r) => r.json());
     if (result.status.id >= 3) break;
   }
-
-  return {
-    stdout: result.stdout || "",
-    stderr: result.stderr || "",
-    compile_output: result.compile_output || "",
-    time: result.time,      // seconds, string
-    memory: result.memory   // KB, number
-  };
+  return result;
 }
 
 /* ==============================
-   RENDER TEST RESULTS (CARDS)
+   RENDER TEST RESULTS
    ============================== */
-function renderTestResults(results, options = {}) {
+function renderTestResults(results, summary) {
+  // summary: { totalTests, passedCount, failedFirst, singleMode }
+  const { totalTests, passedCount, singleMode } = summary;
+
   if (!outputArea) return;
-
-  const totalTests = options.totalTests || results.length;
-  const passedCount =
-    typeof options.passedCount === "number"
-      ? options.passedCount
-      : results.filter((r) => r.isPass).length;
-  const failedFirst = options.failedFirst || false;
-  const singleMode = options.singleMode || false;
-
-  // summary badge
-  if (testSummaryBadge) {
-    if (totalTests > 0) {
-      testSummaryBadge.textContent = `${passedCount}/${totalTests} tests passed`;
-    } else {
-      testSummaryBadge.textContent = "No tests";
-    }
-    if (totalTests > 0 && passedCount === totalTests) {
-      testSummaryBadge.classList.add("all-pass");
-    } else {
-      testSummaryBadge.classList.remove("all-pass");
-    }
-  }
 
   outputArea.innerHTML = "";
 
-  let ordered = results.slice();
-  if (failedFirst && results.some((r) => !r.isPass)) {
-    ordered.sort((a, b) => Number(a.isPass) - Number(b.isPass)); // fails first
+  // summary badge
+  if (testSummaryBadge) {
+    if (passedCount === totalTests) {
+      testSummaryBadge.textContent = "All Pass ✅";
+      testSummaryBadge.classList.add("all-pass");
+    } else {
+      testSummaryBadge.textContent = `${passedCount}/${totalTests} Passed`;
+      testSummaryBadge.classList.remove("all-pass");
+    }
   }
 
   const list = document.createElement("div");
   list.className = "test-result-list";
 
-  if (failedFirst && results.some((r) => !r.isPass)) {
-    const info = document.createElement("p");
-    info.style.fontSize = "12px";
-    info.style.marginBottom = "4px";
-    info.textContent = "Failed test cases are shown first below.";
-    outputArea.appendChild(info);
-  }
-
-  ordered.forEach((res) => {
+  results.forEach((res) => {
     const card = document.createElement("div");
-    card.className = "test-result-card " + (res.isPass ? "pass" : "fail");
+    card.className =
+      "test-result-card " + (res.isPass ? "pass" : "fail");
 
-    const header = document.createElement("button");
+    const header = document.createElement("div");
     header.className = "test-result-header";
 
+    const left = document.createElement("div");
+    left.className = "test-header-left";
     const title = document.createElement("span");
-    title.className = "test-result-header-title";
-    title.textContent = `Test ${res.index + 1} — ${res.isPass ? "Pass ✅" : "Fail ❌"}`;
-    header.appendChild(title);
+    title.className = "test-title";
+    title.textContent = `Test #${res.index + 1}`;
+    left.appendChild(title);
+
+    const status = document.createElement("span");
+    status.className =
+      "test-status " + (res.isPass ? "status-pass" : "status-fail");
+    status.textContent = res.isPass ? "Pass" : "Fail";
+    left.appendChild(status);
+
+    header.appendChild(left);
 
     const right = document.createElement("div");
-    right.className = "test-result-header-right";
+    right.className = "test-header-right";
 
     if (typeof res.timeMs === "number") {
       const chipTime = document.createElement("span");
@@ -1008,12 +1366,12 @@ async function testCode() {
   }
 
   let passed = 0;
-  challengeStatusMsg.textContent = "Running all tests...";
+  challengeStatusMsg.textContent = "Running all tests.";
   if (outputArea) {
-    outputArea.textContent = "Running tests on all cases...";
+    outputArea.textContent = "Running tests on all cases.";
   }
   if (testSummaryBadge) {
-    testSummaryBadge.textContent = "Running...";
+    testSummaryBadge.textContent = "Running.";
     testSummaryBadge.classList.remove("all-pass");
   }
 
@@ -1023,7 +1381,7 @@ async function testCode() {
     const t = tests[i];
 
     const statusCell = rows[i].querySelector(".status");
-    statusCell.textContent = "Running...";
+    statusCell.textContent = "Running.";
     statusCell.className = "status status-running";
 
     const judge = await runJudgeForInput(langId, t.input || "");
@@ -1042,15 +1400,11 @@ async function testCode() {
     if (!displayOutput) displayOutput = "(no output)";
 
     const isPass = actual === expected;
+    if (isPass) passed++;
 
-    if (isPass) {
-      passed++;
-      statusCell.textContent = "Pass";
-      statusCell.className = "status status-pass";
-    } else {
-      statusCell.textContent = "Fail";
-      statusCell.className = "status status-fail";
-    }
+    statusCell.textContent = isPass ? "Pass" : "Fail";
+    statusCell.className =
+      "status " + (isPass ? "status-pass" : "status-fail");
 
     const timeMs =
       judge.time != null ? Math.round(parseFloat(judge.time) * 1000) : undefined;
@@ -1067,24 +1421,25 @@ async function testCode() {
     });
   }
 
+  challengeStatusMsg.textContent =
+    passed === tests.length
+      ? "✅ All test cases passed!"
+      : `Some tests failed. Passed ${passed} / ${tests.length}.`;
+
   renderTestResults(results, {
     totalTests: tests.length,
     passedCount: passed,
-    failedFirst: true,
+    failedFirst: passed !== tests.length,
     singleMode: false
   });
 
   if (passed === tests.length) {
-    challengeStatusMsg.textContent = "🎉 Challenge Passed!";
     unlockNext();
-  } else {
-    challengeStatusMsg.textContent =
-      "❌ One or more test cases failed. Expand the red cards on the right to see details.";
   }
 }
 
 /* ==============================
-   RUN ONLY ONE TEST (ROW CLICK)
+   RUN A SINGLE TEST
    ============================== */
 async function runSingleTest(testIndex) {
   const langId = JUDGE_LANG_MAP[currentLanguage];
@@ -1105,16 +1460,16 @@ async function runSingleTest(testIndex) {
   const row = rows[testIndex];
   const statusCell = row.querySelector(".status");
 
-  challengeStatusMsg.textContent = `Running only Test ${testIndex + 1}...`;
+  challengeStatusMsg.textContent = `Running only Test ${testIndex + 1}.`;
   if (outputArea) {
-    outputArea.textContent = `Running Test ${testIndex + 1}...`;
+    outputArea.textContent = `Running Test ${testIndex + 1}.`;
   }
   if (testSummaryBadge) {
     testSummaryBadge.textContent = `Test ${testIndex + 1}`;
     testSummaryBadge.classList.remove("all-pass");
   }
 
-  statusCell.textContent = "Running...";
+  statusCell.textContent = "Running.";
   statusCell.className = "status status-running";
 
   const judge = await runJudgeForInput(langId, t.input || "");

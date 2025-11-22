@@ -1,4 +1,5 @@
 {
+  "type":"Compiler",
   "title": "Python Level 1 — Input, Output & Basic Arithmetic",
   "concept": "Practice reading input, printing output, and doing basic integer arithmetic in Python.",
   "challenges": [
