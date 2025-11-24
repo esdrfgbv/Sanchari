@@ -1,18 +1,140 @@
 {
-    "level": 10,
-  "type" : "Compiler",
+  "level": 10,
+  "type": "Compiler",
   "title": "DSA Level 10 — Dynamic Programming & Advanced",
   "concept": "Classical DP patterns: knapsack, LIS, LCS, DP on grids, bitmask DP.",
   "challenges": [
-    { "id": 1, "title": "0/1 Knapsack", "description": "Max value with weight ≤ W", "starterCode": "", "tests": [] },
-    { "id": 2, "title": "Unbounded Knapsack", "description": "Infinite repetitions allowed", "starterCode": "", "tests": [] },
-    { "id": 3, "title": "Longest Increasing Subsequence", "description": "LIS length", "starterCode": "", "tests": [] },
-    { "id": 4, "title": "Longest Common Subsequence", "description": "Print LCS length", "starterCode": "", "tests": [] },
-    { "id": 5, "title": "Minimum Edit Distance", "description": "Convert word A to B", "starterCode": "", "tests": [] },
-    { "id": 6, "title": "Coin Change", "description": "Count ways to form amount", "starterCode": "", "tests": [] },
-    { "id": 7, "title": "Matrix Chain Multiplication", "description": "Parenthesization DP", "starterCode": "", "tests": [] },
-    { "id": 8, "title": "Subset Sum DP", "description": "Check if subset gives sum", "starterCode": "", "tests": [] },
-    { "id": 9, "title": "Rod Cutting", "description": "Max revenue", "starterCode": "", "tests": [] },
-    { "id": 10, "title": "Travelling Salesman Problem (Bitmask DP)", "description": "Minimum Hamiltonian cycle cost", "starterCode": "", "tests": [] }
+    {
+      "id": 1,
+      "title": "0/1 Knapsack",
+      "description": "Given N items with values and weights and a capacity W, find the maximum total value you can get by choosing each item at most once.",
+      "inputDescription": "First line: N W. Next N lines: value[i] weight[i].",
+      "outputDescription": "Single integer: maximum value <= W.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, W;\n    return 0;\n}",
+      "tests": [
+        {
+          "input": "3 50\n60 10\n100 20\n120 30",
+          "expected": "220"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Unbounded Knapsack",
+      "description": "Same as Knapsack, but you can take an unlimited number of each item.",
+      "inputDescription": "First line: N W. Next N lines: value[i] weight[i].",
+      "outputDescription": "Single integer: maximum value.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, W;\n    return 0;\n}",
+      "tests": [
+        {
+          "input": "2 5\n10 2\n30 4",
+          "expected": "50"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Longest Increasing Subsequence",
+      "description": "Given an array, find the length of the longest strictly increasing subsequence.",
+      "inputDescription": "First line: N. Second line: N integers.",
+      "outputDescription": "Single integer: LIS length.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "8\n10 9 2 5 3 7 101 18", "expected": "4" }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Longest Common Subsequence",
+      "description": "Given two strings A and B, compute the length of their Longest Common Subsequence (LCS).",
+      "inputDescription": "First line: A. Second line: B.",
+      "outputDescription": "Single integer: LCS length.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    char A[1005], B[1005];\n    return 0;\n}",
+      "tests": [
+        { "input": "abcde\nace", "expected": "3" },
+        { "input": "abc\ndef", "expected": "0" }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Minimum Edit Distance",
+      "description": "Compute the minimum number of insertions, deletions, or substitutions required to convert string A into string B.",
+      "inputDescription": "First line: A. Second line: B.",
+      "outputDescription": "Single integer: minimum edit distance.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    char A[1005], B[1005];\n    return 0;\n}",
+      "tests": [
+        { "input": "horse\nros", "expected": "3" },
+        { "input": "intention\nexecution", "expected": "5" }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Coin Change (Count Ways)",
+      "description": "Given coins of different denominations and a total amount, count how many ways you can make that amount (order of coins does not matter).",
+      "inputDescription": "First line: N amount. Second line: N coin values.",
+      "outputDescription": "Single integer: number of ways.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, amount;\n    return 0;\n}",
+      "tests": [
+        { "input": "3 4\n1 2 3", "expected": "4" }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Matrix Chain Multiplication",
+      "description": "Given dimensions of matrices, find the minimum number of scalar multiplications needed to multiply the chain.",
+      "inputDescription": "First line: N (number of matrices). Second line: N+1 integers p0 p1 ... pN, where matrix i is p[i-1] x p[i].",
+      "outputDescription": "Single integer: minimum cost.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "3\n10 20 30 40", "expected": "18000" }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Subset Sum DP",
+      "description": "Given a set of integers and a target sum S, determine if there exists a subset with sum exactly S.",
+      "inputDescription": "First line: N S. Second line: N integers.",
+      "outputDescription": "\"YES\" if such subset exists, otherwise \"NO\".",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, S;\n    return 0;\n}",
+      "tests": [
+        { "input": "5 11\n2 3 7 8 10", "expected": "YES" },
+        { "input": "4 9\n3 34 4 12", "expected": "NO" }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Rod Cutting",
+      "description": "Given a rod of length N and an array price[] where price[i] is price of length i+1, determine maximum obtainable value by cutting up the rod.",
+      "inputDescription": "First line: N. Second line: N integers, price[1..N].",
+      "outputDescription": "Single integer: maximum revenue.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "4\n1 5 8 9", "expected": "10" }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Travelling Salesman Problem (Bitmask DP)",
+      "description": "Given a complete weighted graph on N nodes (0 to N-1), find the minimum cost Hamiltonian cycle starting and ending at node 0.",
+      "inputDescription": "First line: N. Next N lines: N integers each (adjacency matrix, cost[i][j]).",
+      "outputDescription": "Single integer: minimum tour cost.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        {
+          "input": "4\n0 10 15 20\n10 0 35 25\n15 35 0 30\n20 25 30 0",
+          "expected": "80"
+        }
+      ]
+    }
   ]
 }

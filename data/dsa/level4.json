@@ -1,6 +1,6 @@
 {
-    "level": 4,
-  "type" : "Compiler",
+  "level": 4,
+  "type": "Compiler",
   "title": "DSA Level 4 — Linked Lists",
   "concept": "Singly and doubly linked list creation, insertion, deletion, searching and reversing.",
   "challenges": [
@@ -8,131 +8,151 @@
       "id": 1,
       "title": "Search Value in Singly Linked List",
       "description": "Given a singly linked list and a value X, determine whether X exists in the list. Print 1 if found, otherwise 0.",
-      "inputDescription": "First line: integer N. Second line: N integers representing list nodes. Third line: X.",
-      "outputDescription": "1 if X exists, otherwise 0.",
+      "inputDescription": "First line: N. Second line: N integers (list values). Third line: X.",
+      "outputDescription": "Print 1 if X is present, otherwise 0.",
       "examples": [
-        "Input:\n5\n1 4 7 9 3\n7\n\nOutput:\n1",
-        "Input:\n5\n1 4 7 9 3\n5\n\nOutput:\n0"
+        "Input:\n5\n1 4 7 9 3\n7\n\nOutput:\n1"
       ],
-      "constraints": "0 ≤ N ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, X;\n    // TODO: read N, list values and X; check if any value equals X\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n1 4 7 9 3\n7", "expected": "1" },
+        { "input": "5\n1 4 7 9 3\n5", "expected": "0" }
+      ]
     },
     {
       "id": 2,
       "title": "Insert at Beginning",
-      "description": "Given a linked list and a value X, insert X at the beginning of the list and print the updated list.",
+      "description": "Given a linked list and a value X, insert X at the beginning and print the updated list.",
       "inputDescription": "First line: N. Second line: N integers. Third line: X.",
-      "outputDescription": "List after inserting X at the beginning.",
+      "outputDescription": "N+1 integers: list after inserting X at the beginning.",
       "examples": [
         "Input:\n3\n2 3 4\n1\n\nOutput:\n1 2 3 4"
       ],
-      "constraints": "0 ≤ N ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, X;\n    // TODO: read N, list, X and print X first, then the original list\n    return 0;\n}",
+      "tests": [
+        { "input": "3\n2 3 4\n1", "expected": "1 2 3 4" },
+        { "input": "0\n\n5", "expected": "5" }
+      ]
     },
     {
       "id": 3,
       "title": "Insert at End",
-      "description": "Insert a new value X at the end of the linked list and print the updated list.",
+      "description": "Insert X at the end of the linked list and print the updated list.",
       "inputDescription": "First line: N. Second line: N integers. Third line: X.",
-      "outputDescription": "List after inserting at the end.",
+      "outputDescription": "N+1 integers: list after inserting X at the end.",
       "examples": [
         "Input:\n3\n1 2 3\n5\n\nOutput:\n1 2 3 5"
       ],
-      "constraints": "0 ≤ N ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, X;\n    // TODO: read N, list, X and print list, then X\n    return 0;\n}",
+      "tests": [
+        { "input": "3\n1 2 3\n5", "expected": "1 2 3 5" },
+        { "input": "0\n\n10", "expected": "10" }
+      ]
     },
     {
       "id": 4,
       "title": "Insert at Position",
       "description": "Insert X at index K (0-based). If K > N, print \"Invalid\".",
       "inputDescription": "First line: N. Second line: N integers. Third line: K X.",
-      "outputDescription": "List after insertion or \"Invalid\".",
+      "outputDescription": "Updated list after insertion, or \"Invalid\".",
       "examples": [
         "Input:\n4\n10 20 30 40\n2 25\n\nOutput:\n10 20 25 30 40"
       ],
-      "constraints": "0 ≤ N ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, K, X;\n    // TODO: if K > N print Invalid; else print list inserting X at position K\n    return 0;\n}",
+      "tests": [
+        { "input": "4\n10 20 30 40\n2 25", "expected": "10 20 25 30 40" },
+        { "input": "3\n1 2 3\n5 10", "expected": "Invalid" }
+      ]
     },
     {
       "id": 5,
       "title": "Delete First Occurrence",
-      "description": "Delete the first occurrence of X from the linked list. If X does not exist, print the list unchanged.",
+      "description": "Delete the first occurrence of X from the list. If X is not present, print the list unchanged.",
       "inputDescription": "First line: N. Second line: N integers. Third line: X.",
-      "outputDescription": "Updated list after deletion.",
+      "outputDescription": "List after deletion, space-separated. If empty, print nothing.",
       "examples": [
         "Input:\n5\n1 2 3 2 4\n2\n\nOutput:\n1 3 2 4"
       ],
-      "constraints": "0 ≤ N ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, X;\n    // TODO: skip printing the first occurrence of X\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n1 2 3 2 4\n2", "expected": "1 3 2 4" },
+        { "input": "3\n1 2 3\n5", "expected": "1 2 3" }
+      ]
     },
     {
       "id": 6,
       "title": "Delete at Position",
       "description": "Delete the node at index K (0-based). If K ≥ N, print \"Invalid\".",
       "inputDescription": "First line: N. Second line: N integers. Third line: K.",
-      "outputDescription": "Updated list or \"Invalid\".",
+      "outputDescription": "Updated list after deletion, or \"Invalid\".",
       "examples": [
         "Input:\n4\n5 6 7 8\n1\n\nOutput:\n5 7 8"
       ],
-      "constraints": "0 ≤ N ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, K;\n    // TODO: check K range; if valid skip K-th element while printing\n    return 0;\n}",
+      "tests": [
+        { "input": "4\n5 6 7 8\n1", "expected": "5 7 8" },
+        { "input": "2\n10 20\n5", "expected": "Invalid" }
+      ]
     },
     {
       "id": 7,
       "title": "Reverse Linked List",
       "description": "Reverse a singly linked list and print the result.",
       "inputDescription": "First line: N. Second line: N integers.",
-      "outputDescription": "Reversed list.",
+      "outputDescription": "Reversed list, space-separated.",
       "examples": [
         "Input:\n4\n1 2 3 4\n\nOutput:\n4 3 2 1"
       ],
-      "constraints": "0 ≤ N ≤ 10^5 (in-place expected)",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    // TODO: read list into array and print in reverse\n    return 0;\n}",
+      "tests": [
+        { "input": "4\n1 2 3 4", "expected": "4 3 2 1" },
+        { "input": "1\n99", "expected": "99" }
+      ]
     },
     {
       "id": 8,
       "title": "Middle of Linked List",
-      "description": "Find the middle element of a singly linked list. If even length, print the second middle.",
+      "description": "Find the middle element of a singly linked list. If even length, print the second middle element.",
       "inputDescription": "First line: N. Second line: N integers.",
       "outputDescription": "Single integer: middle value.",
       "examples": [
-        "Input:\n5\n1 2 3 4 5\n\nOutput:\n3",
-        "Input:\n4\n1 2 3 4\n\nOutput:\n3"
+        "Input:\n5\n1 2 3 4 5\n\nOutput:\n3"
       ],
-      "constraints": "1 ≤ N ≤ 10^5 (fast-slow pointer expected)",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    // TODO: middle index is N/2 (0-based, second middle for even)\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n1 2 3 4 5", "expected": "3" },
+        { "input": "4\n1 2 3 4", "expected": "3" }
+      ]
     },
     {
       "id": 9,
       "title": "Detect Cycle (Floyd)",
-      "description": "Given a linked list, detect whether a cycle exists. Print \"YES\" or \"NO\".",
-      "inputDescription": "Representing input format depends on language, but assume connections can create a cycle.",
-      "outputDescription": "\"YES\" if cycle exists, else \"NO\".",
-      "examples": [],
-      "constraints": "Fast-slow pointer expected, O(1) memory",
-      "starterCode": "",
-      "tests": []
+      "description": "Given a linked list, detect whether a cycle exists. Input gives N, N node values, and pos where tail connects (-1 means no cycle). Print \"YES\" if there is a cycle, otherwise \"NO\".",
+      "inputDescription": "First line: N. Second line: N integers (values). Third line: pos (0-based index where tail connects, or -1).",
+      "outputDescription": "\"YES\" if cycle exists, otherwise \"NO\".",
+      "examples": [
+        "Input:\n3\n1 2 3\n-1\n\nOutput:\nNO"
+      ],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, pos;\n    // In a real LL, you'd build nodes and connect tail->pos.\n    // For now, focus on understanding Floyd's cycle detection.\n    return 0;\n}",
+      "tests": [
+        { "input": "3\n1 2 3\n-1", "expected": "NO" },
+        { "input": "3\n1 2 3\n1", "expected": "YES" }
+      ]
     },
     {
       "id": 10,
       "title": "Merge Two Sorted Linked Lists",
       "description": "Given two sorted linked lists, merge them into one sorted list and print the result.",
-      "inputDescription": "First list: N and N integers. Second list: M and M integers.",
-      "outputDescription": "Merged sorted list.",
+      "inputDescription": "First line: N. Second line: N integers (sorted). Third line: M. Fourth line: M integers (sorted).",
+      "outputDescription": "Merged sorted list, space-separated.",
       "examples": [
         "Input:\n3\n1 3 5\n3\n2 4 6\n\nOutput:\n1 2 3 4 5 6"
       ],
-      "constraints": "0 ≤ N, M ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, M;\n    // TODO: read two sorted arrays and merge like merge-sort merge\n    return 0;\n}",
+      "tests": [
+        { "input": "3\n1 3 5\n3\n2 4 6", "expected": "1 2 3 4 5 6" },
+        { "input": "2\n1 2\n0\n", "expected": "1 2" }
+      ]
     }
   ]
 }

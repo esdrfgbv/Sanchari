@@ -1,6 +1,6 @@
 {
-    "level": 7,
-  "type" : "Compiler",
+  "level": 7,
+  "type": "Compiler",
   "title": "DSA Level 6 — Recursion & Backtracking",
   "concept": "Recursion techniques: permutations, subsets, n-Queens, Sudoku, backtracking search.",
   "challenges": [
@@ -8,107 +8,143 @@
       "id": 1,
       "title": "Factorial Using Recursion",
       "description": "Compute n! using recursion.",
-      "inputDescription": "Integer n.",
-      "outputDescription": "Single integer: factorial value.",
+      "inputDescription": "Single integer n.",
+      "outputDescription": "n! (factorial of n).",
       "examples": [
         "Input:\n5\n\nOutput:\n120"
       ],
-      "constraints": "0 ≤ n ≤ 20",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nlong long fact(int n) {\n    // TODO: recursive factorial\n}\n\nint main() {\n    int n;\n    // read n and print fact(n)\n    return 0;\n}",
+      "tests": [
+        { "input": "0", "expected": "1" },
+        { "input": "5", "expected": "120" }
+      ]
     },
     {
       "id": 2,
       "title": "Fibonacci (Memoization)",
       "description": "Print the nth Fibonacci number using recursion with memoization.",
-      "inputDescription": "Integer n.",
-      "outputDescription": "Single integer: Fib(n).",
-      "examples": [],
-      "constraints": "0 ≤ n ≤ 10^5 (memoization required)",
-      "starterCode": "",
-      "tests": []
+      "inputDescription": "Single integer n.",
+      "outputDescription": "Fib(n).",
+      "examples": [
+        "Input:\n7\n\nOutput:\n13"
+      ],
+      "starterCode": "#include <stdio.h>\n\nlong long memo[100005];\n\nlong long fib(int n) {\n    // TODO: memoized recursion\n}\n\nint main() {\n    int n;\n    // read n and print fib(n)\n    return 0;\n}",
+      "tests": [
+        { "input": "0", "expected": "0" },
+        { "input": "7", "expected": "13" }
+      ]
     },
     {
       "id": 3,
       "title": "Generate Subsets",
       "description": "Given an array of integers, generate all subsets (power set) in lexicographic order.",
-      "inputDescription": "N and N integers.",
-      "outputDescription": "Print each subset on a new line.",
-      "examples": [],
-      "constraints": "N ≤ 15",
-      "starterCode": "",
-      "tests": []
+      "inputDescription": "First line: N. Second line: N integers.",
+      "outputDescription": "Each subset on a new line, elements space-separated. Print empty subset as an empty line.",
+      "examples": [
+        "Input:\n2\n1 2\n\nOutput:\n\n1\n2\n1 2"
+      ],
+      "starterCode": "#include <stdio.h>\n\nint arr[20];\nint chosen[20];\n\nvoid gen(int idx, int N) {\n    // TODO: recursive include/exclude\n}\n\nint main() {\n    int N;\n    // read N and array, sort if needed, and call gen\n    return 0;\n}",
+      "tests": [
+        { "input": "1\n5", "expected": "\n5" }
+      ]
     },
     {
       "id": 4,
       "title": "Generate Permutations",
       "description": "Given an array of distinct integers, print all permutations in lexicographic order.",
-      "inputDescription": "N and N integers.",
-      "outputDescription": "Each permutation on a new line.",
-      "constraints": "N ≤ 10",
-      "starterCode": "",
-      "tests": []
+      "inputDescription": "First line: N. Second line: N distinct integers.",
+      "outputDescription": "Each permutation on a new line, elements space-separated.",
+      "examples": [
+        "Input:\n3\n1 2 3\n\nOutput:\n1 2 3\n1 3 2\n2 1 3\n2 3 1\n3 1 2\n3 2 1"
+      ],
+      "starterCode": "#include <stdio.h>\n\nint arr[12], used[12], perm[12];\n\nvoid gen(int idx, int N) {\n    // TODO: generate permutations recursively\n}\n\nint main() {\n    int N;\n    // read N, array, maybe sort, then call gen\n    return 0;\n}",
+      "tests": [
+        { "input": "2\n1 2", "expected": "1 2\n2 1" }
+      ]
     },
     {
       "id": 5,
       "title": "N-Queens",
-      "description": "Place N queens on an NxN chessboard. Print total number of valid arrangements.",
-      "inputDescription": "Integer N.",
-      "outputDescription": "Integer: count of valid configurations.",
-      "constraints": "1 ≤ N ≤ 12",
-      "starterCode": "",
-      "tests": []
+      "description": "Place N queens on an N×N chessboard such that no two queens attack each other. Print the number of valid arrangements.",
+      "inputDescription": "Single integer N.",
+      "outputDescription": "Single integer: count of valid configurations.",
+      "examples": [
+        "Input:\n4\n\nOutput:\n2"
+      ],
+      "starterCode": "#include <stdio.h>\n\nint N;\nint col[20], diag1[40], diag2[40];\nlong long solutions = 0;\n\nvoid solve(int row) {\n    // TODO: backtracking for N-Queens\n}\n\nint main() {\n    // read N, call solve(0), print solutions\n    return 0;\n}",
+      "tests": [
+        { "input": "1", "expected": "1" },
+        { "input": "4", "expected": "2" }
+      ]
     },
     {
       "id": 6,
       "title": "Rat in a Maze",
-      "description": "Given an N×N maze of 0s and 1s, count the paths from (0,0) to (N-1,N-1) moving only right or down.",
-      "constraints": "All paths must stay inside maze and only go through 1s.",
-      "inputDescription": "N and N×N grid.",
+      "description": "Given an N×N maze of 0s and 1s, count the paths from (0,0) to (N-1,N-1) moving only right or down through cells with value 1.",
+      "inputDescription": "First line: N. Next N lines: N integers (0 or 1).",
       "outputDescription": "Single integer: number of possible paths.",
-      "starterCode": "",
-      "tests": []
+      "examples": [
+        "Input:\n2\n1 1\n1 1\n\nOutput:\n2"
+      ],
+      "starterCode": "#include <stdio.h>\n\nint N;\nint grid[20][20];\n\nlong long dfs(int r, int c) {\n    // TODO: recursion with bounds and cell == 1\n}\n\nint main() {\n    // read N and grid, print dfs(0,0)\n    return 0;\n}",
+      "tests": [
+        { "input": "2\n1 1\n1 1", "expected": "2" },
+        { "input": "2\n1 0\n0 1", "expected": "0" }
+      ]
     },
     {
       "id": 7,
       "title": "Sudoku Solver",
-      "description": "Fill a 9×9 grid so each row/column/subgrid has digits 1–9 exactly once.",
-      "inputDescription": "9×9 matrix with 0 for blanks.",
-      "outputDescription": "Print solved Sudoku grid.",
+      "description": "Fill a 9×9 Sudoku grid so each row, column and 3×3 subgrid has digits 1–9 exactly once.",
+      "inputDescription": "9 lines, each with 9 integers (0–9) where 0 means empty.",
+      "outputDescription": "Solved 9×9 Sudoku grid (9 lines of 9 integers).",
       "examples": [],
-      "constraints": "Backtracking expected",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint grid[9][9];\n\nint solveSudoku() {\n    // TODO: backtracking Sudoku solver\n}\n\nint main() {\n    // read grid, solve, print grid\n    return 0;\n}",
+      "tests": [
+        {
+          "input": "1 2 3 4 5 6 7 8 9\n4 5 6 7 8 9 1 2 3\n7 8 9 1 2 3 4 5 6\n2 3 4 5 6 7 8 9 1\n5 6 7 8 9 1 2 3 4\n8 9 1 2 3 4 5 6 7\n3 4 5 6 7 8 9 1 2\n6 7 8 9 1 2 3 4 5\n9 1 2 3 4 5 6 7 8",
+          "expected": "1 2 3 4 5 6 7 8 9\n4 5 6 7 8 9 1 2 3\n7 8 9 1 2 3 4 5 6\n2 3 4 5 6 7 8 9 1\n5 6 7 8 9 1 2 3 4\n8 9 1 2 3 4 5 6 7\n3 4 5 6 7 8 9 1 2\n6 7 8 9 1 2 3 4 5\n9 1 2 3 4 5 6 7 8"
+        }
+      ]
     },
     {
       "id": 8,
       "title": "Word Search Grid",
-      "description": "Given a grid of letters and a target word, return YES if the word exists by moving adjacent cells (cannot reuse the same cell twice).",
-      "inputDescription": "Grid + word.",
+      "description": "Given a grid of letters and a target word, return YES if the word exists by moving to adjacent cells (up, down, left, right) without reusing a cell.",
+      "inputDescription": "First line: R C. Next R lines: C characters (no spaces). Last line: target word.",
       "outputDescription": "\"YES\" or \"NO\".",
-      "constraints": "m,n ≤ 10, word length ≤ 100",
-      "starterCode": "",
-      "tests": []
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nchar grid[15][15];\nint R, C;\nchar word[105];\n\nint dfs(int r, int c, int idx) {\n    // TODO: backtracking search\n}\n\nint main() {\n    // read R, C, grid, word and search\n    return 0;\n}",
+      "tests": [
+        { "input": "3 4\nABCE\nSFCS\nADEE\nABCCED", "expected": "YES" },
+        { "input": "3 4\nABCE\nSFCS\nADEE\nABCB", "expected": "NO" }
+      ]
     },
     {
       "id": 9,
       "title": "Print All Balanced Parentheses",
       "description": "Given N, print all valid combinations of N pairs of parentheses.",
-      "inputDescription": "Integer N.",
-      "outputDescription": "Each combination in new line.",
-      "constraints": "1 ≤ N ≤ 12",
-      "starterCode": "",
-      "tests": []
+      "inputDescription": "Single integer N.",
+      "outputDescription": "Each valid string on a separate line.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint N;\nchar cur[30];\n\nvoid gen(int pos, int open, int close) {\n    // TODO: generate all strings\n}\n\nint main() {\n    // read N and call gen\n    return 0;\n}",
+      "tests": [
+        { "input": "1", "expected": "()" },
+        { "input": "2", "expected": "()()\n(())" }
+      ]
     },
     {
       "id": 10,
       "title": "Knight’s Tour",
-      "description": "Count possible knight’s tours in an NxN chessboard starting from (0,0).",
-      "inputDescription": "Integer N.",
-      "outputDescription": "Single integer: count of tours.",
-      "constraints": "1 ≤ N ≤ 8",
-      "starterCode": "",
-      "tests": []
+      "description": "Count possible knight’s tours on an N×N chessboard starting from (0,0).",
+      "inputDescription": "Single integer N.",
+      "outputDescription": "Single integer: number of tours.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint N;\nint board[10][10];\n\nlong long solve(int r, int c, int moveNo) {\n    // TODO: backtracking Knight's tour\n}\n\nint main() {\n    // read N, run solver, print count\n    return 0;\n}",
+      "tests": [
+        { "input": "1", "expected": "1" },
+        { "input": "2", "expected": "0" }
+      ]
     }
   ]
 }

@@ -1,18 +1,139 @@
 {
-    "level": 9,
-  "type" : "Compiler",
+  "level": 9,
+  "type": "Compiler",
   "title": "DSA Level 9 — Graphs",
   "concept": "Adjacency list, BFS, DFS, connected components, shortest path on unweighted graphs, bipartite checking.",
   "challenges": [
-    { "id": 1, "description": "BFS on adjacency list", "starterCode": "", "tests": [] },
-    { "id": 2, "description": "DFS on adjacency list", "starterCode": "", "tests": [] },
-    { "id": 3, "description": "Connected Components in Undirected Graph", "starterCode": "", "tests": [] },
-    { "id": 4, "description": "Cycle Detection in Undirected Graph", "starterCode": "", "tests": [] },
-    { "id": 5, "description": "Cycle Detection in Directed Graph", "starterCode": "", "tests": [] },
-    { "id": 6, "description": "Shortest Path in Unweighted Graph (BFS)", "starterCode": "", "tests": [] },
-    { "id": 7, "description": "Bipartite Check", "starterCode": "", "tests": [] },
-    { "id": 8, "description": "Topological Sorting", "starterCode": "", "tests": [] },
-    { "id": 9, "description": "Number of Islands (Matrix BFS)", "starterCode": "", "tests": [] },
-    { "id": 10, "description": "Word Ladder (Shortest Transformation)", "starterCode": "", "tests": [] }
+    {
+      "id": 1,
+      "title": "BFS on Adjacency List",
+      "description": "Perform Breadth-First Search (BFS) on an undirected graph from a given source node and print the order of visiting.",
+      "inputDescription": "First line: N M. Next M lines: u v (edges, 1-based). Last line: source s.",
+      "outputDescription": "BFS traversal order starting from s, space-separated.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, M, s;\n    return 0;\n}",
+      "tests": [
+        { "input": "4 4\n1 2\n2 3\n1 4\n3 4\n1", "expected": "1 2 4 3" }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "DFS on Adjacency List",
+      "description": "Perform Depth-First Search (DFS) on an undirected graph from a given source and print the order of visiting.",
+      "inputDescription": "First line: N M. Next M lines: u v. Last line: source s.",
+      "outputDescription": "DFS order starting from s, space-separated. (Use increasing neighbor order for determinism.)",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, M, s;\n    return 0;\n}",
+      "tests": [
+        { "input": "4 3\n1 2\n2 3\n2 4\n1", "expected": "1 2 3 4" }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Connected Components in Undirected Graph",
+      "description": "Count the number of connected components in an undirected graph.",
+      "inputDescription": "First line: N M. Next M lines: u v.",
+      "outputDescription": "Single integer: number of connected components.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, M;\n    return 0;\n}",
+      "tests": [
+        { "input": "4 2\n1 2\n3 4", "expected": "2" },
+        { "input": "3 0", "expected": "3" }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Cycle Detection in Undirected Graph",
+      "description": "Detect if there is a cycle in an undirected graph.",
+      "inputDescription": "First line: N M. Next M lines: u v.",
+      "outputDescription": "\"YES\" if a cycle exists, else \"NO\".",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, M;\n    return 0;\n}",
+      "tests": [
+        { "input": "3 3\n1 2\n2 3\n3 1", "expected": "YES" },
+        { "input": "3 2\n1 2\n2 3", "expected": "NO" }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Cycle Detection in Directed Graph",
+      "description": "Detect if there is a cycle in a directed graph using DFS (recursion stack) or Kahn’s algorithm.",
+      "inputDescription": "First line: N M. Next M lines: u v (directed edge u → v).",
+      "outputDescription": "\"YES\" if a cycle exists, otherwise \"NO\".",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, M;\n    return 0;\n}",
+      "tests": [
+        { "input": "3 3\n1 2\n2 3\n3 1", "expected": "YES" },
+        { "input": "3 2\n1 2\n2 3", "expected": "NO" }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Shortest Path in Unweighted Graph",
+      "description": "Using BFS, find the shortest distance from a source node s to all other nodes in an unweighted undirected graph.",
+      "inputDescription": "First line: N M. Next M lines: u v. Last line: s.",
+      "outputDescription": "N integers: dist[1], dist[2], ..., dist[N]; use -1 for unreachable nodes.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, M, s;\n    return 0;\n}",
+      "tests": [
+        { "input": "4 3\n1 2\n2 3\n3 4\n1", "expected": "0 1 2 3" }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Bipartite Graph Check",
+      "description": "Check if an undirected graph is bipartite using BFS/DFS and 2-coloring.",
+      "inputDescription": "First line: N M. Next M lines: u v.",
+      "outputDescription": "\"YES\" if graph is bipartite, otherwise \"NO\".",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, M;\n    return 0;\n}",
+      "tests": [
+        { "input": "3 3\n1 2\n2 3\n1 3", "expected": "NO" },
+        { "input": "4 4\n1 2\n2 3\n3 4\n4 1", "expected": "YES" }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Topological Sorting of DAG",
+      "description": "Given a directed acyclic graph (DAG), output any valid topological ordering of vertices.",
+      "inputDescription": "First line: N M. Next M lines: u v (edge u → v).",
+      "outputDescription": "N integers: a topological ordering.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, M;\n    return 0;\n}",
+      "tests": [
+        { "input": "3 2\n1 2\n2 3", "expected": "1 2 3" }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Number of Islands (Matrix BFS)",
+      "description": "Given a 2D grid of '0' and '1', count the number of connected components of '1's (islands). Use 4-direction adjacency.",
+      "inputDescription": "First line: R C. Next R lines: string of length C consisting of '0' and '1'.",
+      "outputDescription": "Single integer: number of islands.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int R, C;\n    return 0;\n}",
+      "tests": [
+        { "input": "4 5\n11000\n11000\n00100\n00011", "expected": "3" }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Word Ladder (Shortest Transformation)",
+      "description": "Given a beginWord, endWord and a dictionary of words, find the length of shortest transformation sequence from beginWord to endWord such that only one letter can be changed at a time and all intermediate words must be in the dictionary.",
+      "inputDescription": "First line: integer N. Next N lines: dictionary words. Next line: beginWord. Next line: endWord.",
+      "outputDescription": "Single integer: length of shortest transformation sequence, or 0 if impossible.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        {
+          "input": "6\nhot\ndot\ndog\nlot\nlog\ncog\nhit\ncog",
+          "expected": "5"
+        },
+        {
+          "input": "5\nhot\ndot\ndog\nlot\nlog\nhit\ncog",
+          "expected": "0"
+        }
+      ]
+    }
   ]
 }

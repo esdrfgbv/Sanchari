@@ -1,6 +1,6 @@
 {
-    "level": 2,
-  "type" : "Compiler",
+  "level": 2,
+  "type": "Compiler",
   "title": "DSA Level 2 — Arrays, Two-Pointers & Frequency",
   "concept": "Slightly harder array problems: pairs, frequency counting, two-pointer tricks.",
   "challenges": [
@@ -13,9 +13,11 @@
       "examples": [
         "Input:\n5\n1 5 3 4 2\n\nOutput:\n4"
       ],
-      "constraints": "1 ≤ N ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n1 5 3 4 2", "expected": "4" },
+        { "input": "1\n10", "expected": "-1" }
+      ]
     },
     {
       "id": 2,
@@ -26,9 +28,11 @@
       "examples": [
         "Input:\n6\n1 1 2 2 2 3\n\nOutput:\n1 2 3"
       ],
-      "constraints": "1 ≤ N ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "6\n1 1 2 2 2 3", "expected": "1 2 3" },
+        { "input": "3\n5 6 7", "expected": "5 6 7" }
+      ]
     },
     {
       "id": 3,
@@ -39,9 +43,11 @@
       "examples": [
         "Input:\n6\n1 2 2 3 3 3\n\nOutput:\n3"
       ],
-      "constraints": "1 ≤ N ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "6\n1 2 2 3 3 3", "expected": "3" },
+        { "input": "4\n7 7 7 7", "expected": "1" }
+      ]
     },
     {
       "id": 4,
@@ -50,12 +56,13 @@
       "inputDescription": "First line: N. Second line: N integers. Third line: S.",
       "outputDescription": "\"YES\" or \"NO\".",
       "examples": [
-        "Input:\n5\n1 4 45 6 10\n16\n\nOutput:\nYES",
-        "Input:\n3\n1 2 3\n10\n\nOutput:\nNO"
+        "Input:\n5\n1 4 45 6 10\n16\n\nOutput:\nYES"
       ],
-      "constraints": "1 ≤ N ≤ 10^5, use O(N log N) or O(N) approach",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    long long S;\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n1 4 45 6 10\n16", "expected": "YES" },
+        { "input": "3\n1 2 3\n10", "expected": "NO" }
+      ]
     },
     {
       "id": 5,
@@ -66,9 +73,11 @@
       "examples": [
         "Input:\n5\n2 3 4 7 11\n9\n\nOutput:\n1 4"
       ],
-      "constraints": "1 ≤ N ≤ 10^5, expected O(N) two-pointer solution",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    long long S;\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n2 3 4 7 11\n9", "expected": "1 4" },
+        { "input": "3\n1 2 3\n100", "expected": "-1" }
+      ]
     },
     {
       "id": 6,
@@ -79,9 +88,11 @@
       "examples": [
         "Input:\n5\n0 1 0 3 12\n\nOutput:\n1 3 12 0 0"
       ],
-      "constraints": "1 ≤ N ≤ 10^5, O(N) time, O(1) extra space preferred",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n0 1 0 3 12", "expected": "1 3 12 0 0" },
+        { "input": "4\n1 2 3 4", "expected": "1 2 3 4" }
+      ]
     },
     {
       "id": 7,
@@ -92,9 +103,11 @@
       "examples": [
         "Input:\n8\n-2 -3 4 -1 -2 1 5 -3\n\nOutput:\n7"
       ],
-      "constraints": "1 ≤ N ≤ 10^5, use O(N) Kadane’s algorithm",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "8\n-2 -3 4 -1 -2 1 5 -3", "expected": "7" },
+        { "input": "3\n-1 -2 -3", "expected": "-1" }
+      ]
     },
     {
       "id": 8,
@@ -105,9 +118,11 @@
       "examples": [
         "Input:\n7\n2 3 2 4 3 3 2\n\nOutput:\n2 3\n3 3\n4 1"
       ],
-      "constraints": "1 ≤ N ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "7\n2 3 2 4 3 3 2", "expected": "2 3\n3 3\n4 1" },
+        { "input": "4\n5 5 5 5", "expected": "5 4" }
+      ]
     },
     {
       "id": 9,
@@ -116,12 +131,13 @@
       "inputDescription": "First line: N. Second line: N integers.",
       "outputDescription": "Majority element value or -1.",
       "examples": [
-        "Input:\n7\n2 2 1 2 3 2 2\n\nOutput:\n2",
-        "Input:\n4\n1 2 3 4\n\nOutput:\n-1"
+        "Input:\n7\n2 2 1 2 3 2 2\n\nOutput:\n2"
       ],
-      "constraints": "1 ≤ N ≤ 10^5, use Boyer–Moore or frequency counting",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "7\n2 2 1 2 3 2 2", "expected": "2" },
+        { "input": "4\n1 2 3 4", "expected": "-1" }
+      ]
     },
     {
       "id": 10,
@@ -132,9 +148,11 @@
       "examples": [
         "Input:\n7 1\n1 0 1 1 0 1 0\n\nOutput:\n4"
       ],
-      "constraints": "1 ≤ N ≤ 10^5, 0 ≤ K ≤ N, sliding window / two-pointer expected",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, K;\n    return 0;\n}",
+      "tests": [
+        { "input": "7 1\n1 0 1 1 0 1 0", "expected": "4" },
+        { "input": "5 0\n1 1 0 1 1", "expected": "2" }
+      ]
     }
   ]
 }

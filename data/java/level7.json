@@ -4,7 +4,7 @@
   "title": "Java Level 7 — Collections & Maps",
   "concept": "ArrayList, HashSet, HashMap, basic usage.",
   "language": "java",
-  "problems": [
+  "challenges": [
     {
       "id": 1,
       "name": "Unique Words",

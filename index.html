@@ -29,12 +29,24 @@
           <span id="profileInitial">U</span>
         </button>
         <div id="profileMenu" class="profile-menu">
-          <div class="profile-menu-header">
-            <span id="profileMenuName">User</span>
-          </div>
-          <button id="switchUserBtn" class="profile-menu-item">Switch user</button>
-          <button id="logoutBtn" class="profile-menu-item">Logout</button>
-        </div>
+  <div class="profile-menu-header">
+    <span id="profileMenuName">User</span>
+  </div>
+
+  <button id="switchUserBtn" class="profile-menu-item">Switch user</button>
+
+  <!-- THEME ROW -->
+  <div class="profile-menu-item theme-row">
+    <span class="theme-row-label">Theme</span>
+    <button id="themeToggleBtn" class="theme-toggle-pill" data-theme="light">
+      <span class="theme-toggle-knob"></span>
+      <span id="themeToggleLabel" class="theme-toggle-label">Light</span>
+    </button>
+  </div>
+
+  <button id="logoutBtn" class="profile-menu-item">Logout</button>
+</div>
+
       </div>
     </div>
   </header>

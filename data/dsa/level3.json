@@ -1,144 +1,158 @@
 {
-    "level": 3,
-  "type" : "Compiler",
+  "level": 3,
+  "type": "Compiler",
   "title": "DSA Level 3 — Strings & Basic Hashing",
   "concept": "Classic string operations: frequency, palindromes, anagrams, sliding window on strings.",
   "challenges": [
     {
       "id": 1,
       "title": "Check Palindrome String",
-      "description": "Given a string S, determine if it is a palindrome (reads the same forwards and backwards). Print \"YES\" or \"NO\".",
+      "description": "Given a string S, determine if it is a palindrome. Print \"YES\" or \"NO\".",
       "inputDescription": "Single line: string S (no spaces).",
       "outputDescription": "\"YES\" if S is palindrome, otherwise \"NO\".",
       "examples": [
-        "Input:\nabba\n\nOutput:\nYES",
-        "Input:\nabca\n\nOutput:\nNO"
+        "Input:\nabba\n\nOutput:\nYES"
       ],
-      "constraints": "1 ≤ |S| ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    char s[100005];\n    return 0;\n}",
+      "tests": [
+        { "input": "abba", "expected": "YES" },
+        { "input": "abca", "expected": "NO" }
+      ]
     },
     {
       "id": 2,
       "title": "Count Character Frequency",
       "description": "Given a string S consisting of lowercase English letters, count the frequency of each character and print them in increasing order of character.",
       "inputDescription": "Single line: string S.",
-      "outputDescription": "For each character c that appears in S, print a line: c count.",
+      "outputDescription": "For each character c that appears, print: c count.",
       "examples": [
         "Input:\nabaabb\n\nOutput:\na 3\nb 3"
       ],
-      "constraints": "1 ≤ |S| ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    char s[100005];\n    return 0;\n}",
+      "tests": [
+        { "input": "abaabb", "expected": "a 3\nb 3" },
+        { "input": "zzz", "expected": "z 3" }
+      ]
     },
     {
       "id": 3,
       "title": "Anagram Check",
-      "description": "Given two strings A and B, check if they are anagrams of each other (contain the same characters with the same frequencies). Print \"YES\" or \"NO\".",
-      "inputDescription": "First line: string A. Second line: string B.",
-      "outputDescription": "\"YES\" if A and B are anagrams, otherwise \"NO\".",
+      "description": "Given two strings A and B, check if they are anagrams. Print \"YES\" or \"NO\".",
+      "inputDescription": "First line: A. Second line: B.",
+      "outputDescription": "\"YES\" if A and B are anagrams, else \"NO\".",
       "examples": [
-        "Input:\nlisten\nsilent\n\nOutput:\nYES",
-        "Input:\nhello\nworld\n\nOutput:\nNO"
+        "Input:\nlisten\nsilent\n\nOutput:\nYES"
       ],
-      "constraints": "1 ≤ |A|, |B| ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    char A[100005], B[100005];\n    return 0;\n}",
+      "tests": [
+        { "input": "listen\nsilent", "expected": "YES" },
+        { "input": "hello\nworld", "expected": "NO" }
+      ]
     },
     {
       "id": 4,
       "title": "First Non-Repeating Character",
-      "description": "Given a string S, find the first character that does not repeat anywhere in the string. If it exists, print that character. Otherwise, print -1.",
+      "description": "Given a string S, find the first character that does not repeat. If none, print -1.",
       "inputDescription": "Single line: string S.",
       "outputDescription": "First non-repeating character or -1.",
       "examples": [
-        "Input:\nleetcode\n\nOutput:\nl",
-        "Input:\naabb\n\nOutput:\n-1"
+        "Input:\nleetcode\n\nOutput:\nl"
       ],
-      "constraints": "1 ≤ |S| ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    char s[100005];\n    return 0;\n}",
+      "tests": [
+        { "input": "leetcode", "expected": "l" },
+        { "input": "aabb", "expected": "-1" }
+      ]
     },
     {
       "id": 5,
       "title": "Longest Substring Without Repeating Characters",
       "description": "Given a string S, find the length of the longest substring without repeating characters.",
-      "inputDescription": "Single line: string S.",
+      "inputDescription": "Single line: S.",
       "outputDescription": "Single integer: maximum length.",
       "examples": [
-        "Input:\nabcabcbb\n\nOutput:\n3",
-        "Input:\nbbbb\n\nOutput:\n1"
+        "Input:\nabcabcbb\n\nOutput:\n3"
       ],
-      "constraints": "1 ≤ |S| ≤ 10^5, sliding window expected",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    char s[100005];\n    return 0;\n}",
+      "tests": [
+        { "input": "abcabcbb", "expected": "3" },
+        { "input": "bbbb", "expected": "1" }
+      ]
     },
     {
       "id": 6,
       "title": "Count Vowels and Consonants",
-      "description": "Given a lowercase English string S, count how many characters are vowels and how many are consonants.",
-      "inputDescription": "Single line: string S made of 'a'-'z'.",
+      "description": "Given a lowercase English string S, count vowels and consonants.",
+      "inputDescription": "Single line: string S of 'a'-'z'.",
       "outputDescription": "Two integers: vowels consonants.",
       "examples": [
         "Input:\nprogramming\n\nOutput:\n3 8"
       ],
-      "constraints": "1 ≤ |S| ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    char s[100005];\n    return 0;\n}",
+      "tests": [
+        { "input": "programming", "expected": "3 8" },
+        { "input": "aeiou", "expected": "5 0" }
+      ]
     },
     {
       "id": 7,
       "title": "Rotate String by K",
-      "description": "Given a string S and an integer K, perform a left rotation of the string by K positions (cyclic). Print the rotated string.",
-      "inputDescription": "First line: string S. Second line: integer K.",
+      "description": "Perform a left rotation of string S by K positions (cyclic).",
+      "inputDescription": "First line: S. Second line: integer K.",
       "outputDescription": "Rotated string.",
       "examples": [
         "Input:\nabcdef\n2\n\nOutput:\ncdefab"
       ],
-      "constraints": "1 ≤ |S| ≤ 10^5, 0 ≤ K ≤ 10^9 (use K mod |S|)",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    char s[100005];\n    long long K;\n    return 0;\n}",
+      "tests": [
+        { "input": "abcdef\n2", "expected": "cdefab" },
+        { "input": "aaaa\n3", "expected": "aaaa" }
+      ]
     },
     {
       "id": 8,
       "title": "Check Subsequence",
-      "description": "Given two strings S and T, check if S is a subsequence of T. Print \"YES\" or \"NO\".",
+      "description": "Check if S is a subsequence of T.",
       "inputDescription": "First line: S. Second line: T.",
-      "outputDescription": "\"YES\" if S is a subsequence of T, else \"NO\".",
+      "outputDescription": "\"YES\" or \"NO\".",
       "examples": [
-        "Input:\nabc\nahbgdc\n\nOutput:\nYES",
-        "Input:\naxc\nahbgdc\n\nOutput:\nNO"
+        "Input:\nabc\nahbgdc\n\nOutput:\nYES"
       ],
-      "constraints": "1 ≤ |S|, |T| ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    char S[100005], T[100005];\n    return 0;\n}",
+      "tests": [
+        { "input": "abc\nahbgdc", "expected": "YES" },
+        { "input": "axc\nahbgdc", "expected": "NO" }
+      ]
     },
     {
       "id": 9,
       "title": "Longest Common Prefix of Strings",
-      "description": "Given N strings, find the longest common prefix of all strings. If no common prefix exists, print an empty string.",
-      "inputDescription": "First line: N. Next N lines: each a string.",
-      "outputDescription": "Single line: longest common prefix (possibly empty).",
+      "description": "Given N strings, find the longest common prefix.",
+      "inputDescription": "First line: N. Next N lines: strings.",
+      "outputDescription": "The longest common prefix (may be empty).",
       "examples": [
-        "Input:\n3\nflower\nflow\nflight\n\nOutput:\nfl",
-        "Input:\n3\ndog\nracecar\ncar\n\nOutput:\n"
+        "Input:\n3\nflower\nflow\nflight\n\nOutput:\nfl"
       ],
-      "constraints": "1 ≤ N ≤ 10^5, total length of all strings ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "3\nflower\nflow\nflight", "expected": "fl" },
+        { "input": "3\ndog\nracecar\ncar", "expected": "" }
+      ]
     },
     {
       "id": 10,
       "title": "Smallest Window Containing All Characters",
-      "description": "You are given two strings S and P. Find the length of the smallest substring of S that contains all characters of P (with their required frequencies). If no such window exists, print -1.",
+      "description": "Given S and P, find the length of the smallest substring of S that contains all characters of P (with frequencies). If none, print -1.",
       "inputDescription": "First line: S. Second line: P.",
-      "outputDescription": "Single integer: length of smallest window, or -1.",
+      "outputDescription": "Single integer: length of smallest window or -1.",
       "examples": [
         "Input:\nADOBECODEBANC\nABC\n\nOutput:\n4"
       ],
-      "constraints": "1 ≤ |S|, |P| ≤ 10^5, use sliding window + frequency arrays/maps",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    char S[100005], P[100005];\n    return 0;\n}",
+      "tests": [
+        { "input": "ADOBECODEBANC\nABC", "expected": "4" },
+        { "input": "aaaaa\nabc", "expected": "-1" }
+      ]
     }
   ]
 }

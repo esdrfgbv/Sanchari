@@ -74,6 +74,11 @@ const profileMenuName = document.getElementById("profileMenuName");
 const switchUserBtn = document.getElementById("switchUserBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 
+/* THEME TOGGLE DOM */
+const themeToggleBtn = document.getElementById("themeToggleBtn");
+const themeToggleLabel = document.getElementById("themeToggleLabel");
+
+
 /* Detect which page we are on */
 const isAuthPage = !!authSection && !homeSection;   // login.html
 const isMainAppPage = !!homeSection;               // index.html
@@ -102,7 +107,10 @@ const JUDGE_LANG_MAP = {
   c: 50,        // GCC C
   python: 71,   // Python 3
   java: 62,     // Java
-  dsa: null,    // theory
+  // Allow DSA challenges to run on a default language (Python 3) so
+  // coding problems under the `dsa` course can be executed.
+  // If you prefer a different default set this to another Judge0 id.
+  dsa: 50,
   cpp: 54,      // C++ (G++)
   js: 63,       // JavaScript (Node)
   csharp: 51,   // C#
@@ -150,6 +158,37 @@ function setCurrentUser(username) {
 function getUserScopedKey(baseKey) {
   const user = getCurrentUser() || "guest";
   return `user_${user}_${baseKey}`;
+}
+
+/* ==============================
+   THEME (LIGHT / DARK)
+   ============================== */
+
+function getStoredTheme() {
+  // Per-user theme; falls back to light
+  const key = getUserScopedKey("theme");
+  return localStorage.getItem(key) || "light";
+}
+
+function applyTheme(theme) {
+  const body = document.body;
+  if (!body) return;
+
+  const normalized = theme === "dark" ? "dark" : "light";
+
+  body.classList.toggle("theme-dark", normalized === "dark");
+  body.classList.toggle("theme-light", normalized === "light");
+
+  const key = getUserScopedKey("theme");
+  localStorage.setItem(key, normalized);
+
+  if (themeToggleLabel) {
+    themeToggleLabel.textContent =
+      normalized === "dark" ? "Dark" : "Light";
+  }
+  if (themeToggleBtn) {
+    themeToggleBtn.setAttribute("data-theme", normalized);
+  }
 }
 
 /* UI updates for login / signup mode */
@@ -908,8 +947,13 @@ function renderMcqLevel(level) {
       optsDiv.appendChild(label);
     });
 
+    // Explanation / feedback area (initially hidden)
+    const explanationDiv = document.createElement("div");
+    explanationDiv.className = "mcq-explanation hidden";
+
     card.appendChild(qTitle);
     card.appendChild(optsDiv);
+    card.appendChild(explanationDiv);
     mcqContainer.appendChild(card);
   });
 
@@ -932,16 +976,39 @@ function renderMcqLevel(level) {
 
       cardEl.classList.remove("correct", "incorrect", "unanswered");
 
+      const explanationEl = cardEl.querySelector(".mcq-explanation");
+
+      const options = q.options || {};
+      const correctOptionText = options[correct] || "";
+      const userChoice = chosen ? chosen.value.toUpperCase() : null;
+
+      let statusLine = "";
+
       if (!chosen) {
         cardEl.classList.add("unanswered");
-        return;
-      }
-
-      if (chosen.value.toUpperCase() === correct) {
+        statusLine = "You did not select any option.";
+      } else if (userChoice === correct) {
         correctCount++;
         cardEl.classList.add("correct");
+        statusLine = "Your answer is correct ✅";
       } else {
         cardEl.classList.add("incorrect");
+        statusLine = `Your answer (${userChoice}) is incorrect ❌`;
+      }
+
+      // Always show correct answer + explanation
+      if (explanationEl) {
+        explanationEl.classList.remove("hidden");
+        const safeCorrectText = escapeHtml(correctOptionText);
+        const safeExplanation = escapeHtml(
+          q.explanation || "Explanation coming soon."
+        );
+
+        explanationEl.innerHTML = `
+          <p><strong>Correct answer:</strong> ${correct}) ${safeCorrectText}</p>
+          <p>${safeExplanation}</p>
+          <p class="mcq-status-line">${statusLine}</p>
+        `;
       }
     });
 
@@ -961,7 +1028,7 @@ function renderMcqLevel(level) {
     } else {
       if (challengeStatusMsg) {
         challengeStatusMsg.textContent =
-          "Some answers are incorrect or unanswered. Correct questions are highlighted in green.";
+          "Some answers are incorrect or unanswered. Correct answers and explanations are shown below each question.";
       }
     }
   });
@@ -969,6 +1036,7 @@ function renderMcqLevel(level) {
   mcqContainer.appendChild(submitBtn);
   mcqContainer.appendChild(resultEl);
 }
+
 
 /* ==============================
    LOAD CHALLENGE SCREEN
@@ -1143,6 +1211,40 @@ function loadChallengeScreen() {
    RUN CODE (NO TESTS)
    ============================== */
 async function runCode() {
+  // SPECIAL CASE: HTML + CSS → open live preview instead of Judge0
+  if (currentLanguage === "htmlcss") {
+    if (!codeEditor) return;
+
+    const htmlContent = codeEditor.value || "";
+
+    // Try to open a new window/tab for preview
+    const previewWindow = window.open("", "_blank", "width=900,height=600");
+
+    if (!previewWindow) {
+      if (outputArea) {
+        outputArea.textContent =
+          "⚠ Unable to open preview window. Please allow popups for this site.";
+      }
+      return;
+    }
+
+    previewWindow.document.open();
+    previewWindow.document.write(htmlContent);
+    previewWindow.document.close();
+
+    if (outputArea) {
+      outputArea.textContent =
+        "✅ HTML preview opened in a new tab/window.";
+    }
+    if (testSummaryBadge) {
+      testSummaryBadge.textContent = "Preview Opened";
+      testSummaryBadge.classList.remove("all-pass");
+    }
+
+    return; // ⬅ DO NOT go to Judge0 for htmlcss
+  }
+
+  // Normal Judge0 flow for code languages
   const langId = JUDGE_LANG_MAP[currentLanguage];
 
   if (!langId || !codeEditor) {
@@ -1331,6 +1433,300 @@ function renderTestResults(results, summary) {
 }
 
 /* ==============================
+   HTML+CSS HEURISTIC TESTS
+   ============================== */
+function runHtmlCssAutoTests(level, challenge) {
+  if (!codeEditor || !outputArea) return;
+
+  const html = codeEditor.value || "";
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+
+  const text =
+    (challenge.title || "") +
+    " " +
+    (challenge.description || "") +
+    " " +
+    (challenge.outputDescription || "");
+  const lowerText = text.toLowerCase();
+
+  const results = [];
+  let testIndex = 0;
+
+  function addCheck(desc, expected, pass, actualDetail) {
+    results.push({
+      index: testIndex++,
+      input: desc,
+      expected,
+      stdout: actualDetail,
+      isPass: pass,
+      time: "-",
+      memory: "-"
+    });
+  }
+
+  // 1) Basic HTML skeleton
+  const hasHtml = !!doc.querySelector("html");
+  const hasHead = !!doc.querySelector("head");
+  const hasBody = !!doc.querySelector("body");
+  addCheck(
+    "Basic HTML skeleton",
+    "<!DOCTYPE html>, <html>, <head>, <body> structure",
+    hasHtml && hasHead && hasBody && html.toLowerCase().includes("<!doctype"),
+    `html:${hasHtml}, head:${hasHead}, body:${hasBody}, doctype:${html
+      .toLowerCase()
+      .includes("<!doctype")}`
+  );
+
+  // 2) Heading / H1 checks
+  if (lowerText.includes("heading") || lowerText.includes("h1")) {
+    const h1Els = Array.from(doc.querySelectorAll("h1"));
+    addCheck(
+      "Heading presence",
+      "At least one <h1> element",
+      h1Els.length > 0,
+      `h1 count: ${h1Els.length}`
+    );
+  }
+
+  // 3) Paragraph checks
+  if (lowerText.includes("paragraphs") || lowerText.includes("paragraph")) {
+    const pEls = Array.from(doc.querySelectorAll("p"));
+    let minNeeded = 1;
+    if (lowerText.includes("two") || lowerText.includes("2")) {
+      minNeeded = 2;
+    }
+    addCheck(
+      "Paragraph presence",
+      `At least ${minNeeded} <p> element(s)`,
+      pEls.length >= minNeeded,
+      `p count: ${pEls.length}`
+    );
+  }
+
+  // 4) Unordered list / hobbies / lists
+  if (
+    lowerText.includes("unordered list") ||
+    lowerText.includes("bulleted") ||
+    lowerText.includes("list of") ||
+    lowerText.includes("<ul")
+  ) {
+    const ul = doc.querySelector("ul");
+    const liCount = ul ? ul.querySelectorAll("li").length : 0;
+    let minLi = 1;
+    if (lowerText.includes("3 hobbies") || lowerText.includes("three")) {
+      minLi = 3;
+    }
+    addCheck(
+      "Unordered list structure",
+      `A <ul> with at least ${minLi} <li> item(s)`,
+      !!ul && liCount >= minLi,
+      `ul present: ${!!ul}, li count: ${liCount}`
+    );
+  }
+
+  // 5) Links
+  if (
+    lowerText.includes("links") ||
+    lowerText.includes("link") ||
+    lowerText.includes("clickable")
+  ) {
+    const aEls = Array.from(doc.querySelectorAll("a[href]"));
+    addCheck(
+      "Links presence",
+      "At least one <a href=\"...\"> link",
+      aEls.length > 0,
+      `link count: ${aEls.length}`
+    );
+  }
+
+  // 6) Images
+  if (
+    lowerText.includes("image") ||
+    lowerText.includes("avatar") ||
+    lowerText.includes("photo") ||
+    lowerText.includes("banner")
+  ) {
+    const imgEls = Array.from(doc.querySelectorAll("img"));
+    addCheck(
+      "Image presence",
+      "At least one <img> element",
+      imgEls.length > 0,
+      `img count: ${imgEls.length}`
+    );
+  }
+
+  // 7) Forms
+  if (
+    lowerText.includes("form") ||
+    lowerText.includes("login") ||
+    lowerText.includes("signup") ||
+    lowerText.includes("contact")
+  ) {
+    const formEl = doc.querySelector("form");
+    addCheck(
+      "Form presence",
+      "A <form> element",
+      !!formEl,
+      `form present: ${!!formEl}`
+    );
+  }
+
+  // 8) Inputs: email / password / textarea / checkbox / radio
+  if (lowerText.includes("email")) {
+    const emailInput =
+      doc.querySelector('input[type="email"]') ||
+      Array.from(doc.querySelectorAll("input")).find((inp) =>
+        (inp.getAttribute("name") || "").toLowerCase().includes("email")
+      );
+    addCheck(
+      "Email input",
+      'An email field (e.g., <input type="email">)',
+      !!emailInput,
+      `email input present: ${!!emailInput}`
+    );
+  }
+
+  if (lowerText.includes("password")) {
+    const pwdInput = doc.querySelector('input[type="password"]');
+    addCheck(
+      "Password input",
+      '<input type="password">',
+      !!pwdInput,
+      `password input present: ${!!pwdInput}`
+    );
+  }
+
+  if (lowerText.includes("textarea") || lowerText.includes("message")) {
+    const ta = doc.querySelector("textarea");
+    addCheck(
+      "Textarea / message field",
+      "<textarea> for message",
+      !!ta,
+      `textarea present: ${!!ta}`
+    );
+  }
+
+  if (lowerText.includes("checkbox")) {
+    const cb = doc.querySelector('input[type="checkbox"]');
+    addCheck(
+      "Checkbox inputs",
+      'At least one <input type="checkbox">',
+      !!cb,
+      `checkbox present: ${!!cb}`
+    );
+  }
+
+  if (lowerText.includes("radio")) {
+    const rb = doc.querySelector('input[type="radio"]');
+    addCheck(
+      "Radio inputs",
+      'At least one <input type="radio">',
+      !!rb,
+      `radio present: ${!!rb}`
+    );
+  }
+
+  // 9) Flexbox / Grid / layout hints (based on CSS text)
+  const styleTextMatches = html.toLowerCase();
+
+  if (lowerText.includes("flexbox") || lowerText.includes("flex")) {
+    const hasFlex =
+      styleTextMatches.includes("display:flex") ||
+      styleTextMatches.includes("display: flex");
+    addCheck(
+      "Flexbox usage",
+      "CSS contains display:flex for layout",
+      hasFlex,
+      `display:flex found: ${hasFlex}`
+    );
+  }
+
+  if (lowerText.includes("grid")) {
+    const hasGrid =
+      styleTextMatches.includes("display:grid") ||
+      styleTextMatches.includes("display: grid") ||
+      styleTextMatches.includes("grid-template");
+    addCheck(
+      "CSS Grid usage",
+      "CSS uses grid (display:grid or grid-template-... )",
+      hasGrid,
+      `grid usage found: ${hasGrid}`
+    );
+  }
+
+  // 10) Media queries / responsive
+  if (
+    lowerText.includes("responsive") ||
+    lowerText.includes("media query") ||
+    lowerText.includes("@media")
+  ) {
+    const hasMedia = styleTextMatches.includes("@media");
+    addCheck(
+      "Media query usage",
+      "CSS contains at least one @media rule",
+      hasMedia,
+      `@media found: ${hasMedia}`
+    );
+  }
+
+  // 11) Transitions / hover effects
+  if (
+    lowerText.includes("hover") ||
+    lowerText.includes("transition") ||
+    lowerText.includes("effect")
+  ) {
+    const hasHover = styleTextMatches.includes(":hover");
+    const hasTransition = styleTextMatches.includes("transition");
+    addCheck(
+      "Hover / transition usage",
+      "Use :hover and/or transition in CSS",
+      hasHover || hasTransition,
+      `:hover: ${hasHover}, transition: ${hasTransition}`
+    );
+  }
+
+  const totalTests = results.length || 1;
+  const passedCount = results.filter((r) => r.isPass).length;
+
+  // Render results using existing UI
+  renderTestResults(results, {
+    totalTests,
+    passedCount,
+    singleMode: false
+  });
+
+  // Update challenge status + progress (similar to code tests)
+  if (passedCount === totalTests && totalTests > 0) {
+    const progress = getProgress(currentLanguage);
+    if (progress.levels[currentLevelIndex] < currentChallengeIndex + 1) {
+      progress.levels[currentLevelIndex] = currentChallengeIndex + 1;
+      saveProgress(currentLanguage, progress);
+      updateCourseSummaryForCurrentLanguage();
+    }
+
+    if (challengeStatusMsg) {
+      challengeStatusMsg.textContent =
+        "✅ Page structure looks good! You can move to the next challenge.";
+    }
+
+    if (nextChallengeBtn) {
+      nextChallengeBtn.disabled = false;
+    }
+
+    if (testSummaryBadge) {
+      testSummaryBadge.textContent = "All Pass ✅";
+      testSummaryBadge.classList.add("all-pass");
+    }
+  } else {
+    if (challengeStatusMsg) {
+      challengeStatusMsg.textContent =
+        "Some checks failed. Compare the instructions and your HTML/CSS and try again.";
+    }
+  }
+}
+
+/* ==============================
    RUN TESTS
    ============================== */
 async function runTests() {
@@ -1344,6 +1740,12 @@ async function runTests() {
 
   const tests = challenge.tests || [];
   const totalTests = tests.length;
+
+  // SPECIAL CASE: HTML+CSS → use DOM-based heuristic tests, no Judge0
+  if (currentLanguage === "htmlcss") {
+    runHtmlCssAutoTests(level, challenge);
+    return;
+  }
 
   const langId = JUDGE_LANG_MAP[currentLanguage];
 
@@ -1367,10 +1769,10 @@ async function runTests() {
   }
 
   if (outputArea) {
-    outputArea.textContent = "⏳ Running all tests...";
+    outputArea.textContent = "⏳ Running all tests.";
   }
   if (testSummaryBadge) {
-    testSummaryBadge.textContent = "Running...";
+    testSummaryBadge.textContent = "Running.";
     testSummaryBadge.classList.remove("all-pass");
   }
 
@@ -1532,27 +1934,32 @@ if (resetStarterBtn) {
       level.type
     );
 
-    const key = getUserScopedKey(
+    if (!codeEditor) return;
+
+    codeEditor.value = challenge.starterCode || "";
+    const savedKey = getUserScopedKey(
       `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`
     );
-    localStorage.removeItem(key);
+    localStorage.removeItem(savedKey);
 
-    if (codeEditor) {
-      codeEditor.value = challenge.starterCode || "";
+    if (outputArea) outputArea.textContent = "";
+    if (testSummaryBadge) {
+      testSummaryBadge.textContent = "–";
+      testSummaryBadge.classList.remove("all-pass");
     }
   });
 }
-if (clearCodeBtn) {
-  clearCodeBtn.addEventListener("click", () => {
-    if (codeEditor) codeEditor.value = "";
-    if (currentLanguage !== null) {
-      const key = getUserScopedKey(
-        `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`
-      );
-      localStorage.setItem(key, "");
-    }
+
+// Auto-save editor
+if (codeEditor) {
+  codeEditor.addEventListener("input", () => {
+    const savedKey = getUserScopedKey(
+      `code_${currentLanguage}_${currentLevelIndex}_${currentChallengeIndex}`
+    );
+    localStorage.setItem(savedKey, codeEditor.value);
   });
 }
+
 
 // Navigation within challenges
 if (prevChallengeBtn) {
@@ -1670,6 +2077,16 @@ if (logoutBtn) {
   });
 }
 
+if (themeToggleBtn) {
+  themeToggleBtn.addEventListener("click", () => {
+    const current =
+      themeToggleBtn.getAttribute("data-theme") || getStoredTheme();
+    const next = current === "dark" ? "light" : "dark";
+    applyTheme(next);
+  });
+}
+
+
 /* Handle browser / Android back (only meaningful on main app page) */
 if (typeof window !== "undefined") {
   window.addEventListener("popstate", (event) => {
@@ -1710,6 +2127,9 @@ if (typeof window !== "undefined") {
    ============================== */
 updateAuthModeUI();
 updateUserUI();
+
+// Apply stored theme (default light)
+applyTheme(getStoredTheme());
 
 const existingState = history.state;
 const user = getCurrentUser();

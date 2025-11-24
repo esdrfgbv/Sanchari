@@ -1,6 +1,6 @@
 {
-    "level": 1,
-  "type" : "Compiler",
+  "level": 1,
+  "type": "Compiler",
   "title": "DSA Level 1 — Arrays & Basic Problems",
   "concept": "Fundamental array operations: traversal, searching, min/max, counting, prefix calculations.",
   "challenges": [
@@ -11,12 +11,13 @@
       "inputDescription": "First line: integer N. Second line: N integers (the array). Third line: integer X.",
       "outputDescription": "Single integer: index of first occurrence of X or -1 if not found.",
       "examples": [
-        "Input:\n5\n1 4 3 4 5\n4\n\nOutput:\n1",
-        "Input:\n4\n2 2 2 2\n3\n\nOutput:\n-1"
+        "Input:\n5\n1 4 3 4 5\n4\n\nOutput:\n1"
       ],
-      "constraints": "1 ≤ N ≤ 10^5, |a[i]| ≤ 10^9",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, X;\n    // read N, array, then X and do linear search\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n1 4 3 4 5\n4", "expected": "1" },
+        { "input": "4\n2 2 2 2\n3", "expected": "-1" }
+      ]
     },
     {
       "id": 2,
@@ -27,9 +28,11 @@
       "examples": [
         "Input:\n5\n1 7 3 7 5\n\nOutput:\n7 1"
       ],
-      "constraints": "1 ≤ N ≤ 10^5, |a[i]| ≤ 10^9",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    // read N and array, track max and its first index\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n1 7 3 7 5", "expected": "7 1" },
+        { "input": "3\n-5 -2 -10", "expected": "-2 1" }
+      ]
     },
     {
       "id": 3,
@@ -40,9 +43,11 @@
       "examples": [
         "Input:\n5\n5 4 4 9 10\n\nOutput:\n4 1"
       ],
-      "constraints": "1 ≤ N ≤ 10^5, |a[i]| ≤ 10^9",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    // read N and array, track min and its first index\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n5 4 4 9 10", "expected": "4 1" },
+        { "input": "4\n7 7 7 7", "expected": "7 0" }
+      ]
     },
     {
       "id": 4,
@@ -53,9 +58,11 @@
       "examples": [
         "Input:\n4\n1 2 3 4\n\nOutput:\n10"
       ],
-      "constraints": "1 ≤ N ≤ 10^5, |a[i]| ≤ 10^9 (use 64-bit type for sum)",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    // use long long to store the sum\n    return 0;\n}",
+      "tests": [
+        { "input": "4\n1 2 3 4", "expected": "10" },
+        { "input": "3\n-1 5 2", "expected": "6" }
+      ]
     },
     {
       "id": 5,
@@ -66,9 +73,11 @@
       "examples": [
         "Input:\n5\n1 2 3 4 5\n\nOutput:\n2 3"
       ],
-      "constraints": "1 ≤ N ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    // iterate array and count even/odd\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n1 2 3 4 5", "expected": "2 3" },
+        { "input": "4\n2 4 6 8", "expected": "4 0" }
+      ]
     },
     {
       "id": 6,
@@ -79,9 +88,11 @@
       "examples": [
         "Input:\n5\n1 2 3 4 5\n\nOutput:\n5 4 3 2 1"
       ],
-      "constraints": "1 ≤ N ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    // read array and print from last index to first\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n1 2 3 4 5", "expected": "5 4 3 2 1" },
+        { "input": "3\n10 20 30", "expected": "30 20 10" }
+      ]
     },
     {
       "id": 7,
@@ -92,9 +103,11 @@
       "examples": [
         "Input:\n5\n-1 0 2 -3 4\n\nOutput:\n2 2 1"
       ],
-      "constraints": "1 ≤ N ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    // track positive, negative, zero counts\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n-1 0 2 -3 4", "expected": "2 2 1" },
+        { "input": "3\n0 0 0", "expected": "0 0 3" }
+      ]
     },
     {
       "id": 8,
@@ -103,12 +116,13 @@
       "inputDescription": "First line: N. Second line: N integers. Third line: integer K.",
       "outputDescription": "Single integer a[K] or the word \"Invalid\".",
       "examples": [
-        "Input:\n5\n10 20 30 40 50\n2\n\nOutput:\n30",
-        "Input:\n3\n1 2 3\n5\n\nOutput:\nInvalid"
+        "Input:\n5\n10 20 30 40 50\n2\n\nOutput:\n30"
       ],
-      "constraints": "1 ≤ N ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, K;\n    // check bounds before printing\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n10 20 30 40 50\n2", "expected": "30" },
+        { "input": "3\n1 2 3\n5", "expected": "Invalid" }
+      ]
     },
     {
       "id": 9,
@@ -119,9 +133,11 @@
       "examples": [
         "Input:\n5\n1 2 3 4 5\n\nOutput:\n1 3 6 10 15"
       ],
-      "constraints": "1 ≤ N ≤ 10^5, use 64-bit sum",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    // maintain running sum and print after each element\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n1 2 3 4 5", "expected": "1 3 6 10 15" },
+        { "input": "3\n2 2 2", "expected": "2 4 6" }
+      ]
     },
     {
       "id": 10,
@@ -130,12 +146,13 @@
       "inputDescription": "First line: N. Second line: N integers.",
       "outputDescription": "\"YES\" or \"NO\".",
       "examples": [
-        "Input:\n5\n1 2 2 3 4\n\nOutput:\nYES",
-        "Input:\n4\n3 1 2 4\n\nOutput:\nNO"
+        "Input:\n5\n1 2 2 3 4\n\nOutput:\nYES"
       ],
-      "constraints": "1 ≤ N ≤ 10^5",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    // compare each element with previous\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n1 2 2 3 4", "expected": "YES" },
+        { "input": "4\n3 1 2 4", "expected": "NO" }
+      ]
     }
   ]
 }

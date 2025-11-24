@@ -7,11 +7,21 @@
 
 body {
   font-family: "Poppins", sans-serif;
-  background: #050816;
-  color: #f5f5f7;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+/* DARK THEME (matches your existing design) */
+body.theme-dark {
+  background: #050816;
+  color: #f5f5f7;
+}
+
+/* LIGHT THEME → GRAY THEME (medium brightness) */
+body.theme-light {
+  background: #cbd5e1;      /* soft slate gray */
+  color: #111827;           /* dark slate text */
 }
 
 /* Background gradient */
@@ -21,6 +31,12 @@ body {
   background: radial-gradient(circle at 20% 10%, #503eff66, transparent 60%),
               radial-gradient(circle at 80% 90%, #15e4b966, transparent 60%);
   z-index: -1;
+}
+
+body.theme-light .app-gradient {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(148, 163, 184, 0.55), transparent 60%),
+    radial-gradient(circle at 80% 90%, rgba(94, 234, 212, 0.35), transparent 60%);
 }
 
 /* Top bar */
@@ -141,6 +157,150 @@ body {
 
 .profile-menu-item:hover {
   background: rgba(30, 64, 175, 0.5);
+}
+
+/* LIGHT THEME OVERRIDES (GRAY) */
+body.theme-light .top-bar {
+  background: #e5e7eb;  /* muted light gray, not white */
+  border-bottom: 1px solid rgba(55, 65, 81, 0.35);
+}
+
+body.theme-light .logo-text {
+  color: #020617;
+}
+
+body.theme-light .user-label {
+  color: #111827;
+}
+
+body.theme-light .profile-btn {
+  border-color: rgba(100, 116, 139, 0.8);
+  background: radial-gradient(circle at 20% 0%, #4f46e5, #1e293b);
+  color: #e5e7eb;
+}
+
+/* Dropdown */
+body.theme-light .profile-menu {
+  background: #d4d4d8; /* neutral gray */
+  border-color: rgba(75, 85, 99, 0.5);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.3);
+}
+
+body.theme-light .profile-menu-header {
+  color: #0f172a;
+  border-bottom-color: rgba(107, 114, 128, 0.5);
+}
+
+body.theme-light .profile-menu-item {
+  color: #111827;
+}
+
+body.theme-light .profile-menu-item:hover {
+  background: rgba(107, 114, 128, 0.35);
+}
+
+/* THEME TOGGLE ROW IN PROFILE MENU */
+.theme-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.theme-row-label {
+  font-size: 13px;
+}
+
+/* pill-style theme switch */
+.theme-toggle-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px 3px 3px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.8);
+  background: rgba(15, 23, 42, 0.95);
+  cursor: pointer;
+  font-size: 11px;
+  color: #e5e7eb;
+  min-width: 80px;
+  justify-content: flex-start;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.theme-toggle-knob {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #6366f1, #22c55e);
+  box-shadow: 0 0 8px rgba(79, 70, 229, 0.7);
+  flex-shrink: 0;
+}
+
+.theme-toggle-label {
+  white-space: nowrap;
+}
+
+/* Light theme version of pill */
+body.theme-light .theme-toggle-pill {
+  background: #e5e7eb;
+  color: #111827;
+  border-color: rgba(100, 116, 139, 0.9);
+}
+
+/* Cards / panels */
+body.theme-light .course-card,
+body.theme-light .level-card,
+body.theme-light .level-intro-card,
+body.theme-light .challenge-left,
+body.theme-light .challenge-right,
+body.theme-light .auth-card {
+  background: #e2e8f0; /* slate-gray card */
+  border-color: rgba(100, 116, 139, 0.5);
+  color: #111827;
+}
+
+body.theme-light .level-progress {
+  color: #4b5563;
+}
+
+body.theme-light .challenge-description {
+  color: #4b5563;
+}
+
+body.theme-light .challenge-concept {
+  color: #4338ca;
+}
+
+/* IO + tables + output */
+body.theme-light .io-container pre {
+  background: rgba(15, 23, 42, 0.06);
+}
+
+body.theme-light .test-table th,
+body.theme-light .test-table td {
+  border-color: rgba(100, 116, 139, 0.5);
+}
+
+body.theme-light .output-section {
+  background: #e5e7eb;
+  border-color: rgba(100, 116, 139, 0.65);
+}
+
+/* MCQ cards */
+body.theme-light .mcq-question-card {
+  background: #e2e8f0;
+  border-color: rgba(100, 116, 139, 0.8);
+}
+
+body.theme-light .mcq-option-text {
+  color: #111827;
+}
+
+/* Footer */
+body.theme-light .footer {
+  color: #4b5563;
 }
 
 /* AUTH (LOGIN / SIGNUP) */
@@ -545,8 +705,6 @@ body {
   font-size: 12px;            /* a bit smaller = less height */
 }
 
-
-
 .test-table {
   width: 100%;
   margin-top: 14px;
@@ -820,7 +978,6 @@ body {
   font-weight: 600;
 }
 
-
 .test-chevron {
   font-size: 11px;
   transition: transform 0.2s ease;
@@ -850,7 +1007,6 @@ body {
 .test-block h4 {
   font-size: 11px;
   font-weight: 600;
-  
   text-transform: uppercase;
   letter-spacing: 0.03em;
   color: #9ca3af;
@@ -867,7 +1023,6 @@ body {
 }
 
 .test-block h4 {
-  
   padding: 0;
 }
 
@@ -939,4 +1094,85 @@ body {
 .mcq-submit-btn {
   align-self: flex-start;
   margin-top: 6px;
+}
+
+/* MCQ layout: use full width (no second column) */
+.challenge-layout.mcq-mode {
+  grid-template-columns: 1fr;
+}
+
+.mcq-explanation {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(148, 163, 184, 0.6);
+  font-size: 12px;
+  color: #e5e7eb;
+  line-height: 1.4;
+}
+
+.mcq-explanation .mcq-status-line {
+  margin-top: 4px;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+/* ===========================
+   Modern Radio Button Style
+   =========================== */
+.mcq-option input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 18px;
+  width: 18px;
+  border: 2px solid #64748b;
+  border-radius: 50%;
+  margin-right: 10px;
+  position: relative;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.mcq-option input[type="radio"]:hover {
+  border-color: #7dd3fc;
+  box-shadow: 0 0 6px #7dd3fc;
+}
+
+.mcq-option input[type="radio"]:checked {
+  border-color: #38bdf8;
+  box-shadow: 0 0 10px #38bdf8;
+}
+
+.mcq-option input[type="radio"]:checked::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background: #38bdf8;
+  border-radius: 50%;
+}
+
+/* Better spacing between label and text */
+.mcq-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+
+body.theme-light .mcq-option:hover {
+  background: rgba(203, 213, 225, 0.6); /* soft slate gray */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body.theme-light {
+  transition: background 0.35s ease, color 0.35s ease;
+}
+
+body.theme-dark {
+  transition: background 0.35s ease, color 0.35s ease;
 }

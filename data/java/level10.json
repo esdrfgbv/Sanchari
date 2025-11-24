@@ -4,7 +4,7 @@
   "title": "Java Level 10 — Mixed Algorithmic Challenges",
   "concept": "Harder problems combining arrays, strings, maps, and basic algorithms.",
   "language": "java",
-  "problems": [
+  "challenges": [
     {
       "id": 1,
       "name": "Two Sum Indices",

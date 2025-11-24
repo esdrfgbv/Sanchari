@@ -4,7 +4,7 @@
   "title": "Java Level 8 — Recursion & Algorithms",
   "concept": "Recursive functions, backtracking-lite, slightly harder array/string logic.",
   "language": "java",
-  "problems": [
+  "challenges": [
     {
       "id": 1,
       "name": "Recursive Factorial",

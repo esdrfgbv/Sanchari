@@ -4,7 +4,7 @@
   "title": "Java Level 4 — Arrays & Basic Strings",
   "concept": "One-dimensional arrays, traversals, simple string operations.",
   "language": "java",
-  "problems": [
+  "challenges": [
     {
       "id": 1,
       "name": "Array Sum",

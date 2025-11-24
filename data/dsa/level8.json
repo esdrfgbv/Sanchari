@@ -1,86 +1,131 @@
 {
-    "level": 8,
-  "type" : "Compiler",
+  "level": 8,
+  "type": "Compiler",
   "title": "DSA Level 7 — Trees & BST",
   "concept": "Binary tree traversals, height, diameter, BST operations and searching.",
   "challenges": [
     {
       "id": 1,
-      "title": "Preorder Traversal",
-      "description": "Print preorder traversal of a binary tree.",
-      "inputDescription": "Tree in level-order with -1 for null.",
-      "outputDescription": "Nodes in preorder.",
+      "title": "Preorder Traversal of Binary Tree",
+      "description": "Print the preorder traversal of a binary tree given in level-order form with -1 representing NULL nodes.",
+      "inputDescription": "First line: integer N (number of nodes including -1). Second line: N integers (level order with -1 for null).",
+      "outputDescription": "Preorder traversal values separated by spaces (skip -1).",
       "examples": [],
-      "constraints": "",
-      "starterCode": "",
-      "tests": []
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    // In practice you would build the tree from level order and then do preorder.\n    return 0;\n}",
+      "tests": [
+        { "input": "7\n1 2 3 -1 -1 4 5", "expected": "1 2 3 4 5" }
+      ]
     },
     {
       "id": 2,
-      "title": "Inorder Traversal",
-      "description": "Print inorder traversal.",
-      "inputDescription": "",
-      "outputDescription": "",
-      "starterCode": "",
-      "tests": []
+      "title": "Inorder Traversal of Binary Tree",
+      "description": "Print inorder traversal of a binary tree.",
+      "inputDescription": "First line: N. Second line: N integers (level order, -1 for null).",
+      "outputDescription": "Inorder traversal values separated by spaces.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "3\n2 1 3", "expected": "1 2 3" }
+      ]
     },
     {
       "id": 3,
-      "title": "Postorder Traversal",
-      "description": "Print postorder traversal.",
-      "inputDescription": "",
-      "outputDescription": "",
-      "starterCode": "",
-      "tests": []
+      "title": "Postorder Traversal of Binary Tree",
+      "description": "Print postorder traversal of a binary tree.",
+      "inputDescription": "First line: N. Second line: N integers (level order, -1 for null).",
+      "outputDescription": "Postorder traversal values separated by spaces.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "3\n2 1 3", "expected": "1 3 2" }
+      ]
     },
     {
       "id": 4,
       "title": "Level Order Traversal",
-      "description": "Print level order traversal using queue.",
-      "starterCode": "",
-      "tests": []
+      "description": "Print the level order traversal of a binary tree using a queue.",
+      "inputDescription": "First line: N. Second line: N integers (level order, -1 for null).",
+      "outputDescription": "Level order traversal values separated by spaces (ignore -1 placeholders).",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "7\n1 2 3 -1 -1 4 5", "expected": "1 2 3 4 5" }
+      ]
     },
     {
       "id": 5,
-      "title": "Height of Tree",
-      "description": "Find height (max depth) of tree.",
-      "starterCode": "",
-      "tests": []
+      "title": "Height of Binary Tree",
+      "description": "Find the height (maximum depth) of a binary tree.",
+      "inputDescription": "First line: N. Second line: N integers (level order, -1 for null).",
+      "outputDescription": "Single integer: height of the tree (height of single node tree is 1).",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "1\n1", "expected": "1" },
+        { "input": "7\n1 2 3 -1 -1 4 5", "expected": "3" }
+      ]
     },
     {
       "id": 6,
-      "title": "Diameter of Tree",
-      "description": "Compute diameter (#nodes on longest path).",
-      "starterCode": "",
-      "tests": []
+      "title": "Diameter of Binary Tree",
+      "description": "Compute the diameter of a binary tree (number of nodes on the longest path between any two nodes).",
+      "inputDescription": "First line: N. Second line: N integers (level order, -1 for null).",
+      "outputDescription": "Single integer: diameter of the tree.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "1\n1", "expected": "1" }
+      ]
     },
     {
       "id": 7,
       "title": "Search in BST",
-      "description": "Given a BST and a value X, print 1 if exists else 0.",
-      "starterCode": "",
-      "tests": []
+      "description": "Given a Binary Search Tree and a value X, print 1 if X exists in the BST, else 0.",
+      "inputDescription": "First line: N. Second line: N integers (keys to insert into BST in given order). Third line: X.",
+      "outputDescription": "1 if found, otherwise 0.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, X;\n    // insert keys into BST then search X\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n5 3 7 2 4\n4", "expected": "1" },
+        { "input": "5\n5 3 7 2 4\n6", "expected": "0" }
+      ]
     },
     {
       "id": 8,
       "title": "Insert into BST",
-      "description": "Insert X into BST and print inorder.",
-      "starterCode": "",
-      "tests": []
+      "description": "Insert X into a Binary Search Tree and print the inorder traversal after insertion.",
+      "inputDescription": "First line: N. Second line: N integers (initial keys). Third line: X.",
+      "outputDescription": "Inorder traversal after insertion, space-separated.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, X;\n    return 0;\n}",
+      "tests": [
+        { "input": "3\n2 1 3\n4", "expected": "1 2 3 4" }
+      ]
     },
     {
       "id": 9,
       "title": "Delete from BST",
-      "description": "Delete node with value X from BST and print inorder.",
-      "starterCode": "",
-      "tests": []
+      "description": "Delete node with value X from a BST and print inorder traversal after deletion. If X not present, print original inorder.",
+      "inputDescription": "First line: N. Second line: N integers (keys). Third line: X.",
+      "outputDescription": "Inorder traversal after deletion, space-separated.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N, X;\n    return 0;\n}",
+      "tests": [
+        { "input": "5\n5 3 7 2 4\n3", "expected": "2 4 5 7" }
+      ]
     },
     {
       "id": 10,
-      "title": "Lowest Common Ancestor",
-      "description": "Given two nodes, find their LCA.",
-      "starterCode": "",
-      "tests": []
+      "title": "Lowest Common Ancestor in BST",
+      "description": "Given a BST and two values a and b, find their Lowest Common Ancestor (LCA).",
+      "inputDescription": "First line: N. Second line: N integers (keys). Third line: a b.",
+      "outputDescription": "Single integer: LCA value.",
+      "examples": [],
+      "starterCode": "#include <stdio.h>\n\nint main() {\n    int N;\n    return 0;\n}",
+      "tests": [
+        { "input": "6\n5 3 8 2 4 7\n2 4", "expected": "3" },
+        { "input": "6\n5 3 8 2 4 7\n2 7", "expected": "5" }
+      ]
     }
   ]
 }

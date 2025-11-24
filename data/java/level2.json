@@ -4,7 +4,7 @@
   "title": "Java Level 2 — Conditionals",
   "concept": "if/else, comparison operators, simple branching.",
   "language": "java",
-  "problems": [
+  "challenges": [
     {
       "id": 1,
       "name": "Even or Odd",
