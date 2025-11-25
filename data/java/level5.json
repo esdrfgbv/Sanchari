@@ -1,119 +1,170 @@
 {
-    "level": 5,
-  "type" : "Compiler",
-  "title": "Java Level 5 — Arrays & Sorting",
-  "concept": "Basic sorting, frequency, simple 2D arrays.",
-  "language": "java",
+  "level": 5,
+  "title": "Java Level 5 — Patterns & Advanced Loops",
+  "concept": "Nested loops, simple patterns, and slightly more complex string logic.",
+  "type": "Compiler",
   "challenges": [
     {
       "id": 1,
-      "name": "Sort Array Ascending",
-      "description": "Given n and an array, sort elements in non-decreasing order and print them.",
-      "input_format": "First line: n. Second line: n integers.",
-      "output_format": "Sorted array in one line.",
-      "constraints": "1 ≤ n ≤ 10^5",
-      "sample_input": "5\n3 1 4 1 5",
-      "sample_output": "1 1 3 4 5",
-      "notes": "Use Arrays.sort."
+      "title": "Sum of Digits",
+      "description": "Given a non-negative integer n, compute the sum of its digits.",
+      "inputDescription": "Single non-negative integer n.",
+      "outputDescription": "Single integer: sum of digits of n.",
+      "examples": [
+        "Input:\n1234\n\nOutput:\n10"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n and compute sum of digits\n    }\n}",
+      "tests": [
+        { "input": "1234", "expected": "10" },
+        { "input": "0", "expected": "0" }
+      ]
     },
     {
       "id": 2,
-      "name": "Second Largest Element",
-      "description": "Print second largest distinct element in the array. If it does not exist (all equal), print -1.",
-      "input_format": "First line: n. Second line: n integers.",
-      "output_format": "Single integer: second largest or -1.",
-      "constraints": "2 ≤ n ≤ 10^5",
-      "sample_input": "5\n1 2 3 4 5",
-      "sample_output": "4",
-      "notes": ""
+      "title": "Count Words",
+      "description": "Given a line of text containing words separated by spaces, count how many words are present. Assume no leading/trailing spaces and words are separated by a single space.",
+      "inputDescription": "Single line string.",
+      "outputDescription": "Single integer: number of words.",
+      "examples": [
+        "Input:\nhello world java\n\nOutput:\n3"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String line = sc.nextLine();\n        // count words in line\n    }\n}",
+      "tests": [
+        { "input": "hello world java", "expected": "3" },
+        { "input": "single", "expected": "1" }
+      ]
     },
     {
       "id": 3,
-      "name": "Count Distinct Elements",
-      "description": "Given an array, count number of distinct values.",
-      "input_format": "First line: n. Second line: n integers.",
-      "output_format": "Single integer: count of distinct values.",
-      "constraints": "1 ≤ n ≤ 10^5",
-      "sample_input": "5\n1 2 2 3 3",
-      "sample_output": "3",
-      "notes": "Use HashSet."
+      "title": "Rectangle Pattern",
+      "description": "Given two integers n and m, print a solid rectangle of n rows and m columns using '*'.",
+      "inputDescription": "Two integers n and m separated by space.",
+      "outputDescription": "n lines, each with m '*' characters (no spaces).",
+      "examples": [
+        "Input:\n2 3\n\nOutput:\n***\n***"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n, m and print n rows of m '*'\n    }\n}",
+      "tests": [
+        {
+          "input": "2 3",
+          "expected": "***\n***"
+        },
+        {
+          "input": "1 5",
+          "expected": "*****"
+        }
+      ]
     },
     {
       "id": 4,
-      "name": "Matrix Row Sum",
-      "description": "Given matrix of size n x m, print sum of each row on separate line.",
-      "input_format": "First line: n m. Next n lines: m integers each.",
-      "output_format": "n lines, ith line is sum of ith row.",
-      "constraints": "1 ≤ n, m ≤ 500",
-      "sample_input": "2 3\n1 2 3\n4 5 6",
-      "sample_output": "6\n15",
-      "notes": ""
+      "title": "Right Triangle Pattern",
+      "description": "Given n, print a right-angled triangle pattern of '*' of height n. On the i-th line there should be i stars.",
+      "inputDescription": "Single integer n.",
+      "outputDescription": "n lines of increasing '*' from 1 to n.",
+      "examples": [
+        "Input:\n3\n\nOutput:\n*\n**\n***"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // print right-angled triangle of '*' with height n\n    }\n}",
+      "tests": [
+        {
+          "input": "3",
+          "expected": "*\n**\n***"
+        },
+        {
+          "input": "1",
+          "expected": "*"
+        }
+      ]
     },
     {
       "id": 5,
-      "name": "Matrix Transpose",
-      "description": "Given matrix n x m, print its transpose (m x n).",
-      "input_format": "First line: n m. Next n lines: m integers.",
-      "output_format": "Transpose: m lines, each with n integers.",
-      "constraints": "1 ≤ n, m ≤ 200",
-      "sample_input": "2 3\n1 2 3\n4 5 6",
-      "sample_output": "1 4\n2 5\n3 6",
-      "notes": ""
+      "title": "Sum Until Zero",
+      "description": "Read integers one by one until you read 0. Print the sum of all numbers read excluding the final 0.",
+      "inputDescription": "Multiple integers, terminated by 0.",
+      "outputDescription": "Single integer: sum of all non-zero values.",
+      "examples": [
+        "Input:\n1 2 3 0\n\nOutput:\n6"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // keep reading numbers, stop at 0, sum others\n    }\n}",
+      "tests": [
+        { "input": "1 2 3 0", "expected": "6" },
+        { "input": "0", "expected": "0" }
+      ]
     },
     {
       "id": 6,
-      "name": "Pair with Given Sum (Exists?)",
-      "description": "Given array and value S, determine if there exists a pair (i, j) with ai + aj = S (i != j). Print YES or NO.",
-      "input_format": "First line: n. Second line: n integers. Third line: S.",
-      "output_format": "YES or NO.",
-      "constraints": "1 ≤ n ≤ 10^5",
-      "sample_input": "4\n1 4 5 3\n7",
-      "sample_output": "YES",
-      "notes": "Use two-pointer after sorting or HashSet."
+      "title": "First Uppercase",
+      "description": "Given a string S, find and print the first uppercase English letter in it. If there is no uppercase letter, print -1.",
+      "inputDescription": "Single string S without spaces.",
+      "outputDescription": "Single uppercase character or -1.",
+      "examples": [
+        "Input:\naBcD\n\nOutput:\nB"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String s = sc.next();\n        // find first uppercase char or print -1\n    }\n}",
+      "tests": [
+        { "input": "aBcD", "expected": "B" },
+        { "input": "abcd", "expected": "-1" }
+      ]
     },
     {
       "id": 7,
-      "name": "Rotate Array by K",
-      "description": "Right-rotate array by k positions and print result.",
-      "input_format": "First line: n k. Second line: n integers.",
-      "output_format": "Rotated array.",
-      "constraints": "1 ≤ n ≤ 10^5; 0 ≤ k ≤ 10^9",
-      "sample_input": "5 2\n1 2 3 4 5",
-      "sample_output": "4 5 1 2 3",
-      "notes": "Use k = k % n."
+      "title": "Character Frequency",
+      "description": "Given a lowercase string S and a character c, print how many times c appears in S.",
+      "inputDescription": "First line: S. Second line: c (single character).",
+      "outputDescription": "Single integer: frequency of c.",
+      "examples": [
+        "Input:\nbanana\na\n\nOutput:\n3"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String s = sc.next();\n        char c = sc.next().charAt(0);\n        // count how many times c appears in s\n    }\n}",
+      "tests": [
+        { "input": "banana\na", "expected": "3" },
+        { "input": "apple\np", "expected": "2" }
+      ]
     },
     {
       "id": 8,
-      "name": "Merge Two Sorted Arrays",
-      "description": "Given two sorted arrays, merge them into a single sorted array.",
-      "input_format": "First line: n. Second line: n integers sorted. Third line: m. Fourth line: m integers sorted.",
-      "output_format": "Merged sorted array in one line.",
-      "constraints": "1 ≤ n, m ≤ 10^5",
-      "sample_input": "3\n1 3 5\n3\n2 4 6",
-      "sample_output": "1 2 3 4 5 6",
-      "notes": "Use two-pointer merge."
+      "title": "GCD of Two Numbers",
+      "description": "Given two integers a and b, compute their greatest common divisor (GCD) using any loop-based method.",
+      "inputDescription": "Two integers a and b.",
+      "outputDescription": "Single integer: gcd(a, b).",
+      "examples": [
+        "Input:\n12 18\n\nOutput:\n6"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read a, b and compute gcd(a,b)\n    }\n}",
+      "tests": [
+        { "input": "12 18", "expected": "6" },
+        { "input": "7 5", "expected": "1" }
+      ]
     },
     {
       "id": 9,
-      "name": "Longest Non-Negative Segment",
-      "description": "Given an array, find length of the longest contiguous segment consisting of non-negative numbers.",
-      "input_format": "First line: n. Second line: n integers.",
-      "output_format": "Single integer length.",
-      "constraints": "1 ≤ n ≤ 10^5",
-      "sample_input": "7\n1 2 -3 4 5 6 -1",
-      "sample_output": "3",
-      "notes": ""
+      "title": "LCM of Two Numbers",
+      "description": "Given two positive integers a and b, print their least common multiple (LCM).",
+      "inputDescription": "Two integers a and b.",
+      "outputDescription": "Single integer: lcm(a, b).",
+      "examples": [
+        "Input:\n4 6\n\nOutput:\n12"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read a, b and compute lcm using gcd\n    }\n}",
+      "tests": [
+        { "input": "4 6", "expected": "12" },
+        { "input": "5 7", "expected": "35" }
+      ]
     },
     {
       "id": 10,
-      "name": "Frequency of Each Element",
-      "description": "Given n and n integers, print each distinct value and its frequency sorted by value ascending.",
-      "input_format": "First line: n. Second line: n integers.",
-      "output_format": "For each distinct value v, print: v freq, in separate lines, sorted by v.",
-      "constraints": "1 ≤ n ≤ 10^5",
-      "sample_input": "5\n2 1 2 3 1",
-      "sample_output": "1 2\n2 2\n3 1",
-      "notes": "Use Map + sorting keys."
+      "title": "Binary Representation (Loop)",
+      "description": "Given a non-negative integer n, print its binary representation without leading zeros.",
+      "inputDescription": "Single non-negative integer n.",
+      "outputDescription": "String: binary representation of n.",
+      "examples": [
+        "Input:\n5\n\nOutput:\n101"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n and print its binary representation using loops\n    }\n}",
+      "tests": [
+        { "input": "5", "expected": "101" },
+        { "input": "0", "expected": "0" }
+      ]
     }
   ]
 }

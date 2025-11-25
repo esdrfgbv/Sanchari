@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sanchari – Code Visualizer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Main app styling + extra visualizer styling -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="visualizer.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <div class="app-gradient"></div>
+
+  <!-- Top bar reused so theme/profile still work -->
+  <header class="top-bar">
+    <div class="logo">
+      <div class="logo-img"></div>
+      <span class="logo-text">Sanchari</span>
+    </div>
+
+    <div class="top-right">
+      <div id="currentUserLabel" class="user-label hidden">
+        <span>Hi, </span><span id="currentUserName"></span>
+      </div>
+
+      <div class="profile-wrapper">
+        <button id="profileButton" class="profile-btn hidden" aria-label="Profile">
+          <span id="profileInitial">U</span>
+        </button>
+        <div id="profileMenu" class="profile-menu">
+          <div class="profile-menu-header">
+            <span id="profileMenuName">User</span>
+          </div>
+
+          <button id="switchUserBtn" class="profile-menu-item">Switch user</button>
+
+          <div class="profile-menu-item theme-row">
+            <span class="theme-row-label">Theme</span>
+            <button id="themeToggleBtn" class="theme-toggle-pill" data-theme="light">
+              <span class="theme-toggle-knob"></span>
+              <span id="themeToggleLabel" class="theme-toggle-label">Light</span>
+            </button>
+          </div>
+
+          <button id="logoutBtn" class="profile-menu-item">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="visualizer-main">
+    <div class="breadcrumb">
+      <button class="back-btn" onclick="window.location.href='index.html'">
+        ← Back to challenge
+      </button>
+      <span>Code Visualizer</span>
+    </div>
+
+    <section class="visualizer-layout">
+      <!-- LEFT: Code + highlight -->
+      <div class="visualizer-panel glass-card">
+        <div class="visualizer-header">
+          <h2 id="visualizerTitle">Code Visualizer</h2>
+          <span id="visualizerMeta" class="visualizer-meta"></span>
+        </div>
+
+        <div class="visualizer-code-wrapper">
+          <pre id="visualizerCode" class="visualizer-code"></pre>
+        </div>
+      </div>
+
+      <!-- RIGHT: Controls + INPUT + Variables + Log -->
+      <div class="visualizer-panel glass-card">
+        <h3>Execution Steps</h3>
+
+        <p id="lineInfo" class="visualizer-line-info">
+          Load a challenge from the main page and click <strong>Visualize Code</strong>.
+        </p>
+
+        <div class="visualizer-controls">
+          <button id="stepBackBtn" class="btn ghost">⬅ Prev step</button>
+          <button id="resetStepsBtn" class="btn ghost">⟳ Reset</button>
+          <button id="stepForwardBtn" class="btn primary">Next step ➝</button>
+        </div>
+
+        <!-- NEW: Input block -->
+        <div id="visualizerInputBlock" class="visualizer-input">
+          <h4>Input</h4>
+          <p id="inputPrompt" class="visualizer-input-prompt">
+            When your code reaches <code>scanf</code> / <code>cin</code> / <code>input()</code>,
+            execution will pause here and you can type values.
+          </p>
+          <div class="visualizer-input-row">
+            <input
+              id="inputValue"
+              class="visualizer-input-field"
+              placeholder="Enter value(s) here…"
+            />
+            <button id="submitInputBtn" class="btn primary btn-sm" type="button">
+              Submit input
+            </button>
+          </div>
+        </div>
+
+        <div class="visualizer-state">
+          <h4>Variables</h4>
+
+          <div id="variablesEmpty" class="visualizer-empty">
+            No variables yet. Step through lines that assign values.
+          </div>
+
+          <table id="variablesTable" class="visualizer-vars-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="visualizer-log">
+          <h4>Execution Log</h4>
+          <div id="execLog" class="visualizer-log-body"></div>
+        </div>
+
+        <div class="visualizer-help">
+          <ul>
+            <li>Supports simple assignments, arithmetic, <code>for</code> loops and inputs.</li>
+            <li>Each <strong>Next step</strong> executes one logical step (including loop iterations).</li>
+            <li>For input lines, type values and click <strong>Submit input</strong> to continue.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© 2025 Sanchari — Code Visualizer</span>
+  </footer>
+
+  <!-- Shared app logic (theme/profile) + visualizer logic -->
+  <script src="script.js"></script>
+  <script src="visualizer.js"></script>
+</body>
+</html>

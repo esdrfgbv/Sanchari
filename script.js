@@ -29,6 +29,7 @@ const testSummaryBadge = document.getElementById("testSummaryBadge");
 
 const runCodeBtn = document.getElementById("runCodeBtn");
 const testCodeBtn = document.getElementById("testCodeBtn");
+const visualizeCodeBtn = document.getElementById("visualizeCodeBtn");
 const resetStarterBtn = document.getElementById("resetStarterBtn");
 const clearCodeBtn = document.getElementById("clearCodeBtn");
 
@@ -201,7 +202,7 @@ function updateAuthModeUI() {
     authSubmitBtn.textContent = "Login";
     authToggleMode.textContent = "New here? Create account";
   } else {
-    authTitle.textContent = "Create your EduWin profile ✨";
+    authTitle.textContent = "Create your Sanchari profile ✨";
     authSubtitle.textContent = "Each profile will have separate progress.";
     authSubmitBtn.textContent = "Create account";
     authToggleMode.textContent = "Already have an account? Login";
@@ -405,6 +406,7 @@ function updateCourseCardsUI() {
     const icon = card.querySelector(".course-icon");
     if (icon) {
       icon.style.backgroundImage = `url(logos/${lang}.png)`;
+      icon.textContent = "";
     }
 
     // Ensure progress element exists
@@ -1919,11 +1921,37 @@ async function runSingleTest(testIndex) {
 if (runCodeBtn) {
   runCodeBtn.addEventListener("click", runCode);
 }
+
 if (testCodeBtn) {
   testCodeBtn.addEventListener("click", () => {
     runTests();
   });
 }
+
+// NEW: Visualize Code button → save payload + go to visualizer.html
+if (visualizeCodeBtn) {
+  visualizeCodeBtn.addEventListener("click", () => {
+    if (!codeEditor) return;
+
+    const payload = {
+      code: codeEditor.value || "",
+      language: currentLanguage,
+      levelIndex: currentLevelIndex,
+      challengeIndex: currentChallengeIndex,
+      title: challengeTitle ? challengeTitle.textContent : ""
+    };
+
+    // Store for the visualizer page to read
+    localStorage.setItem(
+      "sanchari_visualizer_payload",
+      JSON.stringify(payload)
+    );
+
+    // Go to the separate visualiser page
+    window.location.href = "visualizer.html";
+  });
+}
+
 if (resetStarterBtn) {
   resetStarterBtn.addEventListener("click", () => {
     const level = challengeData.levels[currentLevelIndex];
@@ -1949,6 +1977,7 @@ if (resetStarterBtn) {
     }
   });
 }
+
 
 // Auto-save editor
 if (codeEditor) {

@@ -1,119 +1,164 @@
 {
-    "level": 3,
-  "type" : "Compiler",
+  "level": 3,
   "title": "Java Level 3 — Loops & Simple Algorithms",
   "concept": "for/while loops, counting, sums, simple patterns.",
-  "language": "java",
+  "type": "Compiler",
   "challenges": [
     {
       "id": 1,
-      "name": "Sum from 1 to N",
+      "title": "Sum from 1 to N",
       "description": "Given n, compute 1 + 2 + ... + n.",
-      "input_format": "Single integer n.",
-      "output_format": "Single integer sum.",
-      "constraints": "1 ≤ n ≤ 10^7 (use long)",
-      "sample_input": "5",
-      "sample_output": "15",
-      "notes": "Loop or formula; both accepted."
+      "inputDescription": "Single integer n.",
+      "outputDescription": "Single integer sum.",
+      "examples": [
+        "Input:\n5\n\nOutput:\n15"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n and compute 1+2+...+n\n    }\n}",
+      "tests": [
+        { "input": "5", "expected": "15" },
+        { "input": "1", "expected": "1" }
+      ]
     },
     {
       "id": 2,
-      "name": "Factorial",
+      "title": "Factorial",
       "description": "Given n, compute n! (factorial).",
-      "input_format": "Single integer n.",
-      "output_format": "Single long integer n!.",
-      "constraints": "0 ≤ n ≤ 20",
-      "sample_input": "5",
-      "sample_output": "120",
-      "notes": "Use long; for n>20 overflow occurs, but n ≤ 20."
+      "inputDescription": "Single integer n.",
+      "outputDescription": "Single long integer n!.",
+      "examples": [
+        "Input:\n5\n\nOutput:\n120"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n and compute n! using loop\n    }\n}",
+      "tests": [
+        { "input": "5", "expected": "120" },
+        { "input": "0", "expected": "1" }
+      ]
     },
     {
       "id": 3,
-      "name": "Count Digits",
+      "title": "Count Digits",
       "description": "Given integer n (non-negative), count number of digits.",
-      "input_format": "Single non-negative integer n.",
-      "output_format": "Single integer: number of digits.",
-      "constraints": "0 ≤ n ≤ 10^18",
-      "sample_input": "12345",
-      "sample_output": "5",
-      "notes": "Special case: n=0 has 1 digit."
+      "inputDescription": "Single non-negative integer n.",
+      "outputDescription": "Single integer: number of digits.",
+      "examples": [
+        "Input:\n12345\n\nOutput:\n5"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n and count its digits (0 has 1 digit)\n    }\n}",
+      "tests": [
+        { "input": "12345", "expected": "5" },
+        { "input": "0", "expected": "1" }
+      ]
     },
     {
       "id": 4,
-      "name": "Power of Two",
+      "title": "Power of Two",
       "description": "Given integer n, print YES if n is a power of 2 (1,2,4,8,...) else NO.",
-      "input_format": "Single integer n.",
-      "output_format": "YES or NO.",
-      "constraints": "1 ≤ n ≤ 10^9",
-      "sample_input": "16",
-      "sample_output": "YES",
-      "notes": "Use loop or bit trick (n & (n-1))."
+      "inputDescription": "Single integer n.",
+      "outputDescription": "YES or NO.",
+      "examples": [
+        "Input:\n16\n\nOutput:\nYES"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n and check if it is power of two\n    }\n}",
+      "tests": [
+        { "input": "16", "expected": "YES" },
+        { "input": "12", "expected": "NO" }
+      ]
     },
     {
       "id": 5,
-      "name": "Multiplication Table",
+      "title": "Multiplication Table",
       "description": "Given n, print its multiplication table from 1 to 10 (one per line).",
-      "input_format": "Single integer n.",
-      "output_format": "10 lines: n * i for i=1..10.",
-      "constraints": "−10^4 ≤ n ≤ 10^4",
-      "sample_input": "2",
-      "sample_output": "2\n4\n6\n8\n10\n12\n14\n16\n18\n20",
-      "notes": "Each result on new line."
+      "inputDescription": "Single integer n.",
+      "outputDescription": "10 lines: n * i for i = 1..10.",
+      "examples": [
+        "Input:\n2\n\nOutput:\n2\n4\n6\n8\n10\n12\n14\n16\n18\n20"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n and print n*i for i=1..10, each on new line\n    }\n}",
+      "tests": [
+        {
+          "input": "2",
+          "expected": "2\n4\n6\n8\n10\n12\n14\n16\n18\n20"
+        },
+        {
+          "input": "1",
+          "expected": "1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
+        }
+      ]
     },
     {
       "id": 6,
-      "name": "Reverse Digits",
+      "title": "Reverse Digits",
       "description": "Given a non-negative integer n, print the number formed by its digits in reverse order.",
-      "input_format": "Single integer n.",
-      "output_format": "Single integer: reversed number.",
-      "constraints": "0 ≤ n ≤ 10^9",
-      "sample_input": "1234",
-      "sample_output": "4321",
-      "notes": "No leading zeros in output."
+      "inputDescription": "Single integer n.",
+      "outputDescription": "Single integer: reversed number.",
+      "examples": [
+        "Input:\n1234\n\nOutput:\n4321"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n and print digits reversed\n    }\n}",
+      "tests": [
+        { "input": "1234", "expected": "4321" },
+        { "input": "1000", "expected": "1" }
+      ]
     },
     {
       "id": 7,
-      "name": "Sum of Even Numbers",
+      "title": "Sum of Even Numbers",
       "description": "Given n, print the sum of all even numbers from 1 to n.",
-      "input_format": "Single integer n.",
-      "output_format": "Single integer sum.",
-      "constraints": "1 ≤ n ≤ 10^7",
-      "sample_input": "6",
-      "sample_output": "12",
-      "notes": "Even numbers: 2+4+6=12."
+      "inputDescription": "Single integer n.",
+      "outputDescription": "Single integer sum.",
+      "examples": [
+        "Input:\n6\n\nOutput:\n12"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n and sum even numbers from 1 to n\n    }\n}",
+      "tests": [
+        { "input": "6", "expected": "12" },
+        { "input": "1", "expected": "0" }
+      ]
     },
     {
       "id": 8,
-      "name": "Count Divisors",
+      "title": "Count Divisors",
       "description": "Given n, count its positive divisors.",
-      "input_format": "Single integer n.",
-      "output_format": "Single integer: number of divisors.",
-      "constraints": "1 ≤ n ≤ 10^6",
-      "sample_input": "6",
-      "sample_output": "4",
-      "notes": "Divisors: 1,2,3,6."
+      "inputDescription": "Single integer n.",
+      "outputDescription": "Single integer: number of divisors.",
+      "examples": [
+        "Input:\n6\n\nOutput:\n4"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n and count its positive divisors\n    }\n}",
+      "tests": [
+        { "input": "6", "expected": "4" },
+        { "input": "1", "expected": "1" }
+      ]
     },
     {
       "id": 9,
-      "name": "Prime or Not",
+      "title": "Prime or Not",
       "description": "Given n, print YES if n is prime, else NO.",
-      "input_format": "Single integer n.",
-      "output_format": "YES or NO.",
-      "constraints": "2 ≤ n ≤ 10^6",
-      "sample_input": "7",
-      "sample_output": "YES",
-      "notes": "Check divisors up to sqrt(n)."
+      "inputDescription": "Single integer n.",
+      "outputDescription": "YES or NO.",
+      "examples": [
+        "Input:\n7\n\nOutput:\nYES"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n and check if n is prime\n    }\n}",
+      "tests": [
+        { "input": "7", "expected": "YES" },
+        { "input": "8", "expected": "NO" }
+      ]
     },
     {
       "id": 10,
-      "name": "Fibonacci Nth Term",
+      "title": "Fibonacci Nth Term",
       "description": "Given n, print nth Fibonacci number (F1 = 0, F2 = 1).",
-      "input_format": "Single integer n.",
-      "output_format": "Single long integer.",
-      "constraints": "1 ≤ n ≤ 50",
-      "sample_input": "6",
-      "sample_output": "5",
-      "notes": "Sequence: 0,1,1,2,3,5,... (here F6 = 5)."
+      "inputDescription": "Single integer n.",
+      "outputDescription": "Single long integer.",
+      "examples": [
+        "Input:\n6\n\nOutput:\n5"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n and print nth Fibonacci (F1=0, F2=1)\n    }\n}",
+      "tests": [
+        { "input": "6", "expected": "5" },
+        { "input": "1", "expected": "0" }
+      ]
     }
   ]
 }

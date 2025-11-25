@@ -1,119 +1,158 @@
 {
-    "level": 6,
-  "type" : "Compiler",
-  "title": "Java Level 6 — Methods & Basic OOP",
-  "concept": "Defining methods, simple classes, encapsulation basics.",
-  "language": "java",
+  "level": 6,
+  "title": "Java Level 6 — Methods & Reuse",
+  "concept": "Defining and using methods, parameter passing, returning values.",
+  "type": "Compiler",
   "challenges": [
     {
       "id": 1,
-      "name": "GCD of Two Numbers",
-      "description": "Write a method gcd(a, b) that returns greatest common divisor using Euclidean algorithm and use it in main.",
-      "input_format": "Two integers a and b.",
-      "output_format": "Single integer: gcd(a, b).",
-      "constraints": "1 ≤ a, b ≤ 10^9",
-      "sample_input": "12 18",
-      "sample_output": "6",
-      "notes": "Implement gcd as static method."
+      "title": "Power Function",
+      "description": "Write a method power(a, b) that returns a^b for non-negative integer b, using loops (no Math.pow). Read a and b, print a^b.",
+      "inputDescription": "Two integers a and b (b >= 0).",
+      "outputDescription": "Single long integer a^b.",
+      "examples": [
+        "Input:\n2 3\n\nOutput:\n8"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static long power(int a, int b) {\n        // compute a^b using loop\n        return 0L;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        System.out.println(power(a, b));\n    }\n}",
+      "tests": [
+        { "input": "2 3", "expected": "8" },
+        { "input": "5 0", "expected": "1" }
+      ]
     },
     {
       "id": 2,
-      "name": "Is Prime Method",
-      "description": "Write a method isPrime(n) that returns true if n is prime, else false. In main, print YES or NO.",
-      "input_format": "Single integer n.",
-      "output_format": "YES or NO.",
-      "constraints": "2 ≤ n ≤ 10^6",
-      "sample_input": "11",
-      "sample_output": "YES",
-      "notes": ""
+      "title": "Is Prime (Method)",
+      "description": "Write a method isPrime(n) which returns true if n is prime, false otherwise. Use it to print YES or NO.",
+      "inputDescription": "Single integer n.",
+      "outputDescription": "YES if prime, otherwise NO.",
+      "examples": [
+        "Input:\n11\n\nOutput:\nYES"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static boolean isPrime(int n) {\n        // return true if n is prime\n        return false;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        System.out.println(isPrime(n) ? \"YES\" : \"NO\");\n    }\n}",
+      "tests": [
+        { "input": "11", "expected": "YES" },
+        { "input": "12", "expected": "NO" }
+      ]
     },
     {
       "id": 3,
-      "name": "Sum of Array (Method)",
-      "description": "Write a method sumArray(int[] a) that returns sum of elements. Use it after reading input.",
-      "input_format": "First line: n. Second line: n integers.",
-      "output_format": "Single long integer: sum.",
-      "constraints": "1 ≤ n ≤ 10^5",
-      "sample_input": "3\n10 20 30",
-      "sample_output": "60",
-      "notes": ""
+      "title": "Maximum of Array (Method)",
+      "description": "Write a method maxArray(arr) that returns the maximum element of an integer array.",
+      "inputDescription": "First line: n. Second line: n integers.",
+      "outputDescription": "Single integer: maximum value.",
+      "examples": [
+        "Input:\n4\n1 7 3 2\n\nOutput:\n7"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static int maxArray(int[] arr) {\n        // return maximum element\n        return 0;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n        for (int i = 0; i < n; i++) arr[i] = sc.nextInt();\n        System.out.println(maxArray(arr));\n    }\n}",
+      "tests": [
+        { "input": "4\n1 7 3 2", "expected": "7" },
+        { "input": "1\n-5", "expected": "-5" }
+      ]
     },
     {
       "id": 4,
-      "name": "Rectangle Class",
-      "description": "Create a class Rectangle with fields width and height (int), constructor, and method area() returning width*height. Read w,h, create object, print area().",
-      "input_format": "Two integers w h.",
-      "output_format": "Single integer: area.",
-      "constraints": "1 ≤ w, h ≤ 10^6",
-      "sample_input": "4 5",
-      "sample_output": "20",
-      "notes": ""
+      "title": "Palindrome Number (Method)",
+      "description": "Write a method isPalindrome(n) that returns true if the decimal representation of n is a palindrome.",
+      "inputDescription": "Single non-negative integer n.",
+      "outputDescription": "YES or NO.",
+      "examples": [
+        "Input:\n121\n\nOutput:\nYES"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static boolean isPalindrome(int n) {\n        // return true if digits of n form a palindrome\n        return false;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        System.out.println(isPalindrome(n) ? \"YES\" : \"NO\");\n    }\n}",
+      "tests": [
+        { "input": "121", "expected": "YES" },
+        { "input": "123", "expected": "NO" }
+      ]
     },
     {
       "id": 5,
-      "name": "Circle Class",
-      "description": "Create Circle class with radius (double) and method getArea() using π=3.14. Read radius, create object, print area with 2 decimals.",
-      "input_format": "Single double r.",
-      "output_format": "Area with 2 decimal places.",
-      "constraints": "0 ≤ r ≤ 10^4",
-      "sample_input": "3",
-      "sample_output": "28.26",
-      "notes": ""
+      "title": "Sum of Array (Method)",
+      "description": "Write a method sumArray that returns the sum of all elements of an integer array.",
+      "inputDescription": "First line: n. Second line: n integers.",
+      "outputDescription": "Single integer: sum.",
+      "examples": [
+        "Input:\n3\n1 2 3\n\nOutput:\n6"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static long sumArray(int[] arr) {\n        // sum all elements\n        return 0L;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n        for (int i = 0; i < n; i++) arr[i] = sc.nextInt();\n        System.out.println(sumArray(arr));\n    }\n}",
+      "tests": [
+        { "input": "3\n1 2 3", "expected": "6" },
+        { "input": "4\n0 0 0 0", "expected": "0" }
+      ]
     },
     {
       "id": 6,
-      "name": "Student Class",
-      "description": "Define Student with fields name (String), age (int). Read name and age, create object and print \"Name: <name>, Age: <age>\".",
-      "input_format": "First line: name. Second line: age.",
-      "output_format": "Single line: Name: <name>, Age: <age>",
-      "constraints": "1 ≤ age ≤ 120",
-      "sample_input": "Alice\n20",
-      "sample_output": "Name: Alice, Age: 20",
-      "notes": ""
+      "title": "Digit Count (Method)",
+      "description": "Write a method countDigits(n) that returns the number of digits in non-negative integer n.",
+      "inputDescription": "Single non-negative integer n.",
+      "outputDescription": "Single integer: digit count.",
+      "examples": [
+        "Input:\n999\n\nOutput:\n3"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static int countDigits(int n) {\n        // count digits of n (0 has 1 digit)\n        return 0;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        System.out.println(countDigits(n));\n    }\n}",
+      "tests": [
+        { "input": "999", "expected": "3" },
+        { "input": "0", "expected": "1" }
+      ]
     },
     {
       "id": 7,
-      "name": "Overloaded Sum Methods",
-      "description": "Create overloaded methods sum(int a, int b) and sum(int a, int b, int c). Read 2 or 3 numbers; if input has 2 numbers print sum of two; if 3 print sum of three.",
-      "input_format": "First integer k (2 or 3). Next k integers.",
-      "output_format": "Single integer sum.",
-      "constraints": "k ∈ {2,3}",
-      "sample_input": "3\n1 2 3",
-      "sample_output": "6",
-      "notes": ""
+      "title": "Swap Values (Method)",
+      "description": "Write a method swap(a, b) that prints the two integers in swapped order (b and then a).",
+      "inputDescription": "Two integers a and b.",
+      "outputDescription": "Two integers: b and a, separated by space.",
+      "examples": [
+        "Input:\n5 10\n\nOutput:\n10 5"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static void swap(int a, int b) {\n        // print b and a\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        swap(a, b);\n    }\n}",
+      "tests": [
+        { "input": "5 10", "expected": "10 5" },
+        { "input": "1 1", "expected": "1 1" }
+      ]
     },
     {
       "id": 8,
-      "name": "Static Utility Method: isPalindrome",
-      "description": "Write a static method isPalindrome(String s) that checks if s is palindrome. Read s, print YES or NO.",
-      "input_format": "Single string s.",
-      "output_format": "YES or NO.",
-      "constraints": "0 ≤ |s| ≤ 10^5",
-      "sample_input": "madam",
-      "sample_output": "YES",
-      "notes": ""
+      "title": "Minimum of Three (Method)",
+      "description": "Write a method min3(a, b, c) that returns the minimum of three integers.",
+      "inputDescription": "Three integers a, b, c.",
+      "outputDescription": "Single integer: minimum.",
+      "examples": [
+        "Input:\n3 1 2\n\nOutput:\n1"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static int min3(int a, int b, int c) {\n        // return minimum of a, b, c\n        return 0;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        int c = sc.nextInt();\n        System.out.println(min3(a, b, c));\n    }\n}",
+      "tests": [
+        { "input": "3 1 2", "expected": "1" },
+        { "input": "-1 -2 -3", "expected": "-3" }
+      ]
     },
     {
       "id": 9,
-      "name": "Temperature Converter Class",
-      "description": "Create class TempConverter with static methods toCelsius(double f) and toFahrenheit(double c). Read an integer t and value x. If t=1 convert F->C, if t=2 convert C->F. Print with 2 decimals.",
-      "input_format": "First line: t (1 or 2). Second line: double x.",
-      "output_format": "One double with 2 decimal places.",
-      "constraints": "−1000 ≤ x ≤ 1000",
-      "sample_input": "1\n50",
-      "sample_output": "10.00",
-      "notes": ""
+      "title": "Reverse String (Method)",
+      "description": "Write a method reverseString(s) that returns the reverse of a string.",
+      "inputDescription": "Single string s without spaces.",
+      "outputDescription": "Reversed string.",
+      "examples": [
+        "Input:\nhello\n\nOutput:\nolleh"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static String reverseString(String s) {\n        // return reversed string\n        return \"\";\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String s = sc.next();\n        System.out.println(reverseString(s));\n    }\n}",
+      "tests": [
+        { "input": "hello", "expected": "olleh" },
+        { "input": "a", "expected": "a" }
+      ]
     },
     {
       "id": 10,
-      "name": "Bank Account Class",
-      "description": "Create BankAccount class with fields owner (String) and balance (double), constructor, deposit(amount), withdraw(amount) (no negative balance check). Read owner, initial balance, then an integer q operations of type D amount or W amount. After all operations print final balance with 2 decimals.",
-      "input_format": "Line1: owner (string no spaces). Line2: double balance. Line3: int q. Next q lines: operation: 'D x' or 'W x'.",
-      "output_format": "Final balance with 2 decimals.",
-      "constraints": "0 ≤ q ≤ 10^5",
-      "sample_input": "Ram\n1000\n3\nD 500\nW 200\nD 100",
-      "sample_output": "1400.00",
-      "notes": ""
+      "title": "Is Vowel (Method)",
+      "description": "Write a method isVowel(c) which returns true if character c is a vowel (a, e, i, o, u in any case), false otherwise.",
+      "inputDescription": "Single character c.",
+      "outputDescription": "YES if c is vowel, NO otherwise.",
+      "examples": [
+        "Input:\na\n\nOutput:\nYES"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static boolean isVowel(char c) {\n        // return true if vowel (case insensitive)\n        return false;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        char c = sc.next().charAt(0);\n        System.out.println(isVowel(c) ? \"YES\" : \"NO\");\n    }\n}",
+      "tests": [
+        { "input": "a", "expected": "YES" },
+        { "input": "Z", "expected": "NO" }
+      ]
     }
   ]
 }

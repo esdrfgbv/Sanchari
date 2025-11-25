@@ -1,119 +1,158 @@
 {
-    "level": 2,
-  "type" : "Compiler",
+  "level": 2,
   "title": "Java Level 2 — Conditionals",
   "concept": "if/else, comparison operators, simple branching.",
-  "language": "java",
+  "type": "Compiler",
   "challenges": [
     {
       "id": 1,
-      "name": "Even or Odd",
+      "title": "Even or Odd",
       "description": "Given an integer n, print \"EVEN\" if n is even, otherwise print \"ODD\".",
-      "input_format": "Single integer n.",
-      "output_format": "String: EVEN or ODD.",
-      "constraints": "−10^9 ≤ n ≤ 10^9",
-      "sample_input": "4",
-      "sample_output": "EVEN",
-      "notes": ""
+      "inputDescription": "Single integer n.",
+      "outputDescription": "String: EVEN or ODD.",
+      "examples": [
+        "Input:\n4\n\nOutput:\nEVEN"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n, check parity and print EVEN or ODD\n    }\n}",
+      "tests": [
+        { "input": "4", "expected": "EVEN" },
+        { "input": "7", "expected": "ODD" }
+      ]
     },
     {
       "id": 2,
-      "name": "Positive, Negative or Zero",
+      "title": "Positive, Negative or Zero",
       "description": "Print POSITIVE, NEGATIVE or ZERO depending on the sign of n.",
-      "input_format": "Single integer n.",
-      "output_format": "One of: POSITIVE, NEGATIVE, ZERO.",
-      "constraints": "−10^9 ≤ n ≤ 10^9",
-      "sample_input": "0",
-      "sample_output": "ZERO",
-      "notes": ""
+      "inputDescription": "Single integer n.",
+      "outputDescription": "One of: POSITIVE, NEGATIVE, ZERO.",
+      "examples": [
+        "Input:\n0\n\nOutput:\nZERO"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n, then print POSITIVE, NEGATIVE or ZERO\n    }\n}",
+      "tests": [
+        { "input": "0", "expected": "ZERO" },
+        { "input": "-5", "expected": "NEGATIVE" }
+      ]
     },
     {
       "id": 3,
-      "name": "Maximum of Two",
+      "title": "Maximum of Two",
       "description": "Read two integers a and b, print the larger one. If equal, print either.",
-      "input_format": "Two integers a and b.",
-      "output_format": "Single integer: max(a, b).",
-      "constraints": "−10^9 ≤ a, b ≤ 10^9",
-      "sample_input": "10 20",
-      "sample_output": "20",
-      "notes": ""
+      "inputDescription": "Two integers a and b.",
+      "outputDescription": "Single integer: max(a, b).",
+      "examples": [
+        "Input:\n10 20\n\nOutput:\n20"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read a, b then print the larger one\n    }\n}",
+      "tests": [
+        { "input": "10 20", "expected": "20" },
+        { "input": "5 5", "expected": "5" }
+      ]
     },
     {
       "id": 4,
-      "name": "Leap Year Checker",
+      "title": "Leap Year Checker",
       "description": "Given a year y, print YES if it is a leap year, otherwise NO. Use Gregorian rules.",
-      "input_format": "Single integer y.",
-      "output_format": "YES or NO.",
-      "constraints": "1 ≤ y ≤ 10^6",
-      "sample_input": "2000",
-      "sample_output": "YES",
-      "notes": "Leap year if divisible by 400, or divisible by 4 but not by 100."
+      "inputDescription": "Single integer y.",
+      "outputDescription": "YES or NO.",
+      "examples": [
+        "Input:\n2000\n\nOutput:\nYES"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read y, apply leap year rules, print YES or NO\n    }\n}",
+      "tests": [
+        { "input": "2000", "expected": "YES" },
+        { "input": "1900", "expected": "NO" }
+      ]
     },
     {
       "id": 5,
-      "name": "Grade Category",
+      "title": "Grade Category",
       "description": "Given marks m (0–100), print grade: A (>=90), B (80–89), C (70–79), D (60–69), F (<60).",
-      "input_format": "Single integer m.",
-      "output_format": "Single character: A/B/C/D/F.",
-      "constraints": "0 ≤ m ≤ 100",
-      "sample_input": "85",
-      "sample_output": "B",
-      "notes": ""
+      "inputDescription": "Single integer m.",
+      "outputDescription": "Single character: A/B/C/D/F.",
+      "examples": [
+        "Input:\n85\n\nOutput:\nB"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read m, then print the grade category\n    }\n}",
+      "tests": [
+        { "input": "95", "expected": "A" },
+        { "input": "59", "expected": "F" }
+      ]
     },
     {
       "id": 6,
-      "name": "Minimum of Three",
+      "title": "Minimum of Three",
       "description": "Read three integers and print the smallest.",
-      "input_format": "Three integers a, b, c.",
-      "output_format": "Single integer: min(a, b, c).",
-      "constraints": "−10^9 ≤ a, b, c ≤ 10^9",
-      "sample_input": "3 1 2",
-      "sample_output": "1",
-      "notes": ""
+      "inputDescription": "Three integers a, b, c.",
+      "outputDescription": "Single integer: min(a, b, c).",
+      "examples": [
+        "Input:\n3 1 2\n\nOutput:\n1"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read a, b, c then print the smallest\n    }\n}",
+      "tests": [
+        { "input": "3 1 2", "expected": "1" },
+        { "input": "-5 -1 -3", "expected": "-5" }
+      ]
     },
     {
       "id": 7,
-      "name": "Absolute Value",
+      "title": "Absolute Value",
       "description": "Print the absolute value of given integer n.",
-      "input_format": "Single integer n.",
-      "output_format": "Single non-negative integer.",
-      "constraints": "−10^9 ≤ n ≤ 10^9",
-      "sample_input": "-7",
-      "sample_output": "7",
-      "notes": ""
+      "inputDescription": "Single integer n.",
+      "outputDescription": "Single non-negative integer.",
+      "examples": [
+        "Input:\n-7\n\nOutput:\n7"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n, then print its absolute value\n    }\n}",
+      "tests": [
+        { "input": "-7", "expected": "7" },
+        { "input": "0", "expected": "0" }
+      ]
     },
     {
       "id": 8,
-      "name": "Triangle Validity",
+      "title": "Triangle Validity",
       "description": "Given three sides a, b, c, print YES if they can form a triangle, otherwise NO.",
-      "input_format": "Three integers a, b, c.",
-      "output_format": "YES or NO.",
-      "constraints": "1 ≤ a, b, c ≤ 10^9",
-      "sample_input": "3 4 5",
-      "sample_output": "YES",
-      "notes": "Valid if a + b > c, a + c > b, b + c > a."
+      "inputDescription": "Three integers a, b, c.",
+      "outputDescription": "YES or NO.",
+      "examples": [
+        "Input:\n3 4 5\n\nOutput:\nYES"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read a, b, c then check triangle inequality and print YES or NO\n    }\n}",
+      "tests": [
+        { "input": "3 4 5", "expected": "YES" },
+        { "input": "1 2 3", "expected": "NO" }
+      ]
     },
     {
       "id": 9,
-      "name": "Ticket Pricing",
+      "title": "Ticket Pricing",
       "description": "Given age, if age < 12 ticket is 50, if 12–17 ticket is 100, else 150. Print price.",
-      "input_format": "Single integer age.",
-      "output_format": "Single integer price.",
-      "constraints": "0 ≤ age ≤ 120",
-      "sample_input": "15",
-      "sample_output": "100",
-      "notes": ""
+      "inputDescription": "Single integer age.",
+      "outputDescription": "Single integer price.",
+      "examples": [
+        "Input:\n15\n\nOutput:\n100"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read age, then print ticket price as per rules\n    }\n}",
+      "tests": [
+        { "input": "10", "expected": "50" },
+        { "input": "30", "expected": "150" }
+      ]
     },
     {
       "id": 10,
-      "name": "Multiple of Both",
+      "title": "Multiple of Both",
       "description": "Given n, print \"BOTH\" if n is divisible by 3 and 5, \"THREE\" if only by 3, \"FIVE\" if only by 5, otherwise \"NONE\".",
-      "input_format": "Single integer n.",
-      "output_format": "BOTH/THREE/FIVE/NONE.",
-      "constraints": "−10^9 ≤ n ≤ 10^9",
-      "sample_input": "30",
-      "sample_output": "BOTH",
-      "notes": ""
+      "inputDescription": "Single integer n.",
+      "outputDescription": "BOTH/THREE/FIVE/NONE.",
+      "examples": [
+        "Input:\n30\n\nOutput:\nBOTH"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n, test divisibility by 3 and 5, then print BOTH/THREE/FIVE/NONE\n    }\n}",
+      "tests": [
+        { "input": "30", "expected": "BOTH" },
+        { "input": "9", "expected": "THREE" }
+      ]
     }
   ]
 }

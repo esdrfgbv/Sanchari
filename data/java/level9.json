@@ -1,119 +1,158 @@
 {
-    "level": 9,
-  "type" : "Compiler",
-  "title": "Java Level 9 — Advanced OOP & Exceptions",
-  "concept": "Inheritance, interfaces, overriding, basic exception handling (still stdin/stdout based problems).",
-  "language": "java",
+  "level": 9,
+  "title": "Java Level 9 — Recursion Basics",
+  "concept": "Recursive functions for math, strings, and arrays.",
+  "type": "Compiler",
   "challenges": [
     {
       "id": 1,
-      "name": "Shape Inheritance: Rectangle & Square",
-      "description": "Create base class Shape with method double area(). Create Rectangle(width, height) extends Shape and overrides area(). Create Square(side) extends Rectangle using super. Read 'R w h' or 'S s' and print area with 2 decimals.",
-      "input_format": "Single line: either 'R w h' or 'S s'.",
-      "output_format": "Area with 2 decimals.",
-      "constraints": "1 ≤ sides ≤ 10^6",
-      "sample_input": "S 4",
-      "sample_output": "16.00",
-      "notes": ""
+      "title": "Recursive Factorial",
+      "description": "Implement factorial(n) recursively (n! with n >= 0).",
+      "inputDescription": "Single integer n.",
+      "outputDescription": "Single long integer n!.",
+      "examples": [
+        "Input:\n5\n\nOutput:\n120"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static long fact(int n) {\n        // recursive factorial\n        return 0L;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        System.out.println(fact(n));\n    }\n}",
+      "tests": [
+        { "input": "5", "expected": "120" },
+        { "input": "0", "expected": "1" }
+      ]
     },
     {
       "id": 2,
-      "name": "Interface Payable",
-      "description": "Define interface Payable with method double getPaymentAmount(). Implement classes Employee(salary) and Invoice(quantity, pricePerItem). Read type and values and print payment amount.",
-      "input_format": "First word: type 'EMP' or 'INV'. For EMP: salary. For INV: quantity pricePerItem.",
-      "output_format": "Payment amount with 2 decimals.",
-      "constraints": "Positive values only.",
-      "sample_input": "INV 5 20",
-      "sample_output": "100.00",
-      "notes": ""
+      "title": "Recursive Fibonacci",
+      "description": "Implement recursive fibonacci(n) with f(1)=0, f(2)=1, and print f(n).",
+      "inputDescription": "Single integer n.",
+      "outputDescription": "Single long integer.",
+      "examples": [
+        "Input:\n6\n\nOutput:\n5"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static long fib(int n) {\n        // recursive fibonacci\n        return 0L;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        System.out.println(fib(n));\n    }\n}",
+      "tests": [
+        { "input": "6", "expected": "5" },
+        { "input": "1", "expected": "0" }
+      ]
     },
     {
       "id": 3,
-      "name": "Bank Account with Overdraft Check",
-      "description": "Extend earlier BankAccount: if withdraw amount > balance, do not change balance and print \"INSUFFICIENT\" before final balance. Otherwise withdraw. Print final balance.",
-      "input_format": "Owner, initial balance, q operations (D/W).",
-      "output_format": "Messages (if any) and final balance with 2 decimals.",
-      "constraints": "0 ≤ q ≤ 10^5",
-      "sample_input": "Ram\n100\n2\nW 150\nD 50",
-      "sample_output": "INSUFFICIENT\n150.00",
-      "notes": "Simple logic, no real exceptions."
+      "title": "Sum 1 to N Recursively",
+      "description": "Compute 1 + 2 + ... + n using recursion.",
+      "inputDescription": "Single integer n.",
+      "outputDescription": "Single integer sum.",
+      "examples": [
+        "Input:\n5\n\nOutput:\n15"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static long sumToN(int n) {\n        // recursive sum from 1 to n\n        return 0L;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        System.out.println(sumToN(n));\n    }\n}",
+      "tests": [
+        { "input": "5", "expected": "15" },
+        { "input": "1", "expected": "1" }
+      ]
     },
     {
       "id": 4,
-      "name": "Custom Exception: InvalidAgeException",
-      "description": "Define custom checked exception InvalidAgeException. Read age; if age < 18 throw exception and catch it in main printing \"INVALID AGE\". Otherwise print \"VALID\".",
-      "input_format": "Single integer age.",
-      "output_format": "INVALID AGE or VALID.",
-      "constraints": "0 ≤ age ≤ 150",
-      "sample_input": "16",
-      "sample_output": "INVALID AGE",
-      "notes": ""
+      "title": "String Reverse Recursively",
+      "description": "Given a string s, print its reverse using a recursive function.",
+      "inputDescription": "Single string s without spaces.",
+      "outputDescription": "Reversed string.",
+      "examples": [
+        "Input:\nabc\n\nOutput:\ncba"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static String reverse(String s) {\n        // recursive reverse\n        return \"\";\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String s = sc.next();\n        System.out.println(reverse(s));\n    }\n}",
+      "tests": [
+        { "input": "abc", "expected": "cba" },
+        { "input": "a", "expected": "a" }
+      ]
     },
     {
       "id": 5,
-      "name": "Abstract Class Animal",
-      "description": "Create abstract class Animal with abstract String sound(). Implement Dog and Cat classes. Read \"dog\" or \"cat\" and print their sound (e.g., \"Woof\" or \"Meow\").",
-      "input_format": "Single word: dog or cat.",
-      "output_format": "Sound string.",
-      "constraints": "",
-      "sample_input": "dog",
-      "sample_output": "Woof",
-      "notes": ""
+      "title": "Sum of Array Recursively",
+      "description": "Given n and an array arr, compute sum of all elements using a recursive function.",
+      "inputDescription": "First line: n. Second line: n integers.",
+      "outputDescription": "Single integer: sum.",
+      "examples": [
+        "Input:\n3\n1 2 3\n\nOutput:\n6"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static long sumArr(int[] arr, int idx) {\n        // recursively sum from idx to end\n        return 0L;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n        for (int i = 0; i < n; i++) arr[i] = sc.nextInt();\n        System.out.println(sumArr(arr, 0));\n    }\n}",
+      "tests": [
+        { "input": "3\n1 2 3", "expected": "6" },
+        { "input": "1\n5", "expected": "5" }
+      ]
     },
     {
       "id": 6,
-      "name": "Polymorphic Shape Array",
-      "description": "Read n, then n lines each describing 'R w h' or 'S s' (Rectangle/Square). Store as Shape references, then print total area of all shapes.",
-      "input_format": "n then n lines of shapes.",
-      "output_format": "Total area with 2 decimals.",
-      "constraints": "1 ≤ n ≤ 10^5",
-      "sample_input": "2\nR 2 3\nS 4",
-      "sample_output": "22.00",
-      "notes": ""
+      "title": "Count Digits Recursively",
+      "description": "Count the number of digits of a non-negative integer n using recursion.",
+      "inputDescription": "Single non-negative integer n.",
+      "outputDescription": "Single integer: digit count.",
+      "examples": [
+        "Input:\n123\n\nOutput:\n3"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static int digits(int n) {\n        // recursive digit count (0 has 1 digit)\n        return 0;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        System.out.println(digits(n));\n    }\n}",
+      "tests": [
+        { "input": "123", "expected": "3" },
+        { "input": "0", "expected": "1" }
+      ]
     },
     {
       "id": 7,
-      "name": "Comparable Student by Marks",
-      "description": "Create class Student(name, marks) implementing Comparable<Student> sorted by marks desc, then name asc. Read n, then n students, sort and print them.",
-      "input_format": "n, then n lines: name marks.",
-      "output_format": "n lines: name marks sorted.",
-      "constraints": "1 ≤ n ≤ 10^5",
-      "sample_input": "3\nRam 90\nSam 95\nAbi 95",
-      "sample_output": "Abi 95\nSam 95\nRam 90",
-      "notes": ""
+      "title": "Power (Recursive)",
+      "description": "Compute a^b using recursion, with b >= 0.",
+      "inputDescription": "Two integers a and b.",
+      "outputDescription": "Single long integer a^b.",
+      "examples": [
+        "Input:\n2 4\n\nOutput:\n16"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static long power(int a, int b) {\n        // recursive power\n        return 0L;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int a = sc.nextInt();\n        int b = sc.nextInt();\n        System.out.println(power(a, b));\n    }\n}",
+      "tests": [
+        { "input": "2 4", "expected": "16" },
+        { "input": "3 0", "expected": "1" }
+      ]
     },
     {
       "id": 8,
-      "name": "Try-Catch Divide by Zero",
-      "description": "Read two integers a and b. Try to compute a/b. If division by zero occurs, catch exception and print \"ERROR\" instead of result.",
-      "input_format": "Two integers a b.",
-      "output_format": "Either quotient (integer division) or ERROR.",
-      "constraints": "−10^9 ≤ a, b ≤ 10^9",
-      "sample_input": "10 0",
-      "sample_output": "ERROR",
-      "notes": ""
+      "title": "Is Array Sorted (Recursive)",
+      "description": "Given an array of n integers, check recursively if it is sorted in non-decreasing order.",
+      "inputDescription": "First line: n. Second line: n integers.",
+      "outputDescription": "YES if sorted, otherwise NO.",
+      "examples": [
+        "Input:\n4\n1 2 2 3\n\nOutput:\nYES"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static boolean isSorted(int[] arr, int idx) {\n        // recursive sorted check\n        return false;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n        for (int i = 0; i < n; i++) arr[i] = sc.nextInt();\n        System.out.println(isSorted(arr, 0) ? \"YES\" : \"NO\");\n    }\n}",
+      "tests": [
+        { "input": "4\n1 2 2 3", "expected": "YES" },
+        { "input": "3\n3 2 1", "expected": "NO" }
+      ]
     },
     {
       "id": 9,
-      "name": "Immutable Point Class",
-      "description": "Create immutable class Point with final x,y and method distanceTo(Point other). Read x1,y1,x2,y2 and print Euclidean distance with 4 decimals.",
-      "input_format": "Four doubles x1 y1 x2 y2.",
-      "output_format": "Distance with 4 decimals.",
-      "constraints": "",
-      "sample_input": "0 0 3 4",
-      "sample_output": "5.0000",
-      "notes": ""
+      "title": "Binary Search (Recursive)",
+      "description": "Implement recursive binary search on a sorted array.",
+      "inputDescription": "First line: n. Second line: n sorted integers. Third line: x.",
+      "outputDescription": "Index of x (0-based) or -1.",
+      "examples": [
+        "Input:\n5\n1 2 3 4 5\n4\n\nOutput:\n3"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static int bs(int[] arr, int l, int r, int x) {\n        // recursive binary search\n        return -1;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n        for (int i = 0; i < n; i++) arr[i] = sc.nextInt();\n        int x = sc.nextInt();\n        System.out.println(bs(arr, 0, n - 1, x));\n    }\n}",
+      "tests": [
+        { "input": "5\n1 2 3 4 5\n4", "expected": "3" },
+        { "input": "4\n1 3 5 7\n2", "expected": "-1" }
+      ]
     },
     {
       "id": 10,
-      "name": "Interface Shape3D (Volume)",
-      "description": "Define interface Shape3D with method double volume(). Implement Cube(side) and Sphere(radius with π=3.14). Read type and size, print volume.",
-      "input_format": "Line: 'C side' or 'S r'.",
-      "output_format": "Volume with 2 decimals.",
-      "constraints": "",
-      "sample_input": "C 3",
-      "sample_output": "27.00",
-      "notes": ""
+      "title": "Print 1 to N Recursively",
+      "description": "Print numbers from 1 to n using recursion, each on its own line.",
+      "inputDescription": "Single integer n.",
+      "outputDescription": "n lines: 1 to n.",
+      "examples": [
+        "Input:\n3\n\nOutput:\n1\n2\n3"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    static void print1toN(int n) {\n        // print 1..n recursively\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        print1toN(n);\n    }\n}",
+      "tests": [
+        { "input": "3", "expected": "1\n2\n3" },
+        { "input": "1", "expected": "1" }
+      ]
     }
   ]
 }

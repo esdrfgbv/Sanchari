@@ -1,119 +1,156 @@
 {
-    "level": 10,
-  "type" : "Compiler",
-  "title": "Java Level 10 — Mixed Algorithmic Challenges",
-  "concept": "Harder problems combining arrays, strings, maps, and basic algorithms.",
-  "language": "java",
+  "level": 10,
+  "title": "Java Level 10 — Problem Solving Mix",
+  "concept": "Combining arrays, loops, methods, recursion and basic algorithms.",
+  "type": "Compiler",
   "challenges": [
     {
       "id": 1,
-      "name": "Two Sum Indices",
-      "description": "Given n and array, and target S, find any pair of indices i, j (0-based, i<j) such that ai + aj = S. Print i j or -1 if not found.",
-      "input_format": "n, array of n integers, then S.",
-      "output_format": "Either two integers i j or -1.",
-      "constraints": "1 ≤ n ≤ 10^5",
-      "sample_input": "4\n2 7 11 15\n9",
-      "sample_output": "0 1",
-      "notes": "Use HashMap for O(n)."
+      "title": "Second Largest Element",
+      "description": "Given n and an array of n integers (n >= 2), print the second largest distinct element. If it does not exist (all equal), print -1.",
+      "inputDescription": "First line: n. Second line: n integers.",
+      "outputDescription": "Single integer: second largest or -1.",
+      "examples": [
+        "Input:\n5\n1 2 3 4 5\n\nOutput:\n4"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // find second largest distinct element\n    }\n}",
+      "tests": [
+        { "input": "5\n1 2 3 4 5", "expected": "4" },
+        { "input": "3\n7 7 7", "expected": "-1" }
+      ]
     },
     {
       "id": 2,
-      "name": "Longest Increasing Subsequence Length",
-      "description": "Given n and array, compute length of longest strictly increasing subsequence.",
-      "input_format": "n, then n integers.",
-      "output_format": "Single integer length.",
-      "constraints": "1 ≤ n ≤ 10^5",
-      "sample_input": "6\n10 9 2 5 3 7",
-      "sample_output": "3",
-      "notes": "O(n log n) LIS algorithm recommended."
+      "title": "Kadane Maximum Subarray Sum",
+      "description": "Given n and an array, find the maximum subarray sum using Kadane's algorithm or any O(n) method.",
+      "inputDescription": "First line: n. Second line: n integers.",
+      "outputDescription": "Single integer: maximum subarray sum.",
+      "examples": [
+        "Input:\n5\n-1 2 3 -2 4\n\nOutput:\n7"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // implement Kadane's algorithm\n    }\n}",
+      "tests": [
+        { "input": "5\n-1 2 3 -2 4", "expected": "7" },
+        { "input": "3\n-5 -1 -2", "expected": "-1" }
+      ]
     },
     {
       "id": 3,
-      "name": "Kadane Maximum Subarray Sum",
-      "description": "Compute maximum subarray sum (at least one element).",
-      "input_format": "n, then n integers.",
-      "output_format": "Single integer max sum.",
-      "constraints": "1 ≤ n ≤ 10^5",
-      "sample_input": "5\n-2 1 -3 4 -1",
-      "sample_output": "4",
-      "notes": "Use Kadane's algorithm."
+      "title": "Rotate Array Right",
+      "description": "Given n, an array of n integers, and k, rotate the array to the right by k positions and print the result.",
+      "inputDescription": "First line: n. Second line: n integers. Third line: k.",
+      "outputDescription": "One line: rotated array.",
+      "examples": [
+        "Input:\n5\n1 2 3 4 5\n2\n\nOutput:\n4 5 1 2 3"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // rotate array right by k (k may be > n)\n    }\n}",
+      "tests": [
+        { "input": "5\n1 2 3 4 5\n2", "expected": "4 5 1 2 3" },
+        { "input": "4\n1 2 3 4\n4", "expected": "1 2 3 4" }
+      ]
     },
     {
       "id": 4,
-      "name": "Longest Substring Without Repeating Characters",
-      "description": "Given string s, find length of longest substring without repeating characters.",
-      "input_format": "Single string s.",
-      "output_format": "Single integer length.",
-      "constraints": "0 ≤ |s| ≤ 10^5",
-      "sample_input": "abcabcbb",
-      "sample_output": "3",
-      "notes": "Use sliding window + map/array."
+      "title": "Matrix Diagonal Sum",
+      "description": "Given n and an n x n matrix, print the sum of its main diagonal elements.",
+      "inputDescription": "First line: n. Next n lines: n integers each.",
+      "outputDescription": "Single integer: diagonal sum.",
+      "examples": [
+        "Input:\n3\n1 2 3\n4 5 6\n7 8 9\n\nOutput:\n15"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read matrix and sum a[i][i]\n    }\n}",
+      "tests": [
+        { "input": "3\n1 2 3\n4 5 6\n7 8 9", "expected": "15" },
+        { "input": "1\n5", "expected": "5" }
+      ]
     },
     {
       "id": 5,
-      "name": "Majority Element",
-      "description": "Given array where a majority element may or may not exist (appears > n/2 times). Print element if exists else -1.",
-      "input_format": "n, then n integers.",
-      "output_format": "Majority element or -1.",
-      "constraints": "1 ≤ n ≤ 10^5",
-      "sample_input": "5\n2 2 1 2 3",
-      "sample_output": "2",
-      "notes": "Use Boyer–Moore + verify."
+      "title": "Transpose of Matrix",
+      "description": "Given n and m and an n x m matrix, print its transpose (m x n).",
+      "inputDescription": "First line: n m. Next n lines: m integers each.",
+      "outputDescription": "m lines, each with n integers.",
+      "examples": [
+        "Input:\n2 3\n1 2 3\n4 5 6\n\nOutput:\n1 4\n2 5\n3 6"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n, m and matrix, then print transpose\n    }\n}",
+      "tests": [
+        { "input": "2 3\n1 2 3\n4 5 6", "expected": "1 4\n2 5\n3 6" }
+      ]
     },
     {
       "id": 6,
-      "name": "Merge Intervals",
-      "description": "Given n intervals [l, r], merge overlapping intervals and print resulting intervals sorted by l.",
-      "input_format": "n, then n lines: l r.",
-      "output_format": "k lines of merged intervals: l r.",
-      "constraints": "1 ≤ n ≤ 10^5",
-      "sample_input": "3\n1 3\n2 6\n8 10",
-      "sample_output": "1 6\n8 10",
-      "notes": ""
+      "title": "Valid Parentheses",
+      "description": "Given a string consisting of only '(' and ')', check if it is a valid parentheses sequence. Use stack logic. Print YES or NO.",
+      "inputDescription": "Single string s.",
+      "outputDescription": "YES if valid, otherwise NO.",
+      "examples": [
+        "Input:\n(()())\n\nOutput:\nYES"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String s = sc.next();\n        // use stack counter logic to check validity\n    }\n}",
+      "tests": [
+        { "input": "(()())", "expected": "YES" },
+        { "input": "())(", "expected": "NO" }
+      ]
     },
     {
       "id": 7,
-      "name": "Meeting Rooms (Minimum Rooms)",
-      "description": "Given n meeting intervals [start, end), find minimum number of rooms required so that no meetings in same room overlap.",
-      "input_format": "n, then n lines start end.",
-      "output_format": "Single integer: min rooms.",
-      "constraints": "1 ≤ n ≤ 10^5",
-      "sample_input": "3\n0 30\n5 10\n15 20",
-      "sample_output": "2",
-      "notes": "Use sweep line or min-heap."
+      "title": "Longest Word in a Sentence",
+      "description": "Given a line of text, find the longest word (max length). If there are multiple, print the first one.",
+      "inputDescription": "Single line of text with words separated by spaces.",
+      "outputDescription": "Single word: longest word.",
+      "examples": [
+        "Input:\nI love programming\n\nOutput:\nprogramming"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String line = sc.nextLine();\n        // split and track longest word\n    }\n}",
+      "tests": [
+        { "input": "I love programming", "expected": "programming" },
+        { "input": "one two", "expected": "one" }
+      ]
     },
     {
       "id": 8,
-      "name": "Shortest Path in Unweighted Graph",
-      "description": "Given undirected unweighted graph (n vertices, m edges), and s, t, find length of shortest path (edges count). If no path, print -1.",
-      "input_format": "n m, then m lines u v (1-based), then s t.",
-      "output_format": "Single integer distance or -1.",
-      "constraints": "1 ≤ n ≤ 10^5; 0 ≤ m ≤ 2*10^5",
-      "sample_input": "4 3\n1 2\n2 3\n3 4\n1 4",
-      "sample_output": "3",
-      "notes": "Use BFS."
+      "title": "Substring Search",
+      "description": "Given two strings text and pattern, print the index of the first occurrence of pattern in text, or -1 if not found. Use 0-based indexing.",
+      "inputDescription": "First line: text. Second line: pattern.",
+      "outputDescription": "Single integer index or -1.",
+      "examples": [
+        "Input:\nabracadabra\ncad\n\nOutput:\n4"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static int findPattern(String text, String pattern) {\n        // simple O(n*m) search is fine\n        return -1;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String text = sc.next();\n        String pattern = sc.next();\n        System.out.println(findPattern(text, pattern));\n    }\n}",
+      "tests": [
+        { "input": "abracadabra\ncad", "expected": "4" },
+        { "input": "aaaaa\nb", "expected": "-1" }
+      ]
     },
     {
       "id": 9,
-      "name": "Number of Islands in Grid",
-      "description": "Given n x m grid of '0' and '1', count number of connected components of '1' (4-direction).",
-      "input_format": "n m, then n lines each with m characters (0/1).",
-      "output_format": "Single integer: count of islands.",
-      "constraints": "1 ≤ n, m ≤ 1000",
-      "sample_input": "3 3\n110\n010\n001",
-      "sample_output": "2",
-      "notes": "Use DFS/BFS."
+      "title": "Matrix Search",
+      "description": "Given n, m and an n x m matrix, and an integer x, check if x appears in the matrix. Print YES or NO.",
+      "inputDescription": "First line: n m. Next n lines: m integers each. Last line: x.",
+      "outputDescription": "YES if x appears, else NO.",
+      "examples": [
+        "Input:\n2 3\n1 2 3\n4 5 6\n5\n\nOutput:\nYES"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // scan matrix and search x\n    }\n}",
+      "tests": [
+        { "input": "2 3\n1 2 3\n4 5 6\n5", "expected": "YES" },
+        { "input": "1 1\n10\n5", "expected": "NO" }
+      ]
     },
     {
       "id": 10,
-      "name": "Dijkstra Single Source Shortest Path",
-      "description": "Given weighted directed graph with non-negative weights, compute shortest distance from source s to all vertices and print distance to t (or -1 if unreachable).",
-      "input_format": "n m, then m lines: u v w, then s t.",
-      "output_format": "Single integer: distance or -1.",
-      "constraints": "1 ≤ n ≤ 10^5; 0 ≤ m ≤ 2*10^5; 0 ≤ w ≤ 10^9",
-      "sample_input": "3 3\n1 2 4\n1 3 2\n3 2 1\n1 2",
-      "sample_output": "3",
-      "notes": "Use Dijkstra with priority queue."
+      "title": "Spiral Print Matrix",
+      "description": "Given n, m and a matrix, print its elements in spiral order (clockwise), all in one line separated by spaces.",
+      "inputDescription": "First line: n m. Next n lines: m integers each.",
+      "outputDescription": "One line: elements in spiral order.",
+      "examples": [
+        "Input:\n3 3\n1 2 3\n4 5 6\n7 8 9\n\nOutput:\n1 2 3 6 9 8 7 4 5"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // implement spiral traversal of matrix\n    }\n}",
+      "tests": [
+        { "input": "3 3\n1 2 3\n4 5 6\n7 8 9", "expected": "1 2 3 6 9 8 7 4 5" }
+      ]
     }
   ]
 }

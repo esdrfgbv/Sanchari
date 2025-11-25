@@ -1,119 +1,158 @@
 {
-    "level": 1,
-  "type" : "Compiler",
+  "level": 1,
   "title": "Java Level 1 — Basic I/O & Arithmetic",
   "concept": "Reading from stdin, printing to stdout, basic arithmetic.",
-  "language": "java",
+  "type": "Compiler",
   "challenges": [
     {
       "id": 1,
-      "name": "Sum of Two Integers",
+      "title": "Sum of Two Integers",
       "description": "Read two integers a and b. Print their sum a + b.",
-      "input_format": "Two integers a and b separated by space.",
-      "output_format": "Single integer: the sum of a and b.",
-      "constraints": "−10^9 ≤ a, b ≤ 10^9",
-      "sample_input": "5 7",
-      "sample_output": "12",
-      "notes": "Use Scanner or BufferedReader in Java."
+      "inputDescription": "Two integers a and b separated by space.",
+      "outputDescription": "Single integer: the sum of a and b.",
+      "examples": [
+        "Input:\n5 7\n\nOutput:\n12"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read a and b, then print their sum\n    }\n}",
+      "tests": [
+        { "input": "5 7", "expected": "12" },
+        { "input": "-3 10", "expected": "7" }
+      ]
     },
     {
       "id": 2,
-      "name": "Product of Two Integers",
+      "title": "Product of Two Integers",
       "description": "Read two integers and print their product.",
-      "input_format": "Two integers a and b.",
-      "output_format": "Single integer: a * b.",
-      "constraints": "−10^6 ≤ a, b ≤ 10^6",
-      "sample_input": "3 4",
-      "sample_output": "12",
-      "notes": "Result fits in 32-bit signed int."
+      "inputDescription": "Two integers a and b.",
+      "outputDescription": "Single integer: a * b.",
+      "examples": [
+        "Input:\n3 4\n\nOutput:\n12"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read a and b, then print their product\n    }\n}",
+      "tests": [
+        { "input": "3 4", "expected": "12" },
+        { "input": "-5 2", "expected": "-10" }
+      ]
     },
     {
       "id": 3,
-      "name": "Area of a Rectangle",
+      "title": "Area of a Rectangle",
       "description": "Given width w and height h, print the area w * h.",
-      "input_format": "Two integers w and h.",
-      "output_format": "Single integer: area.",
-      "constraints": "1 ≤ w, h ≤ 10^4",
-      "sample_input": "5 2",
-      "sample_output": "10",
-      "notes": ""
+      "inputDescription": "Two integers w and h.",
+      "outputDescription": "Single integer: area.",
+      "examples": [
+        "Input:\n5 2\n\nOutput:\n10"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read w and h, then print w*h\n    }\n}",
+      "tests": [
+        { "input": "5 2", "expected": "10" },
+        { "input": "7 3", "expected": "21" }
+      ]
     },
     {
       "id": 4,
-      "name": "Next and Previous",
+      "title": "Next and Previous",
       "description": "Given an integer n, print two integers: n-1 and n+1, separated by space.",
-      "input_format": "Single integer n.",
-      "output_format": "Two integers: previous and next.",
-      "constraints": "−10^9 ≤ n ≤ 10^9",
-      "sample_input": "10",
-      "sample_output": "9 11",
-      "notes": ""
+      "inputDescription": "Single integer n.",
+      "outputDescription": "Two integers: previous and next.",
+      "examples": [
+        "Input:\n10\n\nOutput:\n9 11"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n, then print n-1 and n+1\n    }\n}",
+      "tests": [
+        { "input": "10", "expected": "9 11" },
+        { "input": "0", "expected": "-1 1" }
+      ]
     },
     {
       "id": 5,
-      "name": "Minutes to Seconds",
+      "title": "Minutes to Seconds",
       "description": "Given time in minutes, convert to seconds.",
-      "input_format": "Single integer m.",
-      "output_format": "Single integer: m * 60.",
-      "constraints": "0 ≤ m ≤ 10^6",
-      "sample_input": "5",
-      "sample_output": "300",
-      "notes": ""
+      "inputDescription": "Single integer m.",
+      "outputDescription": "Single integer: m * 60.",
+      "examples": [
+        "Input:\n5\n\nOutput:\n300"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read m, then print m*60\n    }\n}",
+      "tests": [
+        { "input": "5", "expected": "300" },
+        { "input": "0", "expected": "0" }
+      ]
     },
     {
       "id": 6,
-      "name": "Simple Interest",
+      "title": "Simple Interest",
       "description": "Given principal P, rate R (per year), time T (in years), compute simple interest = (P * R * T) / 100 as integer (floor).",
-      "input_format": "Three integers P, R, T.",
-      "output_format": "Single integer: simple interest.",
-      "constraints": "0 ≤ P, R, T ≤ 10^6",
-      "sample_input": "1000 10 1",
-      "sample_output": "100",
-      "notes": "Use integer arithmetic; no decimals."
+      "inputDescription": "Three integers P, R, T.",
+      "outputDescription": "Single integer: simple interest.",
+      "examples": [
+        "Input:\n1000 10 1\n\nOutput:\n100"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read P, R, T then print (P*R*T)/100\n    }\n}",
+      "tests": [
+        { "input": "1000 10 1", "expected": "100" },
+        { "input": "1500 7 2", "expected": "210" }
+      ]
     },
     {
       "id": 7,
-      "name": "Circle Circumference",
+      "title": "Circle Circumference",
       "description": "Given radius r (integer), print the circumference using π ≈ 3.14. Output as double with exactly two decimal places.",
-      "input_format": "Single integer r.",
-      "output_format": "One double value with two decimal places.",
-      "constraints": "0 ≤ r ≤ 10^4",
-      "sample_input": "5",
-      "sample_output": "31.40",
-      "notes": "Use 2 * 3.14 * r and format with String.format."
+      "inputDescription": "Single integer r.",
+      "outputDescription": "One double value with two decimal places.",
+      "examples": [
+        "Input:\n5\n\nOutput:\n31.40"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read r, compute 2 * 3.14 * r and print with 2 decimal places\n    }\n}",
+      "tests": [
+        { "input": "5", "expected": "31.40" },
+        { "input": "0", "expected": "0.00" }
+      ]
     },
     {
       "id": 8,
-      "name": "Fahrenheit to Celsius",
+      "title": "Fahrenheit to Celsius",
       "description": "Given temperature in Fahrenheit F, convert to Celsius C = (F - 32) * 5 / 9. Print result as integer (floor).",
-      "input_format": "Single integer F.",
-      "output_format": "Single integer: C.",
-      "constraints": "−1000 ≤ F ≤ 1000",
-      "sample_input": "50",
-      "sample_output": "10",
-      "notes": ""
+      "inputDescription": "Single integer F.",
+      "outputDescription": "Single integer: C.",
+      "examples": [
+        "Input:\n50\n\nOutput:\n10"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read F, compute (F - 32) * 5 / 9 and print as integer\n    }\n}",
+      "tests": [
+        { "input": "50", "expected": "10" },
+        { "input": "32", "expected": "0" }
+      ]
     },
     {
       "id": 9,
-      "name": "Last Digit",
+      "title": "Last Digit",
       "description": "Given an integer n, print its last digit (absolute value).",
-      "input_format": "Single integer n.",
-      "output_format": "Single digit 0–9.",
-      "constraints": "−10^9 ≤ n ≤ 10^9",
-      "sample_input": "-123",
-      "sample_output": "3",
-      "notes": "Use Math.abs(n % 10)."
+      "inputDescription": "Single integer n.",
+      "outputDescription": "Single digit 0–9.",
+      "examples": [
+        "Input:\n-123\n\nOutput:\n3"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read n, then print absolute value of n % 10\n    }\n}",
+      "tests": [
+        { "input": "-123", "expected": "3" },
+        { "input": "90", "expected": "0" }
+      ]
     },
     {
       "id": 10,
-      "name": "Sum of Three Numbers",
+      "title": "Sum of Three Numbers",
       "description": "Read three integers and print their sum.",
-      "input_format": "Three integers a, b, c.",
-      "output_format": "Single integer: a + b + c.",
-      "constraints": "−10^9 ≤ a, b, c ≤ 10^9",
-      "sample_input": "1 2 3",
-      "sample_output": "6",
-      "notes": ""
+      "inputDescription": "Three integers a, b, c.",
+      "outputDescription": "Single integer: a + b + c.",
+      "examples": [
+        "Input:\n1 2 3\n\nOutput:\n6"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read a, b, c then print their sum\n    }\n}",
+      "tests": [
+        { "input": "1 2 3", "expected": "6" },
+        { "input": "-1 0 5", "expected": "4" }
+      ]
     }
   ]
 }

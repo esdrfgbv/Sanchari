@@ -1,119 +1,157 @@
 {
-    "level": 8,
-  "type" : "Compiler",
-  "title": "Java Level 8 — Recursion & Algorithms",
-  "concept": "Recursive functions, backtracking-lite, slightly harder array/string logic.",
-  "language": "java",
+  "level": 8,
+  "title": "Java Level 8 — Collections & Simple Algorithms",
+  "concept": "Using ArrayList, basic searching, frequency counting and maps.",
+  "type": "Compiler",
   "challenges": [
     {
       "id": 1,
-      "name": "Recursive Factorial",
-      "description": "Implement factorial using recursion and print n!.",
-      "input_format": "Single integer n.",
-      "output_format": "Single long integer.",
-      "constraints": "0 ≤ n ≤ 20",
-      "sample_input": "5",
-      "sample_output": "120",
-      "notes": ""
+      "title": "Unique Elements",
+      "description": "Given n and an array of n integers, print how many distinct values are present.",
+      "inputDescription": "First line: n. Second line: n integers.",
+      "outputDescription": "Single integer: number of distinct values.",
+      "examples": [
+        "Input:\n5\n1 2 2 3 1\n\nOutput:\n3"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // use a Set to count distinct elements\n    }\n}",
+      "tests": [
+        { "input": "5\n1 2 2 3 1", "expected": "3" },
+        { "input": "3\n1 1 1", "expected": "1" }
+      ]
     },
     {
       "id": 2,
-      "name": "Recursive Fibonacci",
-      "description": "Implement Fibonacci using recursion (memoization recommended to avoid TLE). Print nth Fibonacci (F1=0, F2=1).",
-      "input_format": "Single integer n.",
-      "output_format": "Single long integer.",
-      "constraints": "1 ≤ n ≤ 50",
-      "sample_input": "6",
-      "sample_output": "5",
-      "notes": "Better to implement iterative or memoized."
+      "title": "Most Frequent Element",
+      "description": "Given n and an array, print the element with the highest frequency. If multiple elements have same highest frequency, print the smallest such element.",
+      "inputDescription": "First line: n. Second line: n integers.",
+      "outputDescription": "Single integer: most frequent element (with smallest value on tie).",
+      "examples": [
+        "Input:\n6\n1 2 2 3 3 3\n\nOutput:\n3"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // build frequency map and choose most frequent\n    }\n}",
+      "tests": [
+        { "input": "6\n1 2 2 3 3 3", "expected": "3" },
+        { "input": "5\n1 2 2 1 3", "expected": "1" }
+      ]
     },
     {
       "id": 3,
-      "name": "Sum of Digits (Recursion)",
-      "description": "Given non-negative integer n, recursively compute sum of its digits.",
-      "input_format": "Single integer n.",
-      "output_format": "Single integer: sum.",
-      "constraints": "0 ≤ n ≤ 10^9",
-      "sample_input": "1234",
-      "sample_output": "10",
-      "notes": ""
+      "title": "Merge Two Lists",
+      "description": "Read two lists A and B, then print a merged list with all elements of A followed by all elements of B.",
+      "inputDescription": "First line: n. Second line: n integers (A). Third line: m. Fourth line: m integers (B).",
+      "outputDescription": "One line with n+m integers separated by space.",
+      "examples": [
+        "Input:\n3\n1 2 3\n2\n4 5\n\nOutput:\n1 2 3 4 5"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read two lists, merge into one ArrayList, print\n    }\n}",
+      "tests": [
+        { "input": "3\n1 2 3\n2\n4 5", "expected": "1 2 3 4 5" },
+        { "input": "0\n\n0\n", "expected": "" }
+      ]
     },
     {
       "id": 4,
-      "name": "Binary Search (Recursive)",
-      "description": "Given sorted array and value x, implement recursive binary search. Print index (0-based) or -1.",
-      "input_format": "n, array of n sorted ints, then x.",
-      "output_format": "Index or -1.",
-      "constraints": "1 ≤ n ≤ 10^5",
-      "sample_input": "5\n1 3 5 7 9\n7",
-      "sample_output": "3",
-      "notes": ""
+      "title": "Intersection of Arrays",
+      "description": "Given two arrays of integers, print the count of elements that appear in both arrays (distinct elements only).",
+      "inputDescription": "First line: n. Second line: n integers. Third line: m. Fourth line: m integers.",
+      "outputDescription": "Single integer: count of common distinct elements.",
+      "examples": [
+        "Input:\n4\n1 2 3 4\n4\n3 4 5 6\n\nOutput:\n2"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // build sets and count intersection size\n    }\n}",
+      "tests": [
+        { "input": "4\n1 2 3 4\n4\n3 4 5 6", "expected": "2" },
+        { "input": "3\n1 2 3\n3\n4 5 6", "expected": "0" }
+      ]
     },
     {
       "id": 5,
-      "name": "Generate All Subsets (Bitmask Count Only)",
-      "description": "Given n (n ≤ 20), count how many subsets of {1..n} have even sum. Use recursion or bitmasks.",
-      "input_format": "Single integer n.",
-      "output_format": "Single integer: count.",
-      "constraints": "1 ≤ n ≤ 20",
-      "sample_input": "3",
-      "sample_output": "4",
-      "notes": "Subsets with even sum: {}, {1,3}, {2}, {2,1,3}."
+      "title": "Anagrams",
+      "description": "Given two lowercase strings s1 and s2, check if they are anagrams (same characters with same counts). Print YES or NO.",
+      "inputDescription": "First line: s1. Second line: s2.",
+      "outputDescription": "YES or NO.",
+      "examples": [
+        "Input:\nlisten\nsilent\n\nOutput:\nYES"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String s1 = sc.next();\n        String s2 = sc.next();\n        // check anagram using frequency or sorting\n    }\n}",
+      "tests": [
+        { "input": "listen\nsilent", "expected": "YES" },
+        { "input": "hello\nworld", "expected": "NO" }
+      ]
     },
     {
       "id": 6,
-      "name": "String Permutation Check",
-      "description": "Given two strings s and t, check if t is a permutation of s (same multiset of characters). Print YES or NO.",
-      "input_format": "Two lines: s, t.",
-      "output_format": "YES or NO.",
-      "constraints": "0 ≤ |s|, |t| ≤ 10^5",
-      "sample_input": "abc\nbca",
-      "sample_output": "YES",
-      "notes": ""
+      "title": "Remove Duplicates from List",
+      "description": "Given a list of integers, remove duplicates but keep the first occurrence of each element. Print resulting list in order.",
+      "inputDescription": "First line: n. Second line: n integers.",
+      "outputDescription": "One line: list without duplicates, same order.",
+      "examples": [
+        "Input:\n6\n1 2 2 3 1 4\n\nOutput:\n1 2 3 4"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // use LinkedHashSet or manual check to preserve order\n    }\n}",
+      "tests": [
+        { "input": "6\n1 2 2 3 1 4", "expected": "1 2 3 4" },
+        { "input": "3\n5 5 5", "expected": "5" }
+      ]
     },
     {
       "id": 7,
-      "name": "Balanced Parentheses",
-      "description": "Given a string of brackets ()[]{}, check if it is balanced using stack. Print YES or NO.",
-      "input_format": "Single string of characters '()[]{}'.",
-      "output_format": "YES or NO.",
-      "constraints": "0 ≤ |s| ≤ 10^5",
-      "sample_input": "{[()]}",
-      "sample_output": "YES",
-      "notes": ""
+      "title": "Word Frequency",
+      "description": "Given a line with words separated by spaces, print the number of times each distinct word appears, in any order, one word per line in format: word count.",
+      "inputDescription": "Single line of text.",
+      "outputDescription": "Multiple lines: word and its count.",
+      "examples": [
+        "Input:\na b a\n\nOutput (order may vary):\na 2\nb 1"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        String line = sc.nextLine();\n        // split line and count frequencies with Map\n    }\n}",
+      "tests": [
+        { "input": "a b a", "expected": "a 2\nb 1" }
+      ]
     },
     {
       "id": 8,
-      "name": "Subset Sum Exists",
-      "description": "Given n and n numbers and target S (n ≤ 20), determine recursively if there exists subset whose sum is S. Print YES or NO.",
-      "input_format": "n, then n integers, then S.",
-      "output_format": "YES or NO.",
-      "constraints": "1 ≤ n ≤ 20",
-      "sample_input": "4\n1 2 3 4\n6",
-      "sample_output": "YES",
-      "notes": ""
+      "title": "Sort List",
+      "description": "Given n and a list of n integers, sort them in non-decreasing order and print.",
+      "inputDescription": "First line: n. Second line: n integers.",
+      "outputDescription": "One line: sorted integers.",
+      "examples": [
+        "Input:\n5\n3 1 4 1 2\n\nOutput:\n1 1 2 3 4"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // read list, sort using Collections or Arrays, print\n    }\n}",
+      "tests": [
+        { "input": "5\n3 1 4 1 2", "expected": "1 1 2 3 4" },
+        { "input": "3\n3 2 1", "expected": "1 2 3" }
+      ]
     },
     {
       "id": 9,
-      "name": "String Compression",
-      "description": "Given string s, compress consecutive repeating characters as char followed by count (e.g., aaabb -> a3b2). If compressed string is not shorter, print original.",
-      "input_format": "Single string s.",
-      "output_format": "Compressed or original string.",
-      "constraints": "0 ≤ |s| ≤ 10^5",
-      "sample_input": "aaabb",
-      "sample_output": "a3b2",
-      "notes": ""
+      "title": "Binary Search in Sorted Array",
+      "description": "Given a sorted array of n integers and a value x, use binary search logic to print the index (0-based) of x, or -1 if not found.",
+      "inputDescription": "First line: n. Second line: n sorted integers. Third line: x.",
+      "outputDescription": "Single integer: index or -1.",
+      "examples": [
+        "Input:\n5\n1 2 3 4 5\n3\n\nOutput:\n2"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static int binarySearch(int[] arr, int x) {\n        // implement binary search\n        return -1;\n    }\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n        for (int i = 0; i < n; i++) arr[i] = sc.nextInt();\n        int x = sc.nextInt();\n        System.out.println(binarySearch(arr, x));\n    }\n}",
+      "tests": [
+        { "input": "5\n1 2 3 4 5\n3", "expected": "2" },
+        { "input": "4\n1 3 5 7\n2", "expected": "-1" }
+      ]
     },
     {
       "id": 10,
-      "name": "Longest Common Prefix",
-      "description": "Given n strings, find the longest common prefix. If none, print \"\" (empty line).",
-      "input_format": "First line: n. Next n lines: strings.",
-      "output_format": "Single line: longest common prefix.",
-      "constraints": "1 ≤ n ≤ 10^5; total length ≤ 10^6",
-      "sample_input": "3\nflower\nflow\nflight",
-      "sample_output": "fl",
-      "notes": ""
+      "title": "Pair Sum Exists",
+      "description": "Given n and an array, and a target value k, print YES if there exist two distinct elements whose sum is k, otherwise NO.",
+      "inputDescription": "First line: n. Second line: n integers. Third line: k.",
+      "outputDescription": "YES or NO.",
+      "examples": [
+        "Input:\n4\n1 4 2 3\n5\n\nOutput:\nYES"
+      ],
+      "starterCode": "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        // use two-sum logic (set or two-pointer on sorted)\n    }\n}",
+      "tests": [
+        { "input": "4\n1 4 2 3\n5", "expected": "YES" },
+        { "input": "3\n1 1 1\n5", "expected": "NO" }
+      ]
     }
   ]
 }

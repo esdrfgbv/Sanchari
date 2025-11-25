@@ -1,0 +1,221 @@
+/* Layout for the visualizer page */
+
+.visualizer-main {
+  padding: 16px 5vw 40px;
+  flex: 1;
+}
+
+.visualizer-layout {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 900px) {
+  .visualizer-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.visualizer-panel {
+  padding: 18px 18px 16px;
+}
+
+.visualizer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+
+.visualizer-header h2 {
+  font-size: 20px;
+}
+
+.visualizer-meta {
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+/* Code block */
+
+.visualizer-code-wrapper {
+  margin-top: 6px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.55);
+  background: #020617;
+  max-height: 460px;
+  overflow: auto;
+}
+
+.visualizer-code {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 13px;
+  padding: 10px 12px;
+  white-space: pre;
+}
+
+/* Lines */
+
+.visualizer-line {
+  display: block;
+  padding: 2px 0;
+}
+
+.visualizer-line-number {
+  display: inline-block;
+  width: 36px;
+  text-align: right;
+  margin-right: 10px;
+  color: var(--text-soft);
+  opacity: 0.8;
+}
+
+.visualizer-line-text {
+  white-space: pre;
+}
+
+.visualizer-line.active {
+  background: rgba(59, 130, 246, 0.22);
+}
+
+.visualizer-line.active .visualizer-line-number {
+  color: #bfdbfe;
+  font-weight: 500;
+}
+
+/* Right panel: steps + input + variables + log */
+
+.visualizer-line-info {
+  font-size: 13px;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.visualizer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 14px;
+}
+
+/* Input block */
+
+.visualizer-input {
+  border-radius: 10px;
+  border: 1px dashed rgba(148, 163, 184, 0.6);
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  font-size: 12px;
+  background: rgba(15, 23, 42, 0.4);
+}
+
+.visualizer-input.waiting {
+  border-style: solid;
+  border-color: rgba(96, 165, 250, 0.9);
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.5);
+}
+
+.visualizer-input h4 {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.visualizer-input-prompt {
+  margin-bottom: 6px;
+  color: var(--text-soft);
+}
+
+.visualizer-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.visualizer-input-field {
+  flex: 1;
+  border-radius: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  background: rgba(15, 23, 42, 0.8);
+  color: var(--text-main);
+  font-size: 13px;
+  padding: 6px 8px;
+}
+
+.visualizer-input-field:focus {
+  outline: none;
+  border-color: rgba(96, 165, 250, 0.95);
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+/* Variables & log */
+
+.visualizer-state {
+  margin-bottom: 16px;
+}
+
+.visualizer-state h4,
+.visualizer-log h4 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.visualizer-empty {
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+.visualizer-vars-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+.visualizer-vars-table th,
+.visualizer-vars-table td {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+  padding: 4px 6px;
+  text-align: left;
+}
+
+.visualizer-vars-table th {
+  font-weight: 500;
+  color: var(--text-soft);
+}
+
+.visualizer-log-body {
+  max-height: 160px;
+  overflow: auto;
+  border-radius: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  padding: 6px 8px;
+  font-size: 11.5px;
+}
+
+.visualizer-log-entry {
+  margin-bottom: 4px;
+}
+
+.visualizer-log-entry-line {
+  opacity: 0.7;
+  margin-right: 6px;
+}
+
+.visualizer-help {
+  font-size: 12px;
+  color: var(--text-soft);
+  margin-top: 10px;
+}
+
+.visualizer-help ul {
+  list-style: disc;
+  margin-left: 18px;
+  margin-top: 4px;
+}
