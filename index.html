@@ -5,6 +5,7 @@
   <title>Sanchari</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="visualizer.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
 </head>
@@ -230,6 +231,98 @@
       </div>
     </div>
   </section>
+
+      <!-- =========================================
+         visualizer layout 
+         ========================================= -->
+    <section id="visualizerPage" class="page hidden">
+      <div class="breadcrumb">
+        <button class="back-btn" id="backToChallengeBtn" type="button">
+          ← Back to challenge
+        </button>
+        <span>Code Visualizer</span>
+      </div>
+
+      <section class="visualizer-layout">
+        <!-- LEFT: Code + highlight -->
+        <div class="visualizer-panel glass-card">
+          <div class="visualizer-header">
+            <h2 id="visualizerTitle">Code Visualizer</h2>
+            <span id="visualizerMeta" class="visualizer-meta"></span>
+          </div>
+
+          <div class="visualizer-code-wrapper">
+            <pre id="visualizerCode" class="visualizer-code"></pre>
+          </div>
+        </div>
+
+        <!-- RIGHT: Controls + INPUT + Variables + Log -->
+        <div class="visualizer-panel glass-card">
+          <h3>Execution Steps</h3>
+
+          <p id="lineInfo" class="visualizer-line-info">
+            Load a challenge and click <strong>Visualize Code</strong>.
+          </p>
+
+          <div class="visualizer-controls">
+            <button id="stepBackBtn" class="btn ghost">⬅ Prev step</button>
+            <button id="resetStepsBtn" class="btn ghost">⟳ Reset</button>
+            <button id="stepForwardBtn" class="btn primary">Next step ➝</button>
+          </div>
+
+          <!-- Input block -->
+          <div id="visualizerInputBlock" class="visualizer-input">
+            <h4>Input</h4>
+            <p id="inputPrompt" class="visualizer-input-prompt">
+              When your code reaches <code>scanf</code> / <code>cin</code> / <code>input()</code>,
+              execution will pause here and you can type values.
+            </p>
+            <div class="visualizer-input-row">
+              <input
+                id="inputValue"
+                class="visualizer-input-field"
+                placeholder="Enter value(s) here…"
+              />
+              <button id="submitInputBtn" class="btn primary btn-sm" type="button">
+                Submit input
+              </button>
+            </div>
+          </div>
+
+          <div class="visualizer-state">
+            <h4>Variables</h4>
+
+            <div id="variablesEmpty" class="visualizer-empty">
+              No variables yet. Step through lines that assign values.
+            </div>
+
+            <table id="variablesTable" class="visualizer-vars-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <div class="visualizer-log">
+            <h4>Execution Log</h4>
+            <div id="execLog" class="visualizer-log-body"></div>
+          </div>
+
+          <div class="visualizer-help">
+            <ul>
+              <li>Supports simple assignments, arithmetic, <code>for</code> loops and inputs.</li>
+              <li>Each <strong>Next step</strong> executes one logical step.</li>
+              <li>For input lines, type values and click <strong>Submit input</strong> to continue.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </section>
+
 
   <footer class="footer">
     <span>© 2025 Sanchari — Learn coding step-by-step</span>

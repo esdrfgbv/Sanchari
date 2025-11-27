@@ -27,6 +27,9 @@
   const inputValueEl = document.getElementById("inputValue");
   const submitInputBtn = document.getElementById("submitInputBtn");
 
+  // ✅ back button for visualizer
+  const backToChallengeBtn = document.getElementById("backToChallengeBtn");
+
   // Runtime state
   let lines = [];
   let currentIndex = -1;
@@ -660,11 +663,15 @@
         }
       }
 
-      // C++: cin >> a >> b;
-      if (/^cin\s*>>/.test(trimmed)) {
-        const afterCin = trimmed.split("cin")[1] || "";
+      // C++: cin >> a >> b; or std::cin >> a >> b;
+      if (/(^|[\s;])(?:std::)?cin\s*>>/.test(trimmed)) {
+        // Find the first "cin" occurrence (works for both "cin" and "std::cin")
+        const cinIndex = trimmed.indexOf("cin");
+        const afterCinPart = cinIndex >= 0 ? trimmed.slice(cinIndex) : trimmed;
+        const afterCin = afterCinPart.split("cin")[1] || "";
         const parts = afterCin.split(">>").slice(1);
         const varNames = [];
+
         parts.forEach((p) => {
           const mm = p.match(/([A-Za-z_]\w*)/);
           if (mm) varNames.push(mm[1]);
@@ -683,10 +690,10 @@
         }
       }
 
-      // Python: x = input("...")
+      // Python: x = input("...") or x = int(input("..."))
       if (/input\s*\(/.test(trimmed)) {
         const assignMatch = trimmed.match(
-          /^([A-Za-z_]\w*)\s*=\s*input\s*\((.*)\)\s*;?$/
+          /^([A-Za-z_]\w*)\s*=\s*(?:int\s*\(\s*)?input\s*\(([^)]*)\)\s*\)?\s*;?(?:\s*#.*)?$/
         );
         if (assignMatch) {
           const varName = assignMatch[1];
@@ -706,7 +713,7 @@
 
       // Java: int n = sc.nextInt();
       const javaScanMatch = trimmed.match(
-        /^([A-Za-z_]\w*)\s*=\s*([A-Za-z_]\w*)\.next(Int|Long|Double|Float|Line)?\s*\(\)\s*;?$/
+        /^(?:[A-Za-z_<>\[\]\s]+)?\s*([A-Za-z_]\w*)\s*=\s*([A-Za-z_]\w*)\.next(Int|Long|Double|Float|Line)?\s*\(\)\s*;?$/
       );
       if (javaScanMatch) {
         const varName = javaScanMatch[1];
@@ -721,9 +728,9 @@
         return "WAITING_FOR_INPUT";
       }
 
-      // JavaScript: x = prompt("...");
+      // JavaScript: let x = prompt("..."); / const x = prompt("..."); / var x = prompt("...")
       const jsPromptMatch = trimmed.match(
-        /^([A-Za-z_]\w*)\s*=\s*prompt\s*\((.*)\)\s*;?$/
+        /^(?:let|var|const)?\s*([A-Za-z_]\w*)\s*=\s*prompt\s*\(([^)]*)\)\s*;?$/
       );
       if (jsPromptMatch) {
         const varName = jsPromptMatch[1];
@@ -1244,6 +1251,18 @@
   if (stepBackBtn) stepBackBtn.addEventListener("click", stepBack);
   if (resetStepsBtn) resetStepsBtn.addEventListener("click", resetSteps);
   if (submitInputBtn) submitInputBtn.addEventListener("click", handleSubmitInput);
+
+  // ✅ Back to challenge – same style as other back buttons in script.js
+  if (backToChallengeBtn) {
+    backToChallengeBtn.addEventListener("click", () => {
+      if (window.history && window.history.length > 1) {
+        history.back();
+      } else {
+        // If visualizer opened directly, just go to main app
+        window.location.href = "index.html";
+      }
+    });
+  }
 
   loadPayload();
 })();
