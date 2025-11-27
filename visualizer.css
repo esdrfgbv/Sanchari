@@ -303,3 +303,16 @@
   margin-left: 18px;
   margin-top: 4px;
 }
+
+/* Array visualization inside variables table */
+.visualizer-array-grid {
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 6px;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+}
+
+.visualizer-array-grid span {
+  min-width: 18px;
+  text-align: center;
+}

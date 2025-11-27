@@ -2001,35 +2001,117 @@ function pushSnapshot() {
   }
 
   function renderVariables() {
-    if (!varsTable) return;
-    const tbody = varsTable.querySelector("tbody");
-    if (!tbody) return;
+  if (!varsTable) return;
+  const tbody = varsTable.querySelector("tbody");
+  if (!tbody) return;
 
-    tbody.innerHTML = "";
+  tbody.innerHTML = "";
 
-    const names = Object.keys(variables);
-    if (names.length === 0) {
-      if (varsEmpty) varsEmpty.style.display = "block";
-      varsTable.style.display = "none";
-      return;
-    }
-
-    if (varsEmpty) varsEmpty.style.display = "none";
-    varsTable.style.display = "table";
-
-    names.forEach((name) => {
-      const tr = document.createElement("tr");
-      const tdName = document.createElement("td");
-      const tdValue = document.createElement("td");
-
-      tdName.textContent = name;
-      tdValue.textContent = String(variables[name]);
-
-      tr.appendChild(tdName);
-      tr.appendChild(tdValue);
-      tbody.appendChild(tr);
-    });
+  const names = Object.keys(variables);
+  if (names.length === 0) {
+    if (varsEmpty) varsEmpty.style.display = "block";
+    varsTable.style.display = "none";
+    return;
   }
+
+  if (varsEmpty) varsEmpty.style.display = "none";
+  varsTable.style.display = "table";
+
+  const scalarNames = [];
+  const arrayGroups = {}; // baseName -> [{ index, value }]
+
+  names.forEach((fullName) => {
+    const m = fullName.match(/^([A-Za-z_]\w*)\[(.+)\]$/);
+    if (m) {
+      const base = m[1];
+      const indexRaw = m[2];
+
+      const asNum = Number(indexRaw);
+      const index =
+        Number.isFinite(asNum) ? asNum : indexRaw;
+
+      if (!arrayGroups[base]) arrayGroups[base] = [];
+      arrayGroups[base].push({
+        index,
+        indexRaw,
+        value: variables[fullName]
+      });
+    } else {
+      scalarNames.push(fullName);
+    }
+  });
+
+  // 1) Normal scalar variables
+  scalarNames.sort().forEach((name) => {
+    const tr = document.createElement("tr");
+    const tdName = document.createElement("td");
+    const tdValue = document.createElement("td");
+
+    tdName.textContent = name;
+    tdValue.textContent = String(variables[name]);
+
+    tr.appendChild(tdName);
+    tr.appendChild(tdValue);
+    tbody.appendChild(tr);
+  });
+
+  // 2) Arrays as two-row block: index row + value row
+  Object.keys(arrayGroups)
+    .sort()
+    .forEach((base) => {
+      const elems = arrayGroups[base].slice();
+
+      elems.sort((a, b) => {
+        const na = Number(a.index);
+        const nb = Number(b.index);
+        if (Number.isFinite(na) && Number.isFinite(nb)) {
+          return na - nb;
+        }
+        return String(a.index).localeCompare(String(b.index));
+      });
+
+      // index row
+      const indexTr = document.createElement("tr");
+      const indexNameTd = document.createElement("td");
+      const indexValTd = document.createElement("td");
+
+      indexNameTd.textContent = "index";
+      const indexGrid = document.createElement("div");
+      indexGrid.className = "visualizer-array-grid";
+
+      elems.forEach((el) => {
+        const span = document.createElement("span");
+        span.textContent = String(el.index);
+        indexGrid.appendChild(span);
+      });
+
+      indexValTd.appendChild(indexGrid);
+      indexTr.appendChild(indexNameTd);
+      indexTr.appendChild(indexValTd);
+      tbody.appendChild(indexTr);
+
+      // value row (arr)
+      const arrTr = document.createElement("tr");
+      const arrNameTd = document.createElement("td");
+      const arrValTd = document.createElement("td");
+
+      arrNameTd.textContent = base;
+      const valGrid = document.createElement("div");
+      valGrid.className = "visualizer-array-grid";
+
+      elems.forEach((el) => {
+        const span = document.createElement("span");
+        span.textContent = String(el.value);
+        valGrid.appendChild(span);
+      });
+
+      arrValTd.appendChild(valGrid);
+      arrTr.appendChild(arrNameTd);
+      arrTr.appendChild(arrValTd);
+      tbody.appendChild(arrTr);
+    });
+}
+
 
   function renderLog() {
     if (!execLogEl) return;
@@ -2206,16 +2288,34 @@ function pushSnapshot() {
     if (typeof result === "boolean") return result ? 1 : 0;
 
     const varMatch = cleaned.match(/^([A-Za-z_]\w*)$/);
-    if (varMatch) {
-      const vName = varMatch[1];
-      if (Object.prototype.hasOwnProperty.call(variables, vName)) {
-        const v = variables[vName];
-        const num = Number(v);
-        if (Number.isFinite(num)) return num;
-      }
-    }
+if (varMatch) {
+  const vName = varMatch[1];
+  if (Object.prototype.hasOwnProperty.call(variables, vName)) {
+    const v = variables[vName];
+    const num = Number(v);
+    if (Number.isFinite(num)) return num;
+  }
+}
 
-    return null;
+// support arr[i] style
+const arrMatch = cleaned.match(/^([A-Za-z_]\w*)\[(.+)\]$/);
+if (arrMatch) {
+  const base = arrMatch[1];
+  const indexExpr = arrMatch[2];
+  const idxNum = evalAsNumber(indexExpr);
+  const indexKey =
+    idxNum !== null ? idxNum : evalToString(indexExpr);
+  const key = `${base}[${indexKey}]`;
+
+  if (Object.prototype.hasOwnProperty.call(variables, key)) {
+    const v = variables[key];
+    const num = Number(v);
+    if (Number.isFinite(num)) return num;
+  }
+}
+
+return null;
+
   }
 
   function evalAsBoolean(expr) {
@@ -2239,13 +2339,31 @@ function pushSnapshot() {
     const strMatch = t.match(/^["']([\s\S]*)["']$/);
     if (strMatch) return strMatch[1];
 
-    const varMatch = t.match(/^([A-Za-z_]\w*)$/);
-    if (varMatch) {
-      const name = varMatch[1];
-      if (Object.prototype.hasOwnProperty.call(variables, name)) {
-        return String(variables[name]);
-      }
-    }
+const varMatch = t.match(/^([A-Za-z_]\w*)$/);
+if (varMatch) {
+  const name = varMatch[1];
+  if (Object.prototype.hasOwnProperty.call(variables, name)) {
+    return String(variables[name]);
+  }
+}
+
+// arr[i] → use element from variables["arr[0]"]
+const arrMatch = t.match(/^([A-Za-z_]\w*)\[(.+)\]$/);
+if (arrMatch) {
+  const base = arrMatch[1];
+  const indexExpr = arrMatch[2];
+  const idxNum = evalAsNumber(indexExpr);
+  const indexKey =
+    idxNum !== null ? idxNum : evalToString(indexExpr);
+  const key = `${base}[${indexKey}]`;
+
+  if (Object.prototype.hasOwnProperty.call(variables, key)) {
+    return String(variables[key]);
+  }
+}
+
+return t;
+
 
     return t;
   }
@@ -2478,43 +2596,84 @@ function pushSnapshot() {
       return;
     }
 
-    if (allowInput && !contextLabel) {
-      if (/scanf\s*\(/.test(trimmed)) {
-        const insideMatch = trimmed.match(/scanf\s*\((.*)\)/);
-        const inside = insideMatch ? insideMatch[1] : "";
-        const varNames = [];
-        const ampMatches = inside.match(/&\s*([A-Za-z_]\w*)/g) || [];
-        ampMatches.forEach((m) => {
-          const mm = m.match(/&\s*([A-Za-z_]\w*)/);
-          if (mm) varNames.push(mm[1]);
-        });
+if (allowInput && !contextLabel) {
+  // --- C scanf() ---
+  if (/scanf\s*\(/.test(trimmed)) {
+    const insideMatch = trimmed.match(/scanf\s*\((.*)\)/);
+    const inside = insideMatch ? insideMatch[1] : "";
+    const varNames = [];
 
-        if (varNames.length > 0) {
-          const fmtMatch = inside.match(/"([^"]*)"/);
-          let desc = `scanf → ${varNames.join(", ")}`;
-          if (fmtMatch) desc = `scanf("${fmtMatch[1]}") → ${varNames.join(", ")}`;
-          setWaitingForInput(true, {
-            varNames,
-            lineNumber: pseudoLineNum,
-            idx,
-            description: desc
-          });
-          addLog(pseudoLineNum, "Waiting for scanf input.");
-          return "WAITING_FOR_INPUT";
-        }
+    // match &x  OR  &arr[i]
+    const ampMatches =
+      inside.match(/&\s*([A-Za-z_]\w*(?:\[[^\]]+\])?)/g) || [];
+
+    ampMatches.forEach((m) => {
+      const mm = m.match(/&\s*([A-Za-z_]\w*(?:\[[^\]]+\])?)/);
+      if (!mm) return;
+      const rawName = mm[1].trim();
+
+      // array element?  arr[ i ]
+      const arrMatch = rawName.match(/^([A-Za-z_]\w*)\[(.+)\]$/);
+      if (arrMatch) {
+        const base = arrMatch[1];
+        const indexExpr = arrMatch[2];
+
+        const idxNum = evalAsNumber(indexExpr);
+        const indexKey =
+          idxNum !== null ? idxNum : evalToString(indexExpr);
+
+        varNames.push(`${base}[${indexKey}]`);
+      } else {
+        // normal variable
+        varNames.push(rawName);
       }
+    });
+
+    if (varNames.length > 0) {
+      const fmtMatch = inside.match(/"([^"]*)"/);
+      let desc = `scanf → ${varNames.join(", ")}`;
+      if (fmtMatch)
+        desc = `scanf("${fmtMatch[1]}") → ${varNames.join(", ")}`;
+
+      setWaitingForInput(true, {
+        varNames,
+        lineNumber: pseudoLineNum,
+        idx,
+        description: desc
+      });
+      addLog(pseudoLineNum, "Waiting for scanf input.");
+      return "WAITING_FOR_INPUT";
+    }
+  }
+
 
       if (/(^|[\s;])(?:std::)?cin\s*>>/.test(trimmed)) {
         const cinIndex = trimmed.indexOf("cin");
         const afterCinPart = cinIndex >= 0 ? trimmed.slice(cinIndex) : trimmed;
         const afterCin = afterCinPart.split("cin")[1] || "";
         const parts = afterCin.split(">>").slice(1);
-        const varNames = [];
+          const varNames = [];
 
-        parts.forEach((p) => {
-          const mm = p.match(/([A-Za-z_]\w*)/);
-          if (mm) varNames.push(mm[1]);
-        });
+  parts.forEach((p) => {
+    const mm = p.match(/([A-Za-z_]\w*(?:\[[^\]]+\])?)/);
+    if (!mm) return;
+    const rawName = mm[1].trim();
+
+    const arrMatch = rawName.match(/^([A-Za-z_]\w*)\[(.+)\]$/);
+    if (arrMatch) {
+      const base = arrMatch[1];
+      const indexExpr = arrMatch[2];
+
+      const idxNum = evalAsNumber(indexExpr);
+      const indexKey =
+        idxNum !== null ? idxNum : evalToString(indexExpr);
+
+      varNames.push(`${base}[${indexKey}]`);
+    } else {
+      varNames.push(rawName);
+    }
+  });
+
 
         if (varNames.length > 0) {
           const desc = `cin >> ${varNames.join(" >> ")}`;
